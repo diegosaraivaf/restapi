@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projeto.entity.Pessoa;
@@ -53,12 +54,17 @@ public class PessoaController {
 	}
 	
 	@PostMapping("/pessoa")
-	public ResponseEntity<Pessoa> salvarPessoa(@RequestBody Pessoa pessoa) {
-		//metodo de salvar
-		Pessoa p = new Pessoa();
-		p = pessoaService.salvar(p);
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(p);
+	public ResponseEntity<Pessoa> salvar(@RequestBody Pessoa pessoa) {
+		try {
+			//metodo de salvar
+			Pessoa p = new Pessoa();
+			p = pessoaService.salvar(p);
+			
+			return ResponseEntity.status(HttpStatus.CREATED).body(p);
+		}catch (Exception e) {
+			//o Exceptoin tem quer ser mais especifico para que seja possivel escolher o httpStatus mais adequado
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
 	}
 	
 	@PutMapping("/pessoa")
