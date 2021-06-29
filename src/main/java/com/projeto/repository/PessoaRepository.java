@@ -1,4 +1,4 @@
-package repositoty;
+package com.projeto.repository;
 
 import java.util.List;
 
@@ -13,9 +13,10 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long>{
 	
 	List<Pessoa> findByNomeContaining(String nome);
 	
-	@Query("SELECT p* FROM Pessoa p WHERE p.nome = :nome AND p.id = :id")
+	@Query("SELECT p FROM Pessoa p WHERE p.nome = :nome AND p.id = :id")
 	List<Pessoa> porNome(String nome,Long id);
 	
-	public List<Pessoa> filtrarPessoas(Long id, String nome);
+	List<Pessoa> filtrarPessoas(Long id, String nome);
+
 	
 }

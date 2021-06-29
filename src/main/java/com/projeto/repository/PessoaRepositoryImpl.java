@@ -1,4 +1,4 @@
-package repositoty;
+package com.projeto.repository;
 
 
 
@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 import com.projeto.entity.Pessoa;
 
 @Repository
-public class PessoaRepositotyImpl {
+public class PessoaRepositoryImpl {
 	
 	@PersistenceContext
 	private EntityManager manager;
@@ -24,7 +24,7 @@ public class PessoaRepositotyImpl {
 	//como o vinculo do nome do metodo e do nome da interface do spring jpa e fraco,pode ser criado uma interface compartilhada entra os dois
 	public List<Pessoa> filtrarPessoas(Long id, String nome){
 		StringBuilder jpql = new StringBuilder();
-		jpql.append("Select * from Pessoa p where 0=0 ");
+		jpql.append("Select p from Pessoa p where 0=0 ");
 		
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		

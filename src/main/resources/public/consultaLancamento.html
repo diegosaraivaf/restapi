@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Título da página</title>
+    
+    <script src="axios.min.js"></script>
+    <script defer src="consultaLancamento.js"></script>
+  </head>
+  <body>
+    
+    <h1>Consulta lancamento</h1>
+    
+    <form id="form-lancamento" >
+    	<table>
+    		<tr>
+    			<td>id</td>
+    			<td>tipo</td>
+    			<td>valor</td>
+    		</tr>
+    		<tr>
+    			<td><input type="text" id="id" ></td>
+    			<td><input type="text" id="tipo" ></td>
+    			<td><input type="text" id="valor" ></td>
+    		</tr>
+    	</table>
+	    
+	    <button id="pesquisar" type="submit" >pesquisar</button>
+		   
+    </form>
+    <a href="http://localhost:8080/cadastroLancamento.html" ><button>Cadastrar</button></a>	
+   
+    <table id="tableLancamento" border="1">
+    </table>
+    
+  </body>
+</html>

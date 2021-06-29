@@ -22,10 +22,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projeto.entity.Pessoa;
+import com.projeto.exeption.NegocioExeption;
 import com.projeto.service.PessoaService;
 
 @RestController
-@RequestMapping(name = "/api")
+@RequestMapping(value = "/api/pessoa")
 public class PessoaController {
 	
 	//existe um problema ao atualizar uma objecto com uma lista de atributos a qual a lista nao e carregada na tela 
@@ -34,12 +35,22 @@ public class PessoaController {
 	@Autowired
 	private PessoaService pessoaService;
 
-	public void buscarPessoa() {
+	@GetMapping("/{id}")
+	public Pessoa porId(@PathVariable(value = "id") Long id) throws NegocioExeption {
+		if(0==0) {
+			throw new NegocioExeption("Pessoa nao encontrada", NegocioExeption.BADREQUEST);
+		}
+		Pessoa p = new Pessoa();
+		p.setNome("diego");
+		p.setEndereco("endereco@endereco");
 		
+		return p;
 	} 
 	
 	@RequestMapping(value="/greeting",method = RequestMethod.GET)
 	public String greeting(@RequestParam(value = "nome",defaultValue = "teste")String nome) {
+//		String x = null;
+//		x.length();
 		return "voce envio o valor =>"+nome;
 	} 
 	
@@ -56,11 +67,13 @@ public class PessoaController {
 	@PostMapping("/pessoa")
 	public ResponseEntity<Pessoa> salvar(@RequestBody Pessoa pessoa) {
 		try {
+//			String x = null;
+//			x.length();
 			//metodo de salvar
-			Pessoa p = new Pessoa();
-			p = pessoaService.salvar(p);
+			//Pessoa p = new Pessoa();
+			pessoa = pessoaService.salvar(pessoa);
 			
-			return ResponseEntity.status(HttpStatus.CREATED).body(p);
+			return ResponseEntity.status(HttpStatus.CREATED).body(pessoa);
 		}catch (Exception e) {
 			//o Exceptoin tem quer ser mais especifico para que seja possivel escolher o httpStatus mais adequado
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
