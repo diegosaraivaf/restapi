@@ -13,6 +13,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import com.projeto.entity.Lancamento;
+import com.projeto.entity.TipoLancamento;
 
 @Repository
 public class LancamentoRepositoryImpl {
@@ -22,7 +23,7 @@ public class LancamentoRepositoryImpl {
 	@PersistenceContext
 	private EntityManager manager;
 	
-	public List<Lancamento> filtrarLancamentos(Long id,String tipo,BigDecimal valor, Date dataEmissao) {
+	public List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao) {
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		
@@ -32,9 +33,9 @@ public class LancamentoRepositoryImpl {
 			jpql.append("and l.id = :id ");
 			parametros.put("id", id);
 		}
-		if(tipo != null && !tipo.isEmpty()) {
-			jpql.append("and l.tipo = :tipo ");
-			parametros.put("tipo", tipo);
+		if(tipoLancamento != null ) {
+			jpql.append("and l.tipoLancamento = :tipoLancamento ");
+			parametros.put("tipoLancamento", tipoLancamento);
 		}
 		
 		TypedQuery<Lancamento> query =  manager.createQuery(jpql.toString(),Lancamento.class);

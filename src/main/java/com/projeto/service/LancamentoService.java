@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projeto.entity.Lancamento;
+import com.projeto.entity.TipoLancamento;
 import com.projeto.repository.LancamentoRepository;
 
 @Service
@@ -33,7 +34,7 @@ public class LancamentoService {
 		lancamentoRepository.delete(lancamento);
 	}
 	
-	public List<Lancamento> filtrarLancamentos(Long id,String tipo,BigDecimal valor, Date dataEmissao){
-		return lancamentoRepository.filtrarLancamentos(id,tipo,valor,dataEmissao);
+	public List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao){
+		return lancamentoRepository.filtrarLancamentos(id,tipoLancamento,valor,dataEmissao);
 	}
 }

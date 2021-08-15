@@ -11,6 +11,11 @@ public class NegocioExeption extends Exception{
 		this.httpStatus = httpStatus; 
 	}
 	
+	public NegocioExeption(String mensagem){
+		super(mensagem);
+		this.httpStatus = BADREQUEST; 
+	}
+	
 	public int getHttpStatus() {
 		return httpStatus;
 	}

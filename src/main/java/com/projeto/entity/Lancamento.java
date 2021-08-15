@@ -4,7 +4,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,13 +21,17 @@ public class Lancamento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String tipo;
+	@Column(name = "tipo_lancamento")
+	@Enumerated(EnumType.STRING)
+	private TipoLancamento tipoLancamento;
 	
 	private BigDecimal valor;
 	
 	private Date dataEmissao;
 	
-	private String situacao;
+	@Column(name = "situacao_lancamento")
+	@Enumerated(EnumType.STRING)
+	private SituacaoLancamento situacaoLancamento;
 	
 	@OneToMany
 	@JoinColumn(name = "lancamento_id")
@@ -38,12 +45,12 @@ public class Lancamento {
 		this.id = id;
 	}
 
-	public String getTipo() {
-		return tipo;
+	public TipoLancamento getTipoLancamento() {
+		return tipoLancamento;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setTipoLancamento(TipoLancamento tipoLancamento) {
+		this.tipoLancamento = tipoLancamento;
 	}
 
 	public BigDecimal getValor() {
@@ -62,12 +69,13 @@ public class Lancamento {
 		this.dataEmissao = dataEmissao;
 	}
 
-	public String getSituacao() {
-		return situacao;
+	
+	public SituacaoLancamento getSituacaoLancamento() {
+		return situacaoLancamento;
 	}
 
-	public void setSituacao(String situacao) {
-		this.situacao = situacao;
+	public void setSituacaoLancamento(SituacaoLancamento situacaoLancamento) {
+		this.situacaoLancamento = situacaoLancamento;
 	}
 
 	public List<Parcela> getParcelas() {

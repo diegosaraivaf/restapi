@@ -14,6 +14,8 @@ public class Contribuinte {
 	
 	private String nome;
 	
+	private String documento;
+	
 	private String endereco;
 	
 	public Long getId() {
@@ -34,6 +36,10 @@ public class Contribuinte {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
-	
-	
+	public String getDocumento() {
+		return documento;
+	}
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
 }
