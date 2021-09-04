@@ -26,7 +26,7 @@ import com.projeto.exeption.NegocioExeption;
 import com.projeto.service.PessoaService;
 
 @RestController
-@RequestMapping(value = "/api/pessoa")
+@RequestMapping(value = "/api/pessoas")
 public class PessoaController {
 	
 	//existe um problema ao atualizar uma objecto com uma lista de atributos a qual a lista nao e carregada na tela 
