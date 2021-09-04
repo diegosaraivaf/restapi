@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.entity.Usuario;
+import com.projeto.exeption.NegocioExeption;
 import com.projeto.service.UsuarioService;
 
 @RestController
-@RequestMapping(value = "/usuario")
+@RequestMapping(value = "/usuarios")
 public class UsuarioController {  
 	
 	@Autowired
@@ -41,12 +42,17 @@ public class UsuarioController {
 	//ver como passar somente string de email,senha
 	@PostMapping("/autenticar")
 	public ResponseEntity<?> validar(@RequestBody Usuario usuario) {
-		Usuario usua = usuarioService.findByEmailAndSenha(usuario.getEmail(), usuario.getSenha());
-		if(usua != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(usua);
+		try {
+			Usuario usua = usuarioService.autenticarUsuario(usuario.getEmail(), usuario.getSenha());
+			
+			return ResponseEntity.status(HttpStatus.OK).body(usua);	
 		}
-		else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario ou senha invalidos");
+		catch (NegocioExeption e) {
+			return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Um erro inesperado aconteceu");
 		}
 	}
 
