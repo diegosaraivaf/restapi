@@ -28,6 +28,7 @@ import com.projeto.service.LancamentoService;
 @RequestMapping("/lancamentos")
 public class LancamentoController {
 	
+	//tirar
 	@PostConstruct
 	public void posConstruct() {
 		System.out.println("construido");

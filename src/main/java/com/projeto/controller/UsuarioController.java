@@ -13,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projeto.dto.TokenDTO;
 import com.projeto.entity.Usuario;
 import com.projeto.exeption.NegocioExeption;
+import com.projeto.service.JwtService;
 import com.projeto.service.UsuarioService;
 
 @RestController
 @RequestMapping(value = "/usuarios")
 public class UsuarioController {  
+	
+	@Autowired
+	private JwtService jwtService;
 	
 	@Autowired
 	private UsuarioService usuarioService;
@@ -43,9 +48,12 @@ public class UsuarioController {
 	@PostMapping("/autenticar")
 	public ResponseEntity<?> validar(@RequestBody Usuario usuario) {
 		try {
-			Usuario usua = usuarioService.autenticarUsuario(usuario.getEmail(), usuario.getSenha());
+			Usuario usuarioAutenticado = usuarioService.autenticarUsuario(usuario.getEmail(), usuario.getSenha());
 			
-			return ResponseEntity.status(HttpStatus.OK).body(usua);	
+			String token = jwtService.gerarToken(usuarioAutenticado);
+			TokenDTO tokenDTO = new TokenDTO(usuarioAutenticado.getNome(),token);
+			return ResponseEntity.ok(tokenDTO);
+			//return ResponseEntity.status(HttpStatus.OK).body(usua);	
 		}
 		catch (NegocioExeption e) {
 			return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());

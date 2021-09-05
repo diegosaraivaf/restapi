@@ -1,0 +1,63 @@
+package com.projeto.service;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.projeto.entity.Usuario;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+@Service
+public class JwtService {
+	
+	@Value("${jwt.expiracao}")
+	private String expiracao;
+
+	@Value("${jwt.chave-assinatura}")
+	private String chaveAssinatura;
+
+	public String gerarToken(Usuario usuario){
+		long exp = Long.valueOf(expiracao);
+		LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(exp);
+		Instant instant = dataHoraExpiracao.atZone( ZoneId.systemDefault()).toInstant(); //convertendo LocalDate para date primeiro dever ser pego a zone pois e possivel pegar a zona de qualquer pais, apois isso e necessario pegar o 'instante'
+		Date data = Date.from(instant);
+	
+		String token = Jwts.builder()
+								.setExpiration(data)
+								.setSubject(usuario.getEmail()) //subject e o identificador do usuario, poderia ser o id,mas neste caso como o email esta sendo utilizado  para buscar o usuario, este campo foi escolhido
+								.signWith(SignatureAlgorithm.HS512, chaveAssinatura) //chave e algoritmo de criptografia
+								.compact();
+	
+		return token;
+	}
+
+	public Claims obterClaims(String token) throws ExpiredJwtException {
+		return Jwts.parser().setSigningKey(chaveAssinatura).parseClaimsJws(token).getBody();
+	}
+
+	public boolean isTokenValido(String token){
+		try{
+			Claims claims = obterClaims(token);
+			Date dataEx = claims.getExpiration();
+			LocalDateTime dataExpiracao = dataEx.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+		
+			return LocalDateTime.now().isBefore(dataExpiracao);
+		}
+		catch(ExpiredJwtException e){
+			return false;
+		}
+	}
+
+	public String obterLoginUsuario(String token) {
+		Claims claims = obterClaims(token);
+		return claims.getSubject();
+	}
+}
