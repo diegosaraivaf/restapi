@@ -3,6 +3,7 @@ package com.projeto.service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -30,9 +31,15 @@ public class JwtService {
 		Instant instant = dataHoraExpiracao.atZone( ZoneId.systemDefault()).toInstant(); //convertendo LocalDate para date primeiro dever ser pego a zone pois e possivel pegar a zona de qualquer pais, apois isso e necessario pegar o 'instante'
 		Date data = Date.from(instant);
 	
+		String horaExpiracaoToken = dataHoraExpiracao.toLocalTime()
+				.format(DateTimeFormatter.ofPattern("HH:mm"));
+			
 		String token = Jwts.builder()
 								.setExpiration(data)
 								.setSubject(usuario.getEmail()) //subject e o identificador do usuario, poderia ser o id,mas neste caso como o email esta sendo utilizado  para buscar o usuario, este campo foi escolhido
+								.claim("userid",usuario.getId())
+								.claim("nome",usuario.getNome())
+								.claim("horaExpiracao",horaExpiracaoToken)
 								.signWith(SignatureAlgorithm.HS512, chaveAssinatura) //chave e algoritmo de criptografia
 								.compact();
 	

@@ -1,5 +1,8 @@
 package com.projeto.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,18 @@ public class ContribuinteService {
 		validarContribuinte(contribuinte);
 		
 		return contribuinteRepository.save(contribuinte);
+	}
+	
+	public List<Contribuinte> pesquisar(){
+		return contribuinteRepository.findAll();
+	}
+	
+	public void deletar(Contribuinte contribuinte) {
+		contribuinteRepository.delete(contribuinte);
+	}
+	
+	public Optional<Contribuinte> porId(Long id) {
+		return contribuinteRepository.findById(id);
 	}
 
 	private void validarContribuinte(Contribuinte contribuinte) throws NegocioExeption {
