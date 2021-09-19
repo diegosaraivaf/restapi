@@ -33,6 +33,10 @@ public class ContribuinteService {
 	public Optional<Contribuinte> porId(Long id) {
 		return contribuinteRepository.findById(id);
 	}
+	
+	public Contribuinte buscarPorDocumento(String documento) {
+		return contribuinteRepository.findByDocumento(documento);
+	}
 
 	private void validarContribuinte(Contribuinte contribuinte) throws NegocioExeption {
 		if(contribuinte.getId() == null) {

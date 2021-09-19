@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.entity.Contribuinte;
@@ -61,6 +62,12 @@ public class ContribuinteController {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("erro inesperado");
 		}
+	}
+	
+	@GetMapping("/documento/{documento}")
+	public ResponseEntity<?> porDocumento(@PathVariable("documento") String documento) {
+		Contribuinte contribuinte = contribuinteService.buscarPorDocumento(documento);
+		return ResponseEntity.status(HttpStatus.OK).body(contribuinte);
 	}
 
 }

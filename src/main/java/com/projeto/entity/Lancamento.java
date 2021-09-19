@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -36,6 +37,10 @@ public class Lancamento {
 	@OneToMany
 	@JoinColumn(name = "lancamento_id")
 	private List<Parcela> parcelas;
+	
+	@ManyToOne
+	@JoinColumn(name = "contribuinte_id")
+	private Contribuinte contribuinte;
 
 	public Long getId() {
 		return id;
@@ -86,6 +91,12 @@ public class Lancamento {
 		this.parcelas = parcelas;
 	}
 	
+	public Contribuinte getContribuinte() {
+		return contribuinte;
+	}
 	
+	public void setContribuinte(Contribuinte contribuinte) {
+		this.contribuinte = contribuinte;
+	}
 	
 }
