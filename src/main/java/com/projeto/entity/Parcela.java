@@ -1,6 +1,7 @@
 package com.projeto.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,13 @@ public class Parcela {
 	private BigDecimal valor;
 	
 	private String situacao;
+	
+	/*
+	 * @Temporal(TemporalType.DATE)
+	 * 
+	 * @Column(name = "data_validade")
+	 */
+	private LocalDate dataVencimento;
 
 	public Long getId() {
 		return id;
@@ -41,6 +49,16 @@ public class Parcela {
 	public void setSituacao(String situacao) {
 		this.situacao = situacao;
 	}
+
+	public LocalDate getDataVencimento() {
+		return dataVencimento;
+	}
+
+	public void setDataVencimento(LocalDate dataVencimento) {
+		this.dataVencimento = dataVencimento;
+	}
+	
+	
 	
 	
 }
