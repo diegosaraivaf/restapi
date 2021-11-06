@@ -12,5 +12,6 @@ import com.projeto.entity.TipoLancamento;
 
 @Repository
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long>{
-	List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao);
+	List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao,
+			String contribuinteNome, String contribuinteDocumento);
 }

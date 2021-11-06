@@ -19,14 +19,15 @@ public class ExeptionHandler
 //extends ResponseEntityExceptionHandler
 {
 	
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> handlerExeption(Exception e) {
-		
-		ErroResponse erro = new ErroResponse("teste", e.getMessage());
-		e.printStackTrace();
-		//new HttpRequestMethodNotSupportedException(null);
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
-	}
+	/*Handler retirado pois esta capturando os erros 500 e retornado 400, assim mascarando o erro
+	 * 
+	 * @ExceptionHandler(Exception.class) public ResponseEntity<?>
+	 * handlerExeption(Exception e) {
+	 * 
+	 * ErroResponse erro = new ErroResponse("teste", e.getMessage());
+	 * e.printStackTrace(); //new HttpRequestMethodNotSupportedException(null);
+	 * return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro); }
+	 */
 	
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<?> handlerNullPointerException(NullPointerException e) {

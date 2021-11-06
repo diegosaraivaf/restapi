@@ -21,7 +21,8 @@ public class LancamentoRepositoryImpl {
 	@PersistenceContext
 	private EntityManager manager;
 	
-	public List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao) {
+	public List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao,
+			String contribuinteNome, String contribuinteDocumento) {
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		
@@ -37,6 +38,14 @@ public class LancamentoRepositoryImpl {
 		if(tipoLancamento != null ) {
 			jpql.append("and l.tipoLancamento = :tipoLancamento ");
 			parametros.put("tipoLancamento", tipoLancamento);
+		}
+		if(contribuinteNome != null && contribuinteNome.trim().length() > 0) {
+			jpql.append("and l.contribuinte.nome like :contribuinteNome ");
+			parametros.put("contribuinteNome", "%"+contribuinteNome+"%");
+		}
+		if(contribuinteDocumento != null && contribuinteDocumento.trim().length() > 0) {
+			jpql.append("and l.contribuinte.documento like :contribuinteDocumento ");
+			parametros.put("contribuinteDocumento", "%"+contribuinteDocumento+"%");
 		}
 		
 		jpql.append("order by l.id ");

@@ -25,6 +25,9 @@ public class ParcelaService {
 	}
 	
 	public void deletarParcelarDoLancamento(Lancamento lancamento){
+		if(lancamento.getId() == null) {
+			return;
+		}
 		parcelaRepository.deletarParcelasDoLancamento(lancamento.getId());
 	}
 	

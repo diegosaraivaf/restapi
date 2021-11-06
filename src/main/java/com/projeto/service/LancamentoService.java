@@ -30,11 +30,9 @@ public class LancamentoService {
 	
 	@Transactional
 	public Lancamento salvar(Lancamento lancamento) {
-		//if(lancamento.getParcelas() != null) {
-			parcelaService.deletarParcelarDoLancamento(lancamento);
-			List<Parcela> parcelas =  parcelaService.salvar(lancamento.getParcelas());
-			lancamento.setParcelas(parcelas);
-		//}
+		parcelaService.deletarParcelarDoLancamento(lancamento);
+		List<Parcela> parcelas =  parcelaService.salvar(lancamento.getParcelas());
+		lancamento.setParcelas(parcelas);
 		
 		return lancamentoRepository.save(lancamento);
 	}
@@ -47,7 +45,8 @@ public class LancamentoService {
 		lancamentoRepository.delete(lancamento);
 	}
 	
-	public List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao){
-		return lancamentoRepository.filtrarLancamentos(id,tipoLancamento,valor,dataEmissao);
+	public List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao,
+			String contribuinteNome, String contribuinteDocumento){
+		return lancamentoRepository.filtrarLancamentos(id,tipoLancamento,valor, dataEmissao, contribuinteNome, contribuinteDocumento);
 	}
 }

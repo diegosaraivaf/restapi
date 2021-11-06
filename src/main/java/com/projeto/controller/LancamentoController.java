@@ -1,6 +1,7 @@
 package com.projeto.controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +55,11 @@ public class LancamentoController {
 	public List<Lancamento> filtrarLancamentos(
 			@RequestParam(value = "id", required=false) Long id,
 			@RequestParam(value = "tipoLancamento", required=false) TipoLancamento tipoLancamento,
-			@RequestParam(value = "valor", required=false) BigDecimal valor) {
-		return lancamentoService.filtrarLancamentos(id, tipoLancamento, valor, null);
+			@RequestParam(value = "valor", required=false) BigDecimal valor,
+			@RequestParam(value = "contribuinteNome", required=false) String contribuinteNome,
+			@RequestParam(value = "contribuinteDocumento", required=false) String contribuinteDocumento,
+			@RequestParam(value = "dataEmissao", required=false) LocalDate dataEmissao) {
+		return lancamentoService.filtrarLancamentos(id, tipoLancamento, valor, null,contribuinteNome, contribuinteDocumento);
 	}
 	
 	@PostMapping
