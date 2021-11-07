@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.projeto.entity.Contribuinte;
@@ -26,8 +27,13 @@ public class ContribuinteService {
 		return contribuinteRepository.findAll();
 	}
 	
-	public void deletar(Contribuinte contribuinte) {
-		contribuinteRepository.delete(contribuinte);
+	public void deletar(Contribuinte contribuinte) throws NegocioExeption {
+		try {
+			contribuinteRepository.delete(contribuinte);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new NegocioExeption("Este contribuinte esta sendo utilizado em outras partes do sistema e nao pode ser excluido.");
+		}
 	}
 	
 	public Optional<Contribuinte> porId(Long id) {

@@ -69,5 +69,16 @@ public class ContribuinteController {
 		Contribuinte contribuinte = contribuinteService.buscarPorDocumento(documento);
 		return ResponseEntity.status(HttpStatus.OK).body(contribuinte);
 	}
+	
+	@GetMapping("/{idContribuinte}")
+	public Contribuinte buscarPorId(@PathVariable("idContribuinte") Long idContribuinte) throws NegocioExeption {
+		Contribuinte  contribuinte  = contribuinteService.porId(idContribuinte).get();
+		if(contribuinte == null) {
+			throw new NegocioExeption("Contribuinte com o id passado nao existe");
+		}
+		
+		return contribuinte;
+	}
+	
 
 }
