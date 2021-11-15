@@ -71,7 +71,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.POST,"/usuarios/autenticar").permitAll()
 				.antMatchers(HttpMethod.POST,"/usuarios/autenticar/").permitAll()
 				.antMatchers(HttpMethod.POST,"/usuarios").permitAll()
-				.antMatchers(HttpMethod.POST,"/usuarios/").permitAll()
+				.antMatchers(HttpMethod.GET,
+						"/v2/api-docs", "/swagger-resources/configuration/ui", 
+						"/swagger-resources", "/swagger-resources/configuration/security", 
+						"/swagger-ui.html", "/webjars/**").permitAll()
+				//.antMatchers(HttpMethod.GET,"/**").permitAll()
 				.anyRequest().authenticated()
 		.and()
 			//impede que o spring crie sessoes

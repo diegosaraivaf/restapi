@@ -4,6 +4,7 @@ import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -54,6 +55,15 @@ public class ExeptionHandler
 		}
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<?> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {		
+		String mensagem = String.format("Campo '%s' %s. ", 
+				e.getBindingResult().getFieldError().getField(),
+				e.getBindingResult().getFieldError().getDefaultMessage());
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagem);
 	}
 	
 	@ExceptionHandler(NegocioExeption.class)

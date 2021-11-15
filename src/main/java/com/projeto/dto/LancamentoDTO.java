@@ -1,48 +1,32 @@
-package com.projeto.entity;
+package com.projeto.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
-@Entity
-public class Lancamento {
+import com.projeto.entity.Contribuinte;
+import com.projeto.entity.Parcela;
+import com.projeto.entity.SituacaoLancamento;
+import com.projeto.entity.TipoLancamento;
+
+public class LancamentoDTO {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "tipo_lancamento")
-	@Enumerated(EnumType.STRING)
 	private TipoLancamento tipoLancamento;
 	
+	@NotNull
 	private BigDecimal valor;
 	
-//	@Temporal(TemporalType.DATE)
 	private Date dataEmissao;
 	
-	@Column(name = "situacao_lancamento")
-	@Enumerated(EnumType.STRING)
 	private SituacaoLancamento situacaoLancamento;
 	
-	@OneToMany
-	@JoinColumn(name = "lancamento_id")
 	private List<Parcela> parcelas;
 	
-	@ManyToOne
-	@JoinColumn(name = "contribuinte_id")
+	@NotNull
 	private Contribuinte contribuinte;
 
 	public Long getId() {
@@ -77,7 +61,6 @@ public class Lancamento {
 		this.dataEmissao = dataEmissao;
 	}
 
-	
 	public SituacaoLancamento getSituacaoLancamento() {
 		return situacaoLancamento;
 	}
@@ -93,13 +76,14 @@ public class Lancamento {
 	public void setParcelas(List<Parcela> parcelas) {
 		this.parcelas = parcelas;
 	}
-	
+
 	public Contribuinte getContribuinte() {
 		return contribuinte;
 	}
-	
+
 	public void setContribuinte(Contribuinte contribuinte) {
 		this.contribuinte = contribuinte;
 	}
+	
 	
 }
