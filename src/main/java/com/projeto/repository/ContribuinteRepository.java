@@ -11,4 +11,5 @@ import com.projeto.entity.Pessoa;
 @Repository
 public interface ContribuinteRepository extends JpaRepository<Contribuinte, Long>{
 	Contribuinte findByDocumento(String documento);
+	List<Contribuinte> filtrar(String documento,String nome,String endereco);
 }

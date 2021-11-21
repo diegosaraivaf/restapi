@@ -23,8 +23,8 @@ public class ContribuinteService {
 		return contribuinteRepository.save(contribuinte);
 	}
 	
-	public List<Contribuinte> pesquisar(){
-		return contribuinteRepository.findAll();
+	public List<Contribuinte> filtrar(String documento,String nome,String endereco) {
+		return contribuinteRepository.filtrar(documento, nome, endereco);
 	}
 	
 	public void deletar(Contribuinte contribuinte) throws NegocioExeption {

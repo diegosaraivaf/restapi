@@ -40,10 +40,14 @@ public class ContribuinteController {
 		}
 	}
 	
-	@GetMapping("/")
-	public ResponseEntity<?> pesquisar(){
-		List<Contribuinte> contribuintes =  contribuinteService.pesquisar();
-		return ResponseEntity.status(HttpStatus.OK).body(contribuintes);
+	@GetMapping("")
+	public List<Contribuinte> filtrar(
+			@RequestParam(value = "documento", required=false) String documento,
+			@RequestParam(value = "nome", required=false) String nome,
+			@RequestParam(value = "endereco", required=false) String endereco
+			){
+		List<Contribuinte> contribuintes =  contribuinteService.filtrar(documento, nome, endereco);
+		return contribuintes;
 	}
 	
 	@DeleteMapping("/{id}")
