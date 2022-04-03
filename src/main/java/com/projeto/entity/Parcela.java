@@ -23,6 +23,8 @@ public class Parcela {
 	 * @Temporal(TemporalType.DATE)
 	 * 
 	 * @Column(name = "data_validade")
+	 * 
+	 * @Convert(converter = JSR310JpaConverters.LocalDateConverter.class)    //nesta versao do spring nao precisa deste converter ?
 	 */
 	private LocalDate dataVencimento;
 

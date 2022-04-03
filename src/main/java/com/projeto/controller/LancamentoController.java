@@ -12,6 +12,10 @@ import javax.websocket.server.PathParam;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,7 +62,9 @@ public class LancamentoController {
 	
 	//@GetMapping
 	public List<Lancamento> listar() {
-		return lancamentoService.findAll();
+		Pageable pageable = PageRequest.of(1, 12, Sort.by(Direction.DESC,"id"));
+		
+		return lancamentoService.findAll(pageable);
 	}
 	
 	@ApiOperation(value = "Filtra lancamentos")
@@ -69,8 +75,10 @@ public class LancamentoController {
 			@RequestParam(value = "valor", required=false) BigDecimal valor,
 			@RequestParam(value = "contribuinteNome", required=false) String contribuinteNome,
 			@RequestParam(value = "contribuinteDocumento", required=false) String contribuinteDocumento,
-			@RequestParam(value = "dataEmissao", required=false) LocalDate dataEmissao) {
-		return lancamentoService.filtrarLancamentos(id, tipoLancamento, valor, null,contribuinteNome, contribuinteDocumento);
+			@RequestParam(value = "dataEmissao", required=false) LocalDate dataEmissao,
+			@RequestParam(value = "pagina",defaultValue = "0") int pagina,
+			@RequestParam(value = "limite",defaultValue = "12") int limite) {
+		return lancamentoService.filtrarLancamentos(id, tipoLancamento, valor, null,contribuinteNome, contribuinteDocumento, pagina,limite);
 	}
 	
 	@ApiOperation(value = "Salva lancamento")

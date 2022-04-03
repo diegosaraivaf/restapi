@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.projeto.entity.Lancamento;
@@ -24,8 +25,10 @@ public class LancamentoService {
 	@Autowired
 	private ParcelaService parcelaService;
 	
-	public List<Lancamento> findAll() {
-		return lancamentoRepository.findAll();
+	/**find all com paginabel,classes do spring boot que ajudam com a paginacao,esta classe nao foi utilizada no filtro
+	 * de lancamento porque usando find all eu perco os fetch join */
+	public List<Lancamento> findAll(Pageable pageable) {
+		return lancamentoRepository.findAll(pageable).getContent();
 	}
 	
 	@Transactional
@@ -46,7 +49,10 @@ public class LancamentoService {
 	}
 	
 	public List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao,
-			String contribuinteNome, String contribuinteDocumento){
-		return lancamentoRepository.filtrarLancamentos(id,tipoLancamento,valor, dataEmissao, contribuinteNome, contribuinteDocumento);
+			String contribuinteNome, String contribuinteDocumento, int pagina, int limite){
+		return lancamentoRepository.filtrarLancamentos(id,tipoLancamento,valor, dataEmissao, contribuinteNome, contribuinteDocumento,
+				pagina,limite);
 	}
+
+
 }

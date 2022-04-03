@@ -22,9 +22,14 @@ public class LancamentoRepositoryImpl {
 	private EntityManager manager;
 	
 	public List<Lancamento> filtrarLancamentos(Long id,TipoLancamento tipoLancamento,BigDecimal valor, Date dataEmissao,
-			String contribuinteNome, String contribuinteDocumento) {
+			String contribuinteNome, String contribuinteDocumento, int pagina, int limite) {
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = new HashMap<String, Object>();
+		
+		int total = buscarQuantidadeTotalLancamentos();
+		int quantidadePaginas = total / limite;
+		int primeiroRegistroPagina = pagina * limite ;
+		int ultimoRegistroPagina = primeiroRegistroPagina + limite ;
 		
 		jpql.append("select distinct l from Lancamento l "
 				+ "join fetch l.contribuinte c "
@@ -54,6 +59,16 @@ public class LancamentoRepositoryImpl {
 		parametros.forEach((key,value) -> query.setParameter(key, value));
 		
 		return query.getResultList();
+	}
+	
+	public int buscarQuantidadeTotalLancamentos() {
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("select count(l.id) from Lancamento");
+	
+		TypedQuery<Integer> query =  manager.createQuery(jpql.toString(),Integer.class);
+
+		
+		return query.getSingleResult();
 	}
 
 }
