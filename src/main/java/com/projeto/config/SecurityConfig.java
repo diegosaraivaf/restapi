@@ -76,6 +76,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 						"/swagger-resources", "/swagger-resources/configuration/security", 
 						"/swagger-ui.html", "/webjars/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/**").permitAll()
+				.antMatchers(HttpMethod.POST,"/**").permitAll()
+				.antMatchers(HttpMethod.PUT,"/**").permitAll()
+				.antMatchers(HttpMethod.PATCH,"/**").permitAll()
+				.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 				.anyRequest().authenticated()
 		.and()
 			//impede que o spring crie sessoes
