@@ -95,9 +95,15 @@ public class LancamentoController {
 	@ApiOperation(value = "Atualiza lancamento por id")
 	@PutMapping("/{id}")
 	public Lancamento atualizar(@PathVariable("id")Long id, @RequestBody Lancamento lancamento) throws NegocioExeption {
+		
+		//mudar este codigo para path id nao pode ser nulo 
 		if(lancamento.getId() == null ) {
 			throw new NegocioExeption("O 'id' do lancamento nao pode ser vazio",NegocioExeption.BADREQUEST);
 		}
+		//adicionar consulta por id, verifica se o lancamento existe, se nao existe, retornar 404 
+		
+		//pensar na possibilidade : toda vez que vo atualizar um registro, tenho que preenche todos os dados dele ? inclusive as dependencias dele ? 
+		
 		return lancamentoService.salvar(lancamento);
 	}
 	

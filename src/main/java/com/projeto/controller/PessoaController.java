@@ -23,6 +23,9 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projeto.entity.Pessoa;
 import com.projeto.exeption.NegocioExeption;
+import com.projeto.repository.PessoaRepository;
+import com.projeto.repository.RepositoryGeneric;
+import com.projeto.repository.RepositoryGenericImpl;
 import com.projeto.service.PessoaService;
 
 @RestController
@@ -34,6 +37,10 @@ public class PessoaController {
 	
 	@Autowired
 	private PessoaService pessoaService;
+	
+	@Autowired
+	private RepositoryGeneric repositoryGeneric;
+
 
 	@GetMapping("/{id}")
 	public Pessoa porId(@PathVariable(value = "id") Long id) throws NegocioExeption {
@@ -90,12 +97,14 @@ public class PessoaController {
 	public void atualizarParcialmente(@PathVariable("id") Long id, @RequestBody Map<String,Object> atributos) {
 		//busca pessoa por id se nao achar retorna codigo 403
 		Pessoa pessoaDestino = new Pessoa();
-		
+		 
 		//seta os valores dos atributaos passados,e passado uma lista porques existe a possibilidade do cliente querer setar null em um atributo
 		ObjectMapper objectMapper = new ObjectMapper();
+		//object mapper foi utilizadeo porque existem varias conversoes que seriam necessario fazer manualmente como de int para bigdevimal ....
 		Pessoa pessoaOrigem = objectMapper.convertValue(atributos, Pessoa.class);
 		
 		atributos.forEach((nomePropriedade,valorPropriedade) ->{
+			//tornar esse trecho generico 
 			Field field = ReflectionUtils.findField(Pessoa.class, nomePropriedade);
 			field.setAccessible(true);
 			
@@ -106,6 +115,49 @@ public class PessoaController {
 		
 		
 		//atualiza pessoa destino ;
+	}
+	
+	/**
+	 * TRYING CREATE A PATH MATHOD GENERIC 
+	 * @param id
+	 * @param atributos
+	 */
+	@PatchMapping("/pessoa/teste/{id}")
+	public void atualizarParcialmenteTeste(@PathVariable("id") Long id, @RequestBody Map<String,Object> atributos) {
+		try {
+			Pessoa p = parseToObject(atributos,Pessoa.class);
+			System.out.println(p);
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//atualiza pessoa destino ;
 		
 	}
+
+	public <T> T parseToObject(Map<String, Object> atributos,Class<T> classe) throws InstantiationException, IllegalAccessException {
+		//busca pessoa por id se nao achar retorna codigo 403
+//		Class<T> objetoDestino = classe.getClass().newInstance();
+		T objetoDestino = repositoryGeneric.find(classe, 1L);
+		
+		//seta os valores dos atributaos passados,e passado uma lista porques existe a possibilidade do cliente querer setar null em um atributo
+		ObjectMapper objectMapper = new ObjectMapper();
+		//object mapper foi utilizadeo porque existem varias conversoes que seriam necessario fazer manualmente como de int para bigdevimal ....
+		T objetoOrigem = objectMapper.convertValue(atributos, classe);
+		
+		atributos.forEach((nomePropriedade,valorPropriedade) ->{
+			//tornar esse trecho generico 
+			Field field = ReflectionUtils.findField(classe, nomePropriedade);
+			field.setAccessible(true);
+			
+			Object novoValor =ReflectionUtils.getField(field, objetoOrigem);
+			
+			ReflectionUtils.setField(field, objetoDestino, novoValor);
+		});
+		
+		return objetoDestino;
+	}
+	
+	
 }
