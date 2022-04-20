@@ -63,12 +63,12 @@ public class LancamentoRepositoryImpl {
 	
 	public int buscarQuantidadeTotalLancamentos() {
 		StringBuilder jpql = new StringBuilder();
-		jpql.append("select count(l.id) from Lancamento");
+		jpql.append("select count(l.id) from Lancamento l");
 	
-		TypedQuery<Integer> query =  manager.createQuery(jpql.toString(),Integer.class);
+		TypedQuery<Long> query =  manager.createQuery(jpql.toString(),Long.class);
 
 		
-		return query.getSingleResult();
+		return Integer.parseInt(query.getSingleResult().toString());
 	}
 
 }
