@@ -66,8 +66,8 @@ public class ExeptionHandler
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagem);
 	}
 	
-	@ExceptionHandler(NegocioExeption.class)
-	public ResponseEntity<?> handlerNegocioExeption(NegocioExeption ex){
+	@ExceptionHandler(NegocioException.class)
+	public ResponseEntity<?> handlerNegocioExeption(NegocioException ex){
 		ErroResponse erro = new ErroResponse("erro de negocio", ex.getMessage());
 		
 		return ResponseEntity.status(ex.getHttpStatus()).body(erro);

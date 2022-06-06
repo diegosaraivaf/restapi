@@ -1,17 +1,17 @@
 package com.projeto.exeption;
 
-public class NegocioExeption extends Exception{
+public class NegocioException extends Exception{
 	private int httpStatus;
 	
 	public final static int BADREQUEST = 400;
 	public final static int NOTFOUND = 404;
 	
-	public NegocioExeption(String mensagem,int httpStatus){
+	public NegocioException(String mensagem,int httpStatus){
 		super(mensagem);
 		this.httpStatus = httpStatus; 
 	}
 	
-	public NegocioExeption(String mensagem){
+	public NegocioException(String mensagem){
 		super(mensagem);
 		this.httpStatus = BADREQUEST; 
 	}

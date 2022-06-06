@@ -9,14 +9,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.entity.Contribuinte;
-import com.projeto.exeption.NegocioExeption;
+import com.projeto.exeption.NegocioException;
 import com.projeto.service.ContribuinteService;
+import com.projeto.service.EnderecoService;
 
 @RestController
 @RequestMapping("/contribuintes")
@@ -25,19 +27,36 @@ public class ContribuinteController {
 	@Autowired
 	private ContribuinteService contribuinteService;
 	
+	@Autowired
+	private EnderecoService enderecoService;
+	
 	@PostMapping("/")
-	public ResponseEntity<?> salvar(@RequestBody Contribuinte constribuinte) {
+	public ResponseEntity<?> salvar(@RequestBody Contribuinte contribuinte) {
 		try {
-			Contribuinte contribuinte = contribuinteService.salvar(constribuinte);
+			enderecoService.saveAll(contribuinte.getEnderecos());
+			contribuinte = contribuinteService.salvar(contribuinte);
+			
 			return ResponseEntity.status(HttpStatus.OK).body(contribuinte);
 		}
-		catch (NegocioExeption e) {
+		catch (NegocioException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Aconteceu um erro inesperado");
 		}
+	}
+	
+	@PutMapping("/{id}")
+	public Contribuinte update(@PathVariable Long id, @RequestBody Contribuinte contribuinte) throws NegocioException {
+		Contribuinte contribuinteAtual = contribuinteService.porId(id).get();
+		if(contribuinteAtual == null) {
+			throw new NegocioException("Nao existe contribuinte com o id :"+id+".");
+		}
+//		provavelmente tenha que ser implementado um metodo para excluir os enderecos de contribuinte antes de salvar todos.
+		enderecoService.saveAll(contribuinte.getEnderecos());
+		contribuinte.setId(id);
+		return contribuinteService.salvar(contribuinte);
 	}
 	
 	@GetMapping("")
@@ -54,12 +73,12 @@ public class ContribuinteController {
 	public ResponseEntity<?> deletar(@PathVariable("id") Long id) {
 		try {
 			Contribuinte contribuinte = contribuinteService.porId(id)
-					.orElseThrow(() -> new NegocioExeption("Nao existe contribuinte com o id passado",NegocioExeption.BADREQUEST));
+					.orElseThrow(() -> new NegocioException("Nao existe contribuinte com o id passado",NegocioException.BADREQUEST));
 			
 			contribuinteService.deletar(contribuinte);
 			
 			return ResponseEntity.status(HttpStatus.OK).body(null);
-		}catch (NegocioExeption e) {
+		}catch (NegocioException e) {
 			return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
 		}
 		catch (Exception e) {
@@ -75,10 +94,10 @@ public class ContribuinteController {
 	}
 	
 	@GetMapping("/{idContribuinte}")
-	public Contribuinte buscarPorId(@PathVariable("idContribuinte") Long idContribuinte) throws NegocioExeption {
+	public Contribuinte buscarPorId(@PathVariable("idContribuinte") Long idContribuinte) throws NegocioException {
 		Contribuinte  contribuinte  = contribuinteService.porId(idContribuinte).get();
 		if(contribuinte == null) {
-			throw new NegocioExeption("Contribuinte com o id passado nao existe");
+			throw new NegocioException("Contribuinte com o id passado nao existe");
 		}
 		
 		return contribuinte;

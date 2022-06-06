@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projeto.entity.Usuario;
-import com.projeto.exeption.NegocioExeption;
+import com.projeto.exeption.NegocioException;
 import com.projeto.repository.UsuarioRepository;
 
 @Service
@@ -42,15 +42,15 @@ public class UsuarioService {
 		return usuarioRepository.findById(id).get();
 	}
 	
-	public Usuario autenticarUsuario(String email,String senha) throws NegocioExeption {
+	public Usuario autenticarUsuario(String email,String senha) throws NegocioException {
 		Usuario usuario = findByEmail(email);
 		
 		if(usuario == null) {
-			throw new NegocioExeption("Usuario nao encontrado");
+			throw new NegocioException("Usuario nao encontrado");
 		}
 		
 		if(!passwordEncoder.matches(senha, usuario.getSenha())) {
-			throw new NegocioExeption("Senha invalida");
+			throw new NegocioException("Senha invalida");
 		}
 		return usuario;
 	}

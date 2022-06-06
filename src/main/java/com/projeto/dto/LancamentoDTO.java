@@ -24,6 +24,7 @@ public class LancamentoDTO {
 	
 	private SituacaoLancamento situacaoLancamento;
 	
+	@NotNull
 	private List<Parcela> parcelas;
 	
 	@NotNull

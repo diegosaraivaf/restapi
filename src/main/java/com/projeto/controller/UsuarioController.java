@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.dto.TokenDTO;
 import com.projeto.entity.Usuario;
-import com.projeto.exeption.NegocioExeption;
+import com.projeto.exeption.NegocioException;
 import com.projeto.service.JwtService;
 import com.projeto.service.UsuarioService;
 
@@ -55,7 +55,7 @@ public class UsuarioController {
 			return ResponseEntity.ok(tokenDTO);
 			//return ResponseEntity.status(HttpStatus.OK).body(usua);	
 		}
-		catch (NegocioExeption e) {
+		catch (NegocioException e) {
 			return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
 		}
 		catch (Exception e) {

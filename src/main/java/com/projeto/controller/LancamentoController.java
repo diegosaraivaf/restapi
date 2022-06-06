@@ -42,7 +42,7 @@ import com.projeto.dto.LancamentoDTO;
 import com.projeto.entity.Lancamento;
 import com.projeto.entity.Pessoa;
 import com.projeto.entity.TipoLancamento;
-import com.projeto.exeption.NegocioExeption;
+import com.projeto.exeption.NegocioException;
 import com.projeto.repository.RepositoryGeneric;
 import com.projeto.service.LancamentoService;
 
@@ -98,9 +98,9 @@ public class LancamentoController {
 	
 	@ApiOperation(value = "Salva lancamento")
 	@PostMapping
-	public Lancamento salvar(@RequestBody @Valid LancamentoDTO lancamentoDTO) throws NegocioExeption {
+	public Lancamento salvar(@RequestBody @Valid LancamentoDTO lancamentoDTO) throws NegocioException {
 		if(lancamentoDTO.getTipoLancamento()== null) {
-			throw new NegocioExeption("Campo 'tipo' nao pode ser nulo. ", NegocioExeption.BADREQUEST);
+			throw new NegocioException("Campo 'tipo lancamento' nao pode ser nulo. ", NegocioException.BADREQUEST);
 		}
 		
 		Lancamento lancamento = modelMapper.map(lancamentoDTO, Lancamento.class);
@@ -109,11 +109,11 @@ public class LancamentoController {
 	
 	@ApiOperation(value = "Atualiza lancamento por id")
 	@PutMapping("/{id}")
-	public Lancamento atualizar(@PathVariable("id")Long id, @RequestBody Lancamento lancamento) throws NegocioExeption {
+	public Lancamento atualizar(@PathVariable("id")Long id, @RequestBody Lancamento lancamento) throws NegocioException {
 		
 		//mudar este codigo para path id nao pode ser nulo 
 		if(lancamento.getId() == null ) {
-			throw new NegocioExeption("O 'id' do lancamento nao pode ser vazio",NegocioExeption.BADREQUEST);
+			throw new NegocioException("O 'id' do lancamento nao pode ser vazio",NegocioException.BADREQUEST);
 		}
 		//adicionar consulta por id, verifica se o lancamento existe, se nao existe, retornar 404 
 		
@@ -178,12 +178,12 @@ public class LancamentoController {
 					Map<String,Object> map = new HashMap<String, Object>();
 //					(ArrayList<LinkedHashMap)valorPropriedade
 					ArrayList<LinkedHashMap> map2 =  ((ArrayList<LinkedHashMap>)valorPropriedade);
-					map2.stream().forEach(m -> 
-						m.entrySet().stream().forEach(m2 -> 
-							map.put(m2.getKey().toString(), m2.get(m2.keySet().toString()))
-						)
-							
-					);
+//					map2.stream().forEach(m -> 
+//						m.entrySet().stream().forEach(m2 -> 
+//							map.put(m2.getKey().toString(), m2.get(m2.keySet().toString()))
+//						)
+//							
+//					);
 					
 					
 					parseToObject(map, field.getClass());

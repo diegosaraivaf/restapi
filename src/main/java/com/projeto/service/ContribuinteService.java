@@ -8,7 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.projeto.entity.Contribuinte;
-import com.projeto.exeption.NegocioExeption;
+import com.projeto.exeption.NegocioException;
 import com.projeto.repository.ContribuinteRepository;
 
 @Service
@@ -17,7 +17,7 @@ public class ContribuinteService {
 	@Autowired
 	private ContribuinteRepository contribuinteRepository;
 
-	public Contribuinte salvar(Contribuinte contribuinte) throws NegocioExeption {
+	public Contribuinte salvar(Contribuinte contribuinte) throws NegocioException {
 		validarContribuinte(contribuinte);
 		
 		return contribuinteRepository.save(contribuinte);
@@ -27,12 +27,12 @@ public class ContribuinteService {
 		return contribuinteRepository.filtrar(documento, nome, endereco);
 	}
 	
-	public void deletar(Contribuinte contribuinte) throws NegocioExeption {
+	public void deletar(Contribuinte contribuinte) throws NegocioException {
 		try {
 			contribuinteRepository.delete(contribuinte);
 		}
 		catch (DataIntegrityViolationException e) {
-			throw new NegocioExeption("Este contribuinte esta sendo utilizado em outras partes do sistema e nao pode ser excluido.");
+			throw new NegocioException("Este contribuinte esta sendo utilizado em outras partes do sistema e nao pode ser excluido.");
 		}
 	}
 	
@@ -44,11 +44,11 @@ public class ContribuinteService {
 		return contribuinteRepository.findByDocumento(documento);
 	}
 
-	private void validarContribuinte(Contribuinte contribuinte) throws NegocioExeption {
+	private void validarContribuinte(Contribuinte contribuinte) throws NegocioException {
 		if(contribuinte.getId() == null) {
 			Contribuinte contrib = contribuinteRepository.findByDocumento(contribuinte.getDocumento());
 			if(contrib != null) {
-				throw new NegocioExeption("Documento ja esta sento utilizado");
+				throw new NegocioException("Documento ja esta sento utilizado");
 			}
 		}
 	}

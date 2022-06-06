@@ -22,7 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projeto.entity.Pessoa;
-import com.projeto.exeption.NegocioExeption;
+import com.projeto.exeption.NegocioException;
 import com.projeto.repository.PessoaRepository;
 import com.projeto.repository.RepositoryGeneric;
 import com.projeto.repository.RepositoryGenericImpl;
@@ -39,9 +39,9 @@ public class PessoaController {
 	private PessoaService pessoaService;
 
 	@GetMapping("/{id}")
-	public Pessoa porId(@PathVariable(value = "id") Long id) throws NegocioExeption {
+	public Pessoa porId(@PathVariable(value = "id") Long id) throws NegocioException {
 		if(0==0) {
-			throw new NegocioExeption("Pessoa nao encontrada", NegocioExeption.BADREQUEST);
+			throw new NegocioException("Pessoa nao encontrada", NegocioException.BADREQUEST);
 		}
 		Pessoa p = new Pessoa();
 		p.setNome("diego");
