@@ -30,10 +30,10 @@ public class ContribuinteController {
 	@Autowired
 	private EnderecoService enderecoService;
 	
-	@PostMapping("/")
+	@PostMapping()
 	public ResponseEntity<?> salvar(@RequestBody Contribuinte contribuinte) {
 		try {
-			enderecoService.saveAll(contribuinte.getEnderecos());
+			//enderecoService.saveAll(contribuinte.getEnderecos());
 			contribuinte = contribuinteService.salvar(contribuinte);
 			
 			return ResponseEntity.status(HttpStatus.OK).body(contribuinte);
@@ -54,12 +54,12 @@ public class ContribuinteController {
 			throw new NegocioException("Nao existe contribuinte com o id :"+id+".");
 		}
 //		provavelmente tenha que ser implementado um metodo para excluir os enderecos de contribuinte antes de salvar todos.
-		enderecoService.saveAll(contribuinte.getEnderecos());
+		//enderecoService.saveAll(contribuinte.getEnderecos());
 		contribuinte.setId(id);
 		return contribuinteService.salvar(contribuinte);
 	}
 	
-	@GetMapping("")
+	@GetMapping
 	public List<Contribuinte> filtrar(
 			@RequestParam(value = "documento", required=false) String documento,
 			@RequestParam(value = "nome", required=false) String nome,

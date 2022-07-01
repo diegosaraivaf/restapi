@@ -80,6 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.PUT,"/**").permitAll()
 				.antMatchers(HttpMethod.PATCH,"/**").permitAll()
 				.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+				.antMatchers(HttpMethod.DELETE,"/**").permitAll()
 				.anyRequest().authenticated()
 		.and()
 			//impede que o spring crie sessoes
