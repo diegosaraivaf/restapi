@@ -10,9 +10,8 @@
     
     <h1>Cadastro Contribuinte</h1>
     
-    <form id="form" >
-    	
-    	<table>
+	<form id="form" >
+		<table>
     		<tr>
     			<td>Nome</td>
     			<td>Documento</td>
@@ -46,24 +45,19 @@
 	    <input id="pesquisar" type="button" value="Pesquisar" >
 	    <input id="atualizar" type="button" value="Atualizar" >
 	    <input id="deletar" type="button" value="Deletar" >
-	    
     </form>
-    
-    
-    
-	
-	<!-- TESTE -->    
-<!--     form php
-    <form action= "cadastro.php" method=POST>
-		<input type="text" name="caixa1"/> 
-		</br>
-		<textarea name="mensagem" rows="5" cols="6">
-		</textarea>
-		</br>
-		<input type="checkbox" name="escolha"  />
-		</br>
-		<input type="submit" name="bt_enviar" value="Enviar dados">
-	</form> -->
- 
+
+	<table border="1">
+		<thead>
+			<tr>
+				<th>id</th><th>Nome</th><th>Idade</th>
+			</tr>
+		</thead>
+		<tbody id="tableData">
+		
+		</tbody>
+		
+    </table>
+
   </body>
 </html>
