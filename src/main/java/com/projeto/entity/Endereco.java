@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Endereco {
@@ -24,6 +26,10 @@ public class Endereco {
 	
 	@Column
 	private String cep;
+	
+	@JoinColumn
+	@ManyToOne
+	private Contribuinte contribuinte;
 
 	public Long getId() {
 		return id;
@@ -64,5 +70,15 @@ public class Endereco {
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
+
+	public Contribuinte getContribuinte() {
+		return contribuinte;
+	}
+
+	public void setContribuinte(Contribuinte contribuinte) {
+		this.contribuinte = contribuinte;
+	}
+	
+	
 	
 }

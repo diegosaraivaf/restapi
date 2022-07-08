@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Contribuinte {
 	
@@ -21,6 +23,7 @@ public class Contribuinte {
 	
 	private String documento;
 	
+	@JsonIgnore
 	@JoinColumn(name = "contribuinte_id")
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Endereco> enderecos;
