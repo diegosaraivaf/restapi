@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Endereco {
 	
@@ -27,6 +29,7 @@ public class Endereco {
 	@Column
 	private String cep;
 	
+	@JsonIgnore
 	@JoinColumn
 	@ManyToOne
 	private Contribuinte contribuinte;

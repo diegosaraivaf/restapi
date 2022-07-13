@@ -37,4 +37,8 @@ public class EnderecoService {
 	public void deletarPorId(Long id) {
 		enderecoRepository.deleteById(id);
 	}
+	
+	public List<Endereco>  porContribuinte(Long contribuinteId) {
+		return  enderecoRepository.porContribuinte(contribuinteId);
+	}
 }

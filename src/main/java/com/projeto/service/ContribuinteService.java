@@ -3,6 +3,8 @@ package com.projeto.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,12 @@ public class ContribuinteService {
 	
 	@Autowired
 	private ContribuinteRepository contribuinteRepository;
-
+	
+	@Transactional
 	public Contribuinte salvar(Contribuinte contribuinte) throws NegocioException {
 		validarContribuinte(contribuinte);
 		
-		return contribuinteRepository.save(contribuinte);
+		return contribuinteRepository.salvar(contribuinte);
 	}
 	
 	public List<Contribuinte> filtrar(String documento,String nome,String endereco) {

@@ -1,5 +1,6 @@
 package com.projeto.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.entity.Contribuinte;
+import com.projeto.entity.Endereco;
 import com.projeto.exeption.NegocioException;
 import com.projeto.service.ContribuinteService;
 import com.projeto.service.EnderecoService;
@@ -55,8 +57,9 @@ public class ContribuinteController {
 		}
 //		provavelmente tenha que ser implementado um metodo para excluir os enderecos de contribuinte antes de salvar todos.
 		//enderecoService.saveAll(contribuinte.getEnderecos());
-		contribuinte.setId(id);
-		return contribuinteService.salvar(contribuinte);
+		contribuinteAtual.setDocumento(contribuinte.getDocumento());
+		contribuinteAtual.setNome(contribuinte.getNome());
+		return contribuinteService.salvar(contribuinteAtual);
 	}
 	
 	@GetMapping
@@ -101,6 +104,20 @@ public class ContribuinteController {
 		}
 		
 		return contribuinte;
+	}
+	
+	@GetMapping("/{idContribuinte}/enderecos")
+	public List<Endereco> porContribuinte(@PathVariable("idContribuinte") Long idContribuinte){
+		return enderecoService.porContribuinte(idContribuinte);
+	}
+	
+	@PostMapping("/{idContribuinte}/enderecos")
+	public Endereco enderecoporContribuinte(@PathVariable("idContribuinte") Long idContribuinte,@RequestBody Endereco endereco){
+		Contribuinte cont = new Contribuinte();
+		cont.setId(idContribuinte);
+		endereco.setContribuinte(cont);
+		
+		return enderecoService.save(endereco);
 	}
 	
 

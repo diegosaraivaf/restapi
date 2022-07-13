@@ -40,10 +40,15 @@ public class ContribuinteRepositoryImpl {
 			jpql.append("and c.endereco like :endereco ");
 			parametros.put("endereco", "%"+endereco+"%");
 		}
+		jpql.append("order by c.id desc ");
 		
 		TypedQuery<Contribuinte> query =  manager.createQuery(jpql.toString(),Contribuinte.class);
 		parametros.forEach((key,value) -> query.setParameter(key, value));
 		
 		return query.getResultList();
+	}
+	
+	public Contribuinte salvar(Contribuinte contribuinte) {
+		return manager.merge(contribuinte);
 	}
 }

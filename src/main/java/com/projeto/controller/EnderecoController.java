@@ -46,5 +46,4 @@ public class EnderecoController {
 	public List<Endereco> buscarTudo() {
 		return enderecoService.buscarTudo();
 	}
-
 }

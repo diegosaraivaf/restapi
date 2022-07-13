@@ -20,22 +20,18 @@ const get = () => {
 		.catch(error => {
 		    console.log(error);
 		});
-	
-	/*https://www.cssscript.com/toast-simple-notify/
-	*/	new Notify ({
-		    title: 'Notify Title',
-		    text: 'Notify Message',
-		    autoclose: true,
-		    autotimeout: 3000,
-		    status: 'success'/*‘success’, ‘error’, or ‘warning’*/
-		})
-	
 }
 
 const del = (id) => {
 	axios.delete(`contribuintes/${id}`)
 		.then(response => {
-			console.log('contribuinte excluido ')
+			new Notify ({
+			    title: 'Sucesso',
+			    text: 'Contribuinte removido com sucesso',
+			    autoclose: true,
+			    autotimeout: 3000,
+			    status: 'success'/*‘success’, ‘error’, or ‘warning’*/
+			})
 		})
 		.catch(error => {
 			console.log('erro ao excluir contribuinte')

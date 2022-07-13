@@ -36,6 +36,8 @@ public class PessoaRepositoryImpl {
 			jpql.append("and p.id = :id ");
 			parametros.put("id", id);
 		}
+		jpql.append("order by p.id desc");
+		
 		
 		TypedQuery<Pessoa> query =  manager.createQuery(jpql.toString(),Pessoa.class);
 		parametros.forEach((chave,valor) -> query.setParameter(chave, valor));

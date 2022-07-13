@@ -18,7 +18,7 @@
 	<body>
 		<div class="container bg-light">
 		    <h1>Cadastro Contribuinte</h1>
-			<a href="http://localhost:8080/consultaContribuinte.html" class="btn btn-primary"  >Voltar</a>
+			<a id="voltar" class="btn btn-primary"  >Voltar</a>
 			<button id="salvar" class="btn btn-secondary offset-10" >Salvar</button>
 			<form id="form" >
 				<div class="row">
@@ -42,23 +42,22 @@
 						<input type="text" id="bairro1" class="form-control" required="" >
 					</div>
 				</div>
-			    <input id="cadastrar" type="button" value="	Cadastrar" >
-			    <input id="pesquisar" type="button" value="Pesquisar" >
-			    <input id="atualizar" type="button" value="Atualizar" >
-			    <input id="deletar" type="button" value="Deletar" >
-		    </form>
-		
-			<table border="1">
-				<thead>
-					<tr>
-						<th>id</th><th>Nome</th><th>documento</th><th>endereco</th>
-					</tr>
-				</thead>
-				<tbody id="tableData">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Id</th><th>Rua</th><th>Bairro</th>
+						</tr>
+					</thead>
+					<tbody id="tableData">
+					</tbody>
+				</table>
+					    <input id="cadastrar" type="button" value="	Cadastrar" >
+					    <input id="pesquisar" type="button" value="Pesquisar" >
+					    <input id="atualizar" type="button" value="Atualizar" >
+					    <input id="deletar" type="button" value="Deletar" >
+					    <input id="add" type="button" value="Add" >
+				    </form>
 				
-				</tbody>
-				
-		    </table>
 		<div class="container bg-light">
 	</body>
 </html>
