@@ -26,62 +26,62 @@ const loadContribuinte = (id) =>{
 			
 			contribuinte = response.data
 		}).catch(error => {
-			
+			console.log(error)
 		})
 	
 	axios.get(`contribuintes/${id}/enderecos`)
 		.then(response =>{
-			enderecosContribuinte = response.date
+			enderecosContribuinte = response.data
 			loadEnderecoTableData(response.data)
 		}).catch(error => {
-			
+			console.log(error)
 		})
 }
 
-function loadEnderecoTableData(data){
+function loadEnderecoTableData(enderecos){
 	const tableBody  = document.getElementById('tableData')
 	let dataHtml = ''
 		
-	for(let endereco of data){
+	for(let endereco of enderecos){
+		console.log(endereco)
 		dataHtml += `
 			<tr>
 				<td>${endereco.id}</td>
-				<td><input value=${endereco.rua} type="text" class="form-control" required="" ></td>
-				<td><input value=${endereco.bairro} type="text" class="form-control" required="" ></td>
+				<td><input value="${endereco.rua}" type="text" class="form-control"  ></td>
+				<td><input value="${endereco.bairro}" type="text" class="form-control" ></td>
+				</th><th><button class="removerLinha"   class="btn btn-primary"  >remover</button></th>
 			</tr>`
 	}
 	tableBody.innerHTML = dataHtml
+	
+	document.querySelectorAll(".removerLinha").forEach( e => e.addEventListener("click", (e) => {removerLinha(e.target)}))
 }
 	
-const put = () => {
-	/*contribuinte.nome = inputNome.value*/
-	/*contribuinte.documento = inputDocumento.value*/
-	
-	axios.put(`contribuintes/${contribuinte.id}`,contribuinte)
-		.then(response => {
-			new Notify ({
-			    title: 'Sucesso',
-			    text: 'Contribuinte atualizado com sucesso',
-			    autoclose: true,
-			    autotimeout: 3000,
-			    status: 'success'/*‘success’, ‘error’, or ‘warning’*/
-			})
-		}).catch(error => {
-			console.log('erro ao atualizar contribuinte')
-		})
-	
-/*	const endereco = {
-		rua : 'teste', 
-		bairro : 'teste',
-		numero : 'teste',
-		cep : 'teste'
+const put = async () => {
+	try {
+		const cont = await axios.put(`contribuintes/${contribuinte.id}`,contribuinte)
+			
+		transformaTabelaEmObjeto()
+		console.log(enderecosContribuinte)
+		const endereco = await axios.post(`contribuintes/${cont.data.id}/enderecos`,enderecosContribuinte)
+		
+		new Notify ({
+				    title: 'Sucesso',
+				    text: 'Contribuinte atualizado com sucesso',
+				    autoclose: true,
+				    autotimeout: 3000,
+				    status: 'success'/*‘success’, ‘error’, or ‘warning’*/
+				})
 	}
-	axios.put('enderecos/1',endereco)
-		.then(response => {
-			console.log('endereco atualizado')
-		}).catch(error => {
-			console.log('erro ao atualizar endereco')
-		})*/
+	catch(error){
+		new Notify ({
+		    title: 'Erro',
+		    text: error.response.data,
+		    autoclose: true,
+		    autotimeout: 3000,
+		    status: 'error'/*‘success’, ‘error’, or ‘warning’*/
+		})
+	}
 }
 
 const salvarAtualizar = () => {
@@ -94,6 +94,9 @@ const salvarAtualizar = () => {
 
 const transformaTabelaEmObjeto = () =>{
 	const tableBody  = document.getElementById('tableData')
+	console.log(tableBody.rows)
+	enderecosContribuinte = []
+	
 	for(var i = 0;i < tableBody.rows.length;i++){
 		enderecosContribuinte.push({
 			rua : tableBody.rows[i].cells[1].children[0].value,
@@ -101,7 +104,7 @@ const transformaTabelaEmObjeto = () =>{
 		})
 		
 	}
-	console.log(enderecosContribuinte)
+	
 }
 
 const post = async  () => {
@@ -109,15 +112,15 @@ const post = async  () => {
 		
 	try {
 		const cont = await axios.post('contribuintes', contribuinte)
-		console.log('contribuinte cadastrado')
 		
-		enderecosContribuinte.forEach(async e => { 
+		/*enderecosContribuinte.forEach(async e => { 
 			console.log({...e, contribuinte : cont.data})
 			const endereco = await axios.post(`contribuintes/${cont.data.id}/enderecos`,{...e, contribuinte : cont.data})
-		})
-				
-		
-		console.log('endereco cadastrado')
+		})*/
+
+		console.log(enderecosContribuinte)
+		const endereco = await axios.post(`contribuintes/${cont.data.id}/enderecos`,enderecosContribuinte)
+	
 		
 		/*window.location.href = "http://localhost:8080/consultaContribuinte.html";*/
 		
@@ -143,9 +146,20 @@ const post = async  () => {
 }
 
 const adicionarLinha = () =>{
-	console.log('passo aqui')
-		const tableBody  = document.getElementById('tableData')
-		tableBody.innerHTML = tableBody.innerHTML += '<tr><th></th><th><input type="text" class="form-control" ></th><th><input type="text" class="form-control" ></th></tr>';
+	const tableBody  = document.getElementById('tableData')
+	tableBody.innerHTML = tableBody.innerHTML += 
+		`<tr>
+			<th></th>
+			<th><input type="text" class="form-control" ></th>
+			<th><input type="text" class="form-control" ></th>
+			</th><th><button class="removerLinha"   class="btn btn-primary"  >remover</button></th>
+		</tr>`;
+		
+	document.querySelectorAll(".removerLinha").forEach( e => e.addEventListener("click", (e) => {removerLinha(e.target)}))
+}
+
+const removerLinha = (linha) =>{
+	linha.parentElement.parentElement.remove()
 }
 
 const voltar = () =>{
@@ -165,6 +179,8 @@ document.getElementById('voltar').addEventListener('click',voltar)
 document.getElementById('add').addEventListener('click',adicionarLinha)
 document.getElementById('nome').addEventListener('change',(e) => {contribuinte.nome = e.target.value })
 document.getElementById('documento').addEventListener('change',(e) => {contribuinte.documento = e.target.value })
+
+
 init()
 
 

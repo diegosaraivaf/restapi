@@ -1,6 +1,5 @@
 package com.projeto.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,12 +111,19 @@ public class ContribuinteController {
 	}
 	
 	@PostMapping("/{idContribuinte}/enderecos")
-	public Endereco enderecoporContribuinte(@PathVariable("idContribuinte") Long idContribuinte,@RequestBody Endereco endereco){
+	public List<Endereco> enderecoporContribuinte(@PathVariable("idContribuinte") Long idContribuinte,@RequestBody List<Endereco> enderecos){
+		
+		enderecoService.deletarPorContribuinte(idContribuinte);
+		
+		//setar contribuinte ao endereco
 		Contribuinte cont = new Contribuinte();
 		cont.setId(idContribuinte);
-		endereco.setContribuinte(cont);
+		for(Endereco e : enderecos) {
+			e.setContribuinte(cont);
+			e = enderecoService.save(e);
+		}
 		
-		return enderecoService.save(endereco);
+		return enderecos;
 	}
 	
 

@@ -78,7 +78,3 @@ const editar = (id) => {
 }
 
 document.getElementById('pesquisar').addEventListener('click',get)
-document.getElementById('deletar').addEventListener('click',del)
-
-
-

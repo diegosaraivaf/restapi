@@ -2,6 +2,8 @@ package com.projeto.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,11 @@ public class EnderecoService {
 	
 	public void deletarPorId(Long id) {
 		enderecoRepository.deleteById(id);
+	}
+	
+	@Transactional
+	public void deletarPorContribuinte(Long id) {
+		enderecoRepository.deletarPorContribuinte(id);
 	}
 	
 	public List<Endereco>  porContribuinte(Long contribuinteId) {
