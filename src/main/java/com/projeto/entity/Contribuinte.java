@@ -23,10 +23,10 @@ public class Contribuinte {
 	
 	private String documento;
 	
-	@JsonIgnore
-	@JoinColumn(name = "contribuinte_id")
-	@OneToMany(fetch = FetchType.LAZY)
-	private List<Endereco> enderecos;
+//	@JsonIgnore
+//	@JoinColumn(name = "contribuinte_id")
+//	@OneToMany(fetch = FetchType.LAZY)
+//	private List<Endereco> enderecos;
 	
 	public Long getId() {
 		return id;
@@ -40,12 +40,12 @@ public class Contribuinte {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public List<Endereco> getEnderecos() {
-		return enderecos;
-	}
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
+//	public List<Endereco> getEnderecos() {
+//		return enderecos;
+//	}
+//	public void setEnderecos(List<Endereco> enderecos) {
+//		this.enderecos = enderecos;
+//	}
 	public String getDocumento() {
 		return documento;
 	}

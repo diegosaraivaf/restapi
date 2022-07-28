@@ -65,9 +65,9 @@ public class ContribuinteController {
 	public List<Contribuinte> filtrar(
 			@RequestParam(value = "documento", required=false) String documento,
 			@RequestParam(value = "nome", required=false) String nome,
-			@RequestParam(value = "endereco", required=false) String endereco
+			@RequestParam(value = "rua", required=false) String rua
 			){
-		List<Contribuinte> contribuintes =  contribuinteService.filtrar(documento, nome, endereco);
+		List<Contribuinte> contribuintes =  contribuinteService.filtrar(documento, nome, rua);
 		return contribuintes;
 	}
 	

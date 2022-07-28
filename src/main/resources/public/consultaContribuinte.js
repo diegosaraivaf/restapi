@@ -5,20 +5,40 @@
 //}
 
 axios.defaults.baseURL = 'http://localhost:8080'
+var nome = null
+var documento = null
+var rua = null
 
 const get = () => {
-	const config = {
+/*	const config = {
 		params : {
 			_limit : 5
 		}
-	};
-
-	axios.get('contribuintes', config)
+	};*/
+	
+	var url = 'contribuintes?0=0'
+	if(documento != null){
+		url = url + '&documento='+ documento 
+	}
+	if(nome != null){
+		url = url + '&nome='+ nome 
+	}
+	if(rua != null){
+		url = url + '&rua='+ rua 
+	}
+	console.log(url)
+	axios.get(url)
 		.then(response => { 
 			loadTableData(response.data)
 		})
 		.catch(error => {
-		    console.log(error);
+			new Notify ({
+			    title: 'Sucesso',
+			    text: error.response.data,
+			    autoclose: true,
+			    autotimeout: 3000,
+			    status: 'error'/*‘success’, ‘error’, or ‘warning’*/
+			})
 		});
 }
 
@@ -34,7 +54,14 @@ const del = (id) => {
 			})
 		})
 		.catch(error => {
-			console.log('erro ao excluir contribuinte')
+			console.log(error)
+			new Notify ({
+			    title: 'Sucesso',
+			    text: error.response.data,
+			    autoclose: true,
+			    autotimeout: 3000,
+			    status: 'error'/*‘success’, ‘error’, or ‘warning’*/
+			})
 		})
 }
 
@@ -78,3 +105,6 @@ const editar = (id) => {
 }
 
 document.getElementById('pesquisar').addEventListener('click',get)
+document.getElementById('documento').addEventListener('change',(e) => {documento = e.target.value })
+document.getElementById('nome').addEventListener('change',(e) => {nome = e.target.value })
+document.getElementById('rua').addEventListener('change',(e) => {rua = e.target.value })
