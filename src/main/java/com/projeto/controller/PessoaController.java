@@ -23,9 +23,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projeto.entity.Pessoa;
 import com.projeto.exeption.NegocioException;
-import com.projeto.repository.PessoaRepository;
-import com.projeto.repository.RepositoryGeneric;
-import com.projeto.repository.RepositoryGenericImpl;
 import com.projeto.service.PessoaService;
 
 @RestController

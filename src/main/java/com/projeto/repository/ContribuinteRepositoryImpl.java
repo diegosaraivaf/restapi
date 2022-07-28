@@ -15,16 +15,16 @@ import com.projeto.entity.Lancamento;
 
 
 @Repository
-public class ContribuinteRepositoryImpl {
+public class ContribuinteRepositoryImpl extends RepositoryGenericoImpl<Contribuinte,Long>{
 	
 	@PersistenceContext
 	private EntityManager manager;
 	
-	public List<Contribuinte> filtrar(String documento,String nome,String endereco) {
+	public List<Contribuinte> filtrar(String documento,String nome,String rua) {
 		StringBuilder jpql = new StringBuilder();
 		Map<String,Object> parametros = new HashMap<String, Object>();
 		
-		jpql.append("select c from Contribuinte c where 1=1 ");
+		jpql.append("select distinct c from Contribuinte c left join Endereco e on e.contribuinte = c  where 1=1 ");
 		
 		if(documento != null ) {
 			jpql.append("and c.documento like :documento ");
@@ -36,9 +36,9 @@ public class ContribuinteRepositoryImpl {
 			parametros.put("nome", "%"+nome+"%");
 		}
 		
-		if(endereco != null ) {
-			jpql.append("and c.endereco like :endereco ");
-			parametros.put("endereco", "%"+endereco+"%");
+		if(rua != null ) {
+			jpql.append("and e.rua like :rua ");
+			parametros.put("rua", "%"+rua+"%");
 		}
 		jpql.append("order by c.id desc ");
 		

@@ -44,6 +44,7 @@ import com.projeto.entity.Pessoa;
 import com.projeto.entity.TipoLancamento;
 import com.projeto.exeption.NegocioException;
 import com.projeto.repository.RepositoryGeneric;
+import com.projeto.repository.RepositoryGenericoImpl;
 import com.projeto.service.LancamentoService;
 
 import io.swagger.annotations.Api;
@@ -54,9 +55,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/lancamentos")
 public class LancamentoController {
-	
-	@Autowired
-	private RepositoryGeneric repositoryGeneric;
 	
 	//tirar
 	@PostConstruct
@@ -74,6 +72,8 @@ public class LancamentoController {
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	RepositoryGenericoImpl<Lancamento, Long> repositoryGeneric;
 	
 	//@GetMapping
 	public List<Lancamento> listar() {
@@ -160,7 +160,7 @@ public class LancamentoController {
 	public <T> T parseToObject(Map<String, Object> atributos,Class<T> classe) throws InstantiationException, IllegalAccessException {
 		//busca pessoa por id se nao achar retorna codigo 403
 //		Class<T> objetoDestino = classe.getClass().newInstance();
-		T objetoAtual = repositoryGeneric.find(classe, 1L);
+		T objetoAtual = (T) repositoryGeneric.porId(1L);
 		
 		//seta os valores dos atributaos passados,e passado uma lista porques existe a possibilidade do cliente querer setar null em um atributo
 		ObjectMapper objectMapper = new ObjectMapper();

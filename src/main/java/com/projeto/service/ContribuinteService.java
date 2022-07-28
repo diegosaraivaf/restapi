@@ -27,6 +27,10 @@ public class ContribuinteService {
 	}
 	
 	public List<Contribuinte> filtrar(String documento,String nome,String endereco) {
+		///teste
+		Contribuinte c = contribuinteRepository.porId(1L);
+		//fim teste
+		
 		return contribuinteRepository.filtrar(documento, nome, endereco);
 	}
 	
