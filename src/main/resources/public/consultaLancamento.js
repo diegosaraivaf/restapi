@@ -1,3 +1,6 @@
+import {teste} from './teste.js';
+/*import {axios} from './axios.min.js';*/
+
 function app(){
 	manipularFormulario()
 }
@@ -15,8 +18,7 @@ function manipularFormulario() {
 }
 
 
-async function pesquisarLancamento(){
-	
+async function pesquisar(){
 	const form_lancamento = document.getElementById('form-lancamento')
 	const inputId = document.getElementById('id').value
 	const inputTipo = document.getElementById('tipo').value
@@ -108,3 +110,4 @@ async function pesquisarLancamento(){
 }
 
 app()
+document.getElementById('pesquisar').addEventListener('click',pesquisar)
