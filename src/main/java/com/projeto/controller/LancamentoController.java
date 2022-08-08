@@ -102,6 +102,9 @@ public class LancamentoController {
 		if(lancamentoDTO.getTipoLancamento()== null) {
 			throw new NegocioException("Campo 'tipo lancamento' nao pode ser nulo. ", NegocioException.BADREQUEST);
 		}
+		if(lancamentoDTO.getParcelas() == null) {
+			throw new NegocioException("Campo 'parcelas' nao pode ser nulo. 2 ", NegocioException.BADREQUEST);
+		}
 		
 		Lancamento lancamento = modelMapper.map(lancamentoDTO, Lancamento.class);
 		return lancamentoService.salvar(lancamento);

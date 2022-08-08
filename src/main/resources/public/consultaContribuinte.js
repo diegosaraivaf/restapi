@@ -26,7 +26,7 @@ const get = () => {
 	if(rua != null){
 		url = url + '&rua='+ rua 
 	}
-	console.log(url)
+	
 	axios.get(url)
 		.then(response => { 
 			loadTableData(response.data)

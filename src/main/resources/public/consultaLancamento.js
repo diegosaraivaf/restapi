@@ -106,8 +106,8 @@ async function pesquisar(){
 
 	});
 	
-	/*axios.get("http://localhost:8080/lancamentos").then(response => console.log(response.data))*/
 }
 
 app()
 document.getElementById('pesquisar').addEventListener('click',pesquisar)
+document.getElementById('nome').addEventListener('change',(e) => {nome = e.target.value })

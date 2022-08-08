@@ -1,4 +1,11 @@
+axios.defaults.baseURL = 'http://localhost:8080'
+	
 app()
+
+var documento = null
+var tipo = null
+var valor = null
+var contribuinteId = null
 
 function app(){
 	manipularFormulario()
@@ -15,17 +22,32 @@ function manipularFormulario() {
 async function salvar(){
 	event.preventDefault()
 
-	const inputTipo = document.getElementById('tipo')
-	const inputValor = document.getElementById('valor')
 	
-	await axios.post('http://localhost:8080/lancamentos',{
-		tipo : inputTipo.value,
-		valor : inputValor.value
+	
+	await axios.post('lancamentos',{
+		tipoLancamento : tipo,
+		valor : valor,
+		contribuinte : {
+			id : contribuinteId
+		},
+		parcelas : [
+			{valor:100}
+		]
 	})
 	
-	window.location.href = "http://localhost:8080/consultaLancamento.html";
+	window.location.href = "consultaLancamento.html";
 }
 
+aoMudarDocumento = (event) => {
+	
+	axios.get(`contribuintes/documento/${event.target.value}`).then(response => {
+		document.getElementById('nome').value = response.data.nome
+		contribuinteId = response.data.id
+	})
+}
 
 document.getElementById('salvar').addEventListener('click',salvar)
+document.getElementById('documento').addEventListener('change',e => aoMudarDocumento(e))
+document.getElementById('tipo').addEventListener('change',e => {tipo = e.target.value })
+document.getElementById('valor').addEventListener('change',e => {valor = e.target.value })
 
