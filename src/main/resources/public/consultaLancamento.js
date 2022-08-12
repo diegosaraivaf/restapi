@@ -40,6 +40,7 @@ async function pesquisar(){
 	const lancamentos  = response.data
 	
 	
+	console.log(lancamentos)
 	
 	const tableLancamento = document.getElementById('tableLancamento')
 	tableLancamento.innerHTML = ''
@@ -52,7 +53,12 @@ async function pesquisar(){
 		tr.appendChild(td); // adiciona a td na tr
 		
 		var td = document.createElement("td"); // cria o element td
-		var textnode = document.createTextNode(l.tipo); 
+		var lancamentoId = document.createTextNode(l.contribuinte.nome); 
+		td.appendChild(lancamentoId); // adiciona o texto na td criada
+		tr.appendChild(td); // adiciona a td na tr
+		
+		var td = document.createElement("td"); // cria o element td
+		var textnode = document.createTextNode(l.tipoLancamento); 
 		td.appendChild(textnode); // adiciona o texto na td criada
 		tr.appendChild(td); // adiciona a td na tr
 		

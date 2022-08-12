@@ -63,7 +63,7 @@ const put = async () => {
 			
 		transformaTabelaEmObjeto()
 		console.log(enderecosContribuinte)
-		const endereco = await axios.post(`contribuintes/${cont.data.id}/enderecos`,enderecosContribuinte)
+		const endereco = await axios.post(`contribuintes/${contribuinte.id}/enderecos`,enderecosContribuinte)
 		
 		new Notify ({
 				    title: 'Sucesso',
