@@ -1,4 +1,5 @@
 import {teste} from './teste.js';
+import * as util from './util.js';
 /*import {axios} from './axios.min.js';*/
 
 function app(){
@@ -42,7 +43,7 @@ async function pesquisar(){
 	
 	console.log(lancamentos)
 	
-	const tableLancamento = document.getElementById('tableLancamento')
+	const tableLancamento = document.getElementById('tLancamentos')
 	tableLancamento.innerHTML = ''
 	lancamentos.forEach(l => {
 		var tr = document.createElement("tr"); // cria o elemento tr
@@ -53,8 +54,8 @@ async function pesquisar(){
 		tr.appendChild(td); // adiciona a td na tr
 		
 		var td = document.createElement("td"); // cria o element td
-		var lancamentoId = document.createTextNode(l.contribuinte.nome); 
-		td.appendChild(lancamentoId); // adiciona o texto na td criada
+		var lancamentoNome = document.createTextNode(l.contribuinte.nome); 
+		td.appendChild(lancamentoNome); // adiciona o texto na td criada
 		tr.appendChild(td); // adiciona a td na tr
 		
 		var td = document.createElement("td"); // cria o element td
@@ -93,17 +94,15 @@ async function pesquisar(){
 		btDetalhe.onclick = async function()
 	     {
 	        console.log('teste detalhe')
-			axios.get("http://localhost:8080/lancamentos/"+lancamentoId.textContent,{}).then(
+	        window.location.href = "http://localhost:8080/cadastroLancamento.html?"+lancamentoId.textContent;
+	        
+			/*axios.get("http://localhost:8080/lancamentos/"+lancamentoId.textContent,{}).then(
 				response => {
 					console.log(response.data)
 					window.location.href = "http://localhost:8080/cadastroLancamento.html";
 					var inputTipo = document.getElementById('tipo')
-					
-					inputTipo.nodeValue('teste')
-					
 				}
-			
-			)
+			)*/
 			
 
 	     }

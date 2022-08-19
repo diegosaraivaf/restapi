@@ -3,7 +3,7 @@
 	    <title>Título da página</title>
 	    
 	    <script defer src="axios.min.js"></script>
-	    <script defer src="cadastroLancamento.js"></script>
+	    <script type="module" src="cadastroLancamento.js" defer></script>
 	    
 	    <!-- bootstrap -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
@@ -48,7 +48,7 @@
 		    <table id="parcelas"  class="table table-striped">
 		    	<thead>
 					<tr>
-						<th>Id</th><th>Rua</th><th>Bairro</th>
+						<th>Parcela</th><th>Valor</th>
 					</tr>
 				</thead>
 		    	<tbody id="tableData">

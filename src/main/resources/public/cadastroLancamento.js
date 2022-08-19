@@ -1,10 +1,33 @@
-
+import {getValoresTBody} from './util.js'
 
 axios.defaults.baseURL = 'http://localhost:8080'
-var documento = null
+var inputDocumento = document.getElementById('documento')
 var tipo = null
-var valor = null
+var inputValor = document.getElementById('valor')
 var contribuinteId = null
+
+window.onload = function () {
+	var params = window.location.search.substring(1).split('&');
+	
+	if(params.length > 0 && params[0] != ""){
+		carregarInformacoes(params[0])
+	}
+ }
+
+const carregarInformacoes = (id) =>{
+	
+	axios.get(`lancamentos/${id}`)
+		.then(response => {
+			var lancamento = response.data
+			inputDocumento.value = response.data.contribuinte.documento
+			inputValor.value = response.data.valor
+			
+			/*contribuinte = response.data*/
+		}).catch(error => {
+			console.log(error)
+		})
+	
+}
 
 /*
   app()
@@ -19,11 +42,16 @@ function manipularFormulario() {
 	}
 }*/
 
-async function salvar(){
+const salvar = async () => {
 	event.preventDefault()
-	
 	var tabela = getValoresTBody('tableData')
-	console.log(tabela)
+	var parcelas = []
+	
+	for(let tab of tabela){
+		parcelas.push({
+			valor: tab[1]
+		})
+	}
 	
 	await axios.post('lancamentos',{
 		tipoLancamento : tipo,
@@ -31,24 +59,22 @@ async function salvar(){
 		contribuinte : {
 			id : contribuinteId
 		},
-		parcelas : [
-			{valor:100}
-		]
+		parcelas : parcelas
 	})
 	
 	window.location.href = "consultaLancamento.html";
 }
 
-aoMudarDocumento = (event) => {
+const aoMudarDocumento = (event) => {
 	axios.get(`contribuintes/documento/${event.target.value}`).then(response => {
 		document.getElementById('nome').value = response.data.nome
 		contribuinteId = response.data.id
 	})
 }
 
-aoMudarQtdParcelas = (e) =>{
+const aoMudarQtdParcelas = (e) =>{
 	var qtdParcelas  = e.target.value
-	const tableBody  = document.getElementById('parcelas')
+	const tableBody  = document.getElementById('tableData')
 	var valorParcela = valor / qtdParcelas
 	
 	tableBody.innerHTML = ''	
@@ -59,26 +85,11 @@ aoMudarQtdParcelas = (e) =>{
 				<th>${valorParcela}</th>
 			</tr>`;
 	}
-		
 	/*document.querySelectorAll(".removerLinha").forEach( e => e.addEventListener("click", (e) => {removerLinha(e.target)}))*/
 }
 
-const getValoresTBody = (id) ={
-	const tableBody  = document.getElementById(id)
-	var tabela = [] 
-	
-	for(var i = 0;i < tableBody.rows.length;i++){
-		var linha = []
-		 for(var i2 = 0;i2 < tableBody.rows[i].cells.length;i2++){
-			 linha.push(tableBody.rows[i].cells[i2].children[0].value)
-		 }
-		tabela.push(
-			linha
-		)
-	}
-	return tabela
-}
 
+document.getElementById('voltar').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/consultaLancamento.html" })
 document.getElementById('salvar').addEventListener('click',salvar)
 document.getElementById('documento').addEventListener('change',e => aoMudarDocumento(e))
 document.getElementById('tipo').addEventListener('change',e => {tipo = e.target.value })
