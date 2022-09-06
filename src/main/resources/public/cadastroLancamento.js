@@ -1,10 +1,13 @@
-import {getValoresTBody} from './util.js'
+import {getValoresTBody,preecherTabela} from './util.js'
 
 axios.defaults.baseURL = 'http://localhost:8080'
 var inputDocumento = document.getElementById('documento')
-var tipo = null
+var inputNome = document.getElementById('nome')
+var inputQtdParcela = document.getElementById('qtdParcela')
+var selectTipo = document.getElementById('tipo')
 var inputValor = document.getElementById('valor')
 var contribuinteId = null
+var lancamentoId = null   <<<<-------
 
 window.onload = function () {
 	var params = window.location.search.substring(1).split('&');
@@ -19,10 +22,18 @@ const carregarInformacoes = (id) =>{
 	axios.get(`lancamentos/${id}`)
 		.then(response => {
 			var lancamento = response.data
-			inputDocumento.value = response.data.contribuinte.documento
-			inputValor.value = response.data.valor
+			inputDocumento.value = lancamento.contribuinte.documento
+			inputNome.value = lancamento.contribuinte.nome
+			/*contribuinteId = lancamento.contribuinte.id*/
+			inputValor.value = lancamento.valor
+			inputQtdParcela.value = lancamento.parcelas.length
+			selectTipo.value = lancamento.tipoLancamento
 			
-			/*contribuinte = response.data*/
+			var parcelas = []
+			lancamento.parcelas.forEach(e => {
+				parcelas.push([e.id,e.valor])
+			})
+			preecherTabela('tableData',parcelas)
 		}).catch(error => {
 			console.log(error)
 		})
@@ -54,8 +65,9 @@ const salvar = async () => {
 	}
 	
 	await axios.post('lancamentos',{
-		tipoLancamento : tipo,
-		valor : valor,
+		
+		tipoLancamento : selectTipo.value,
+		valor : inputValor.value,
 		contribuinte : {
 			id : contribuinteId
 		},
@@ -74,17 +86,28 @@ const aoMudarDocumento = (event) => {
 
 const aoMudarQtdParcelas = (e) =>{
 	var qtdParcelas  = e.target.value
-	const tableBody  = document.getElementById('tableData')
 	var valorParcela = valor / qtdParcelas
+	var dados = []
 	
-	tableBody.innerHTML = ''	
 	for(var i = 0; i < qtdParcelas; i++ ){
-		tableBody.innerHTML = tableBody.innerHTML += 
-			`<tr>
-				<th>${i+1}</th>
-				<th>${valorParcela}</th>
-			</tr>`;
+		dados.push([i+1,valorParcela])
 	}
+	
+	preecherTabela('tableData',dados)
+	
+	
+//	var qtdParcelas  = e.target.value
+//	const tableBody  = document.getElementById('tableData')
+//	var valorParcela = valor / qtdParcelas
+//	
+//	tableBody.innerHTML = ''	
+//	for(var i = 0; i < qtdParcelas; i++ ){
+//		tableBody.innerHTML = tableBody.innerHTML += 
+//			`<tr>
+//				<th>${i+1}</th>
+//				<th>${valorParcela}</th>
+//			</tr>`;
+//	}
 	/*document.querySelectorAll(".removerLinha").forEach( e => e.addEventListener("click", (e) => {removerLinha(e.target)}))*/
 }
 
