@@ -115,13 +115,16 @@ public class LancamentoController {
 	public Lancamento atualizar(@PathVariable("id")Long id, @RequestBody Lancamento lancamento) throws NegocioException {
 		
 		//mudar este codigo para path id nao pode ser nulo 
-		if(lancamento.getId() == null ) {
+		if(id== null ) {
 			throw new NegocioException("O 'id' do lancamento nao pode ser vazio",NegocioException.BADREQUEST);
 		}
-		//adicionar consulta por id, verifica se o lancamento existe, se nao existe, retornar 404 
+		if(lancamentoService.buscarPorId(id).get() == null) {
+			throw new NegocioException("O id passado nao existe");
+		}
 		
-		//pensar na possibilidade : toda vez que vo atualizar um registro, tenho que preenche todos os dados dele ? inclusive as dependencias dele ? 
-		
+		//pensar na possibilidade : toda vez que vo atualizar um registro, tenho que preenche todos os dados dele ? inclusive as dependencias dele ? (aparentemente as dependencias devem ser salvas 
+		//em outros endpoints o que deve ser passada para esta instancia sao os ids de referencia.)
+		lancamento.setId(id);
 		return lancamentoService.salvar(lancamento);
 	}
 	

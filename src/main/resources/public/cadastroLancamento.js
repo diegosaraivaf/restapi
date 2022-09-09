@@ -7,7 +7,7 @@ var inputQtdParcela = document.getElementById('qtdParcela')
 var selectTipo = document.getElementById('tipo')
 var inputValor = document.getElementById('valor')
 var contribuinteId = null
-var lancamentoId = null   <<<<-------
+var lancamentoId = null   
 
 window.onload = function () {
 	var params = window.location.search.substring(1).split('&');
@@ -22,9 +22,10 @@ const carregarInformacoes = (id) =>{
 	axios.get(`lancamentos/${id}`)
 		.then(response => {
 			var lancamento = response.data
+			lancamentoId = lancamento.id
 			inputDocumento.value = lancamento.contribuinte.documento
 			inputNome.value = lancamento.contribuinte.nome
-			/*contribuinteId = lancamento.contribuinte.id*/
+			contribuinteId = lancamento.contribuinte.id
 			inputValor.value = lancamento.valor
 			inputQtdParcela.value = lancamento.parcelas.length
 			selectTipo.value = lancamento.tipoLancamento
@@ -64,15 +65,21 @@ const salvar = async () => {
 		})
 	}
 	
-	await axios.post('lancamentos',{
-		
+	var lancamento = {
 		tipoLancamento : selectTipo.value,
 		valor : inputValor.value,
 		contribuinte : {
 			id : contribuinteId
 		},
 		parcelas : parcelas
-	})
+	}
+	
+	if(lancamentoId != null){
+		await axios.put('lancamentos/'+lancamentoId,lancamento)
+	}
+	else{
+		await axios.post('lancamentos',lancamento)
+	}
 	
 	window.location.href = "consultaLancamento.html";
 }
@@ -86,7 +93,7 @@ const aoMudarDocumento = (event) => {
 
 const aoMudarQtdParcelas = (e) =>{
 	var qtdParcelas  = e.target.value
-	var valorParcela = valor / qtdParcelas
+	var valorParcela = inputValor.value / qtdParcelas
 	var dados = []
 	
 	for(var i = 0; i < qtdParcelas; i++ ){
@@ -116,5 +123,5 @@ document.getElementById('voltar').addEventListener('click',e =>{ window.location
 document.getElementById('salvar').addEventListener('click',salvar)
 document.getElementById('documento').addEventListener('change',e => aoMudarDocumento(e))
 document.getElementById('tipo').addEventListener('change',e => {tipo = e.target.value })
-document.getElementById('valor').addEventListener('change',e => {valor = e.target.value })
+document.getElementById('valor').addEventListener('change',e => {inputValor.value = e.target.value })
 document.getElementById('qtdParcela').addEventListener('keyup',e => aoMudarQtdParcelas(e))

@@ -33,6 +33,8 @@ public class LancamentoService {
 	
 	@Transactional
 	public Lancamento salvar(Lancamento lancamento) {
+		//adicionar validacoes quantidade maxima de parcela,valor minimo parcela.
+		
 		//pensar em realizar este processo altomaticamento com update cascade
 		parcelaService.deletarParcelarDoLancamento(lancamento);
 		List<Parcela> parcelas =  parcelaService.salvar(lancamento.getParcelas());
