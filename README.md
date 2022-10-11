@@ -12,3 +12,4 @@
 
 # 
 -tratamento te execoes com handle
+-transactions 

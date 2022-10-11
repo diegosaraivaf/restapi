@@ -96,6 +96,11 @@ public class LancamentoController {
 		return lancamentoService.filtrarLancamentos(id, tipoLancamento, valor, null,contribuinteNome, contribuinteDocumento, pagina,limite);
 	}
 	
+	@GetMapping("transacao")
+	public void testarTransacao() throws NegocioException {
+		lancamentoService.testeTransaction();
+	}
+	
 	@ApiOperation(value = "Salva lancamento")
 	@PostMapping
 	public Lancamento salvar(@RequestBody @Valid LancamentoDTO lancamentoDTO) throws NegocioException {

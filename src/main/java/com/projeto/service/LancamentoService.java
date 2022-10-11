@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.projeto.entity.Lancamento;
 import com.projeto.entity.Parcela;
 import com.projeto.entity.TipoLancamento;
+import com.projeto.exeption.NegocioException;
 import com.projeto.repository.LancamentoRepository;
 
 @Service
@@ -55,6 +56,21 @@ public class LancamentoService {
 			String contribuinteNome, String contribuinteDocumento, int pagina, int limite){
 		return lancamentoRepository.filtrarLancamentos(id,tipoLancamento,valor, dataEmissao, contribuinteNome, contribuinteDocumento,
 				pagina,limite);
+	}
+	
+	@Transactional(rollbackOn = Throwable.class)
+	public void testeTransaction() throws NegocioException {
+		Lancamento l1 = new Lancamento();
+		l1.setValor(new BigDecimal("1000"));
+		lancamentoRepository.save(l1);
+		
+		if(0==0) {
+			throw new NegocioException("Erro na transacao");
+		}
+		
+		Lancamento l2 = new Lancamento();
+		l2.setValor(new BigDecimal("1000"));
+		lancamentoRepository.save(l2);
 	}
 
 
