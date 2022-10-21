@@ -59,8 +59,4 @@ public class Parcela {
 	public void setDataVencimento(LocalDate dataVencimento) {
 		this.dataVencimento = dataVencimento;
 	}
-	
-	
-	
-	
 }
