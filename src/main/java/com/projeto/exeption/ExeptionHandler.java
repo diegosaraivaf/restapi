@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import java.util.stream.Collectors;
 
@@ -50,6 +51,10 @@ public class ExeptionHandler
 					ex.getValue().toString(),
 					ex.getTargetType().getName());
 			erro = new ErroResponse("null pointer", mensagem);
+		}
+		else if(rootCause instanceof MismatchedInputException) {
+			MismatchedInputException ex = ((MismatchedInputException)rootCause);
+			erro = new ErroResponse("Campo invalido", ex.getMessage());
 		}
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);

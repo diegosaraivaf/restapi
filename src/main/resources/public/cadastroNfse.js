@@ -1,13 +1,13 @@
 import {getValoresTBody,preecherTabela} from './util.js'
 
 axios.defaults.baseURL = 'http://localhost:8080'
-var inputDocumento = document.getElementById('documento')
-var inputNome = document.getElementById('nome')
-var inputQtdParcela = document.getElementById('qtdParcela')
-var selectTipo = document.getElementById('tipo')
+var inputPrestador = document.getElementById('prestador')
+var inputTomador = document.getElementById('tomador')
+var inputLocalPrestacao = document.getElementById('localPrestacao')
 var inputValor = document.getElementById('valor')
-var contribuinteId = null
-var lancamentoId = null   
+var inputItens = document.getElementById('itens')
+var prestador = null
+var tomador = null
 
 window.onload = function () {
 	var params = window.location.search.substring(1).split('&');
@@ -56,38 +56,37 @@ function manipularFormulario() {
 
 const salvar = async () => {
 	event.preventDefault()
-	var tabela = getValoresTBody('tableData')
-	var parcelas = []
-	
-	for(let tab of tabela){
-		parcelas.push({
-			valor: tab[1]
-		})
-	}
-	
-	var lancamento = {
-		tipoLancamento : selectTipo.value,
+
+	var nfse = {
+		prestador,
+		tomador,
+		localPrestacao : inputLocalPrestacao.value,
 		valor : inputValor.value,
-		contribuinte : {
-			id : contribuinteId
-		},
-		parcelas : parcelas
+		listaItens : inputItens.value
 	}
 	
-	if(lancamentoId != null){
+	/*if(lancamentoId != null){
 		await axios.put('lancamentos/'+lancamentoId,lancamento)
 	}
 	else{
-		await axios.post('lancamentos',lancamento)
-	}
+		await axios.post('lancamentos',nfse)
+	}*/
+	await axios.post('nfses',nfse)
 	
-	window.location.href = "consultaLancamento.html";
+	window.location.href = "consultaNfse.html";
 }
 
-const aoMudarDocumento = (event) => {
+const aoMudarPrestador = (event) => {
 	axios.get(`contribuintes/documento/${event.target.value}`).then(response => {
-		document.getElementById('nome').value = response.data.nome
-		contribuinteId = response.data.id
+		document.getElementById('prestadorNome').value = response.data.nome
+		prestador = response.data
+	})
+}
+
+const aoMudarTomador = (event) => {
+	axios.get(`contribuintes/documento/${event.target.value}`).then(response => {
+		document.getElementById('tomadorNome').value = response.data.nome
+		tomador = response.data
 	})
 }
 
@@ -119,9 +118,9 @@ const aoMudarQtdParcelas = (e) =>{
 }
 
 
+
+
 document.getElementById('voltar').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/consultaLancamento.html" })
 document.getElementById('salvar').addEventListener('click',salvar)
-document.getElementById('documento').addEventListener('change',e => aoMudarDocumento(e))
-document.getElementById('tipo').addEventListener('change',e => {tipo = e.target.value })
-document.getElementById('valor').addEventListener('change',e => {inputValor.value = e.target.value })
-document.getElementById('qtdParcela').addEventListener('keyup',e => aoMudarQtdParcelas(e))
+document.getElementById('prestadorDocumento').addEventListener('change',e => aoMudarPrestador(e))
+document.getElementById('tomadorDocumento').addEventListener('change',e => aoMudarTomador(e))

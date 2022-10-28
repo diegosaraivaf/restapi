@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,6 +15,7 @@ import javax.persistence.ManyToOne;
 public class Nfse {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne
@@ -27,10 +30,10 @@ public class Nfse {
 	private String localPrestacao;//criar objeto municipio
 	
 	@Column(name="lista_items")
-	private String listaItemns;//criar objeto de item de servico (descricao,quantidade,valor)
+	private String listaItens;//criar objeto de item de servico (descricao,quantidade,valor)
 	
 	@Column(name="valor_servico")
-	private BigDecimal valorservico;
+	private BigDecimal valorServico;
 
 	public Long getId() {
 		return id;
@@ -64,19 +67,19 @@ public class Nfse {
 		this.localPrestacao = localPrestacao;
 	}
 
-	public String getListaItemns() {
-		return listaItemns;
+	public String getListaItens() {
+		return listaItens;
 	}
 
-	public void setListaItemns(String listaItemns) {
-		this.listaItemns = listaItemns;
+	public void setListaItens(String listaItens) {
+		this.listaItens = listaItens;
 	}
 
-	public BigDecimal getValorservico() {
-		return valorservico;
+	public BigDecimal getValorServico() {
+		return valorServico;
 	}
 
-	public void setValorservico(BigDecimal valorservico) {
-		this.valorservico = valorservico;
+	public void setValorServico(BigDecimal valorServico) {
+		this.valorServico = valorServico;
 	}
 }

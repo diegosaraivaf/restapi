@@ -11,50 +11,51 @@
 	</head>
 	<body>
 	    <div class="container bg-light">
-			<h1>Cadastro Lancamento</h1>
+			<h1>Cadastro NFSe</h1>
 			<button id="voltar" class="btn btn-primary col-1"  >Voltar</button>
 			<button id="salvar" class="btn btn-secondary col-1 offset-10" >Salvar</button>
 	    
 	    	<form id="form-lancamento" >
 		    	<div class="row">
 		    		<div class="col-4">
-		    			<label  class="form-label">Documento</label>
-		    			<input type="text" id="documento" class="form-control"  >
+		    			<label  class="form-label">Prestador</label>
+		    			<input type="text" id="prestadorDocumento" class="form-control"  >
 		    		</div>
 		    		<div class="col-4">
-		    			<label  class="form-label">Nome</label>
-		    			<input type="text" id="nome" class="form-control" disabled="true" >
+		    			<label  class="form-label"> .</label>
+		    			<input type="text" readonly="true" id="prestadorNome" class="form-control"  >
 		    		</div>
 		    	</div>
 		    	<div class="row">
 		    		<div class="col-4">
-		    			<label  class="form-label">Tipo</label>
-		    			<select type="text" id="tipo"  class="form-select form-select"  >
-		    				<option value="">Selecione</option>
-		    				<option value="IPTU">IPTU</option>
-		    				<option value="ITBI">ITBI</option>
-		    			</select>
+		    			<label  class="form-label">Tomador</label>
+		    			<input type="text" id="tomadorDocumento" class="form-control"  >
 		    		</div>
 		    		<div class="col-4">
-		    			<label  class="form-label">Valor</label>
-		    			<input type="text" id="valor" class="form-control"  >
+		    			<label  class="form-label"> .</label>
+		    			<input type="text" readonly="true" id="tomadorNome" class="form-control"  >
 		    		</div>
-		    		<div class="col-2">
-		    			<label  class="form-label">Qtd. Parcelas</label>
-		    			<input type="text" id="qtdParcela" class="form-control"  >
+		    	</div>
+		    	
+		    	<div class="row">
+		    		<div class="col-4">
+		    			<label  class="form-label">Local Prestacao</label>
+		    			<input type="text" id="localPrestacao" class="form-control"  >
+		    		</div>
+		    	</div>
+		    	<div class="row">
+		    		<div class="col-4">
+		    			<label  class="form-label">Valor</label>
+		    			<input type="text" id="valor" class="form-control" >
+		    		</div>
+		    	</div>
+		    	<div class="row">
+		    		<div class="col-4">
+		    			<label  class="form-label">Items da Nota</label>
+		    			<input type="text" id="itens" class="form-control"  >
 		    		</div>
 		    	</div>
 		    </form>
-		    <table id="parcelas"  class="table table-striped">
-		    	<thead>
-					<tr>
-						<th>Parcela</th><th>Valor</th>
-					</tr>
-				</thead>
-		    	<tbody id="tableData">
-		    	</tbody>
-		    </table>
-		    
 	    </div>
 	</body>
 </html>

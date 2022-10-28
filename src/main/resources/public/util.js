@@ -15,6 +15,7 @@ export const getValoresTBody = (id) => {
 	return tabela
 }
 
+/* Melhorar este metodo colocado o nome das colunas que vao ser exibidas */
 export const preecherTabela = (idTabela, dados) =>{
 	const tableBody  = document.getElementById(idTabela)
 	var linha = ''
