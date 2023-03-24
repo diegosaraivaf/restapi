@@ -75,12 +75,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 						"/v2/api-docs", "/swagger-resources/configuration/ui", 
 						"/swagger-resources", "/swagger-resources/configuration/security", 
 						"/swagger-ui.html", "/webjars/**").permitAll()
-				.antMatchers(HttpMethod.GET,"/**").permitAll()
-				.antMatchers(HttpMethod.POST,"/**").permitAll()
-				.antMatchers(HttpMethod.PUT,"/**").permitAll()
-				.antMatchers(HttpMethod.PATCH,"/**").permitAll()
-				.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-				.antMatchers(HttpMethod.DELETE,"/**").permitAll()
+				//.antMatchers(HttpMethod.GET,"/**").permitAll()
+				//.antMatchers(HttpMethod.POST,"/**").permitAll()
+				//.antMatchers(HttpMethod.PUT,"/**").permitAll()
+				//.antMatchers(HttpMethod.PATCH,"/**").permitAll()
+				//.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+				//.antMatchers(HttpMethod.DELETE,"/**").permitAll()
+				.antMatchers("/**").permitAll() //mermite tudo 
+				
 				.anyRequest().authenticated()
 		.and()
 			//impede que o spring crie sessoes
@@ -89,6 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			//.httpBasic()
 			.addFilterBefore(jwtTokenFilter(),UsernamePasswordAuthenticationFilter.class);
 		;
+		
+		http.headers().frameOptions().disable();//configuracao pro h2 funciona
 	}
 	
 	//este filter parece nao esta sendo utilizado 

@@ -2,6 +2,8 @@ package com.projeto.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import com.projeto.service.EnderecoService;
 @RestController
 @RequestMapping("/contribuintes")
 public class ContribuinteController {
+	private final Logger logger = LoggerFactory.getLogger(ContribuinteController.class);
 	
 	@Autowired
 	private ContribuinteService contribuinteService;
@@ -34,6 +37,8 @@ public class ContribuinteController {
 	@PostMapping()
 	public ResponseEntity<?> salvar(@RequestBody Contribuinte contribuinte) {
 		try {
+			logger.info("salvando novo contribuinte");
+			
 			//enderecoService.saveAll(contribuinte.getEnderecos());
 			contribuinte = contribuinteService.salvar(contribuinte);
 			
@@ -50,6 +55,8 @@ public class ContribuinteController {
 	
 	@PutMapping("/{id}")
 	public Contribuinte update(@PathVariable Long id, @RequestBody Contribuinte contribuinte) throws NegocioException {
+		logger.info("atualizando contribuinte");
+		
 		Contribuinte contribuinteAtual = contribuinteService.porId(id).get();
 		if(contribuinteAtual == null) {
 			throw new NegocioException("Nao existe contribuinte com o id :"+id+".");
@@ -58,6 +65,7 @@ public class ContribuinteController {
 		//enderecoService.saveAll(contribuinte.getEnderecos());
 		contribuinteAtual.setDocumento(contribuinte.getDocumento());
 		contribuinteAtual.setNome(contribuinte.getNome());
+		
 		return contribuinteService.salvar(contribuinteAtual);
 	}
 	
@@ -67,6 +75,8 @@ public class ContribuinteController {
 			@RequestParam(value = "nome", required=false) String nome,
 			@RequestParam(value = "rua", required=false) String rua
 			){
+		logger.info("filtrando contribuinte");
+		
 		List<Contribuinte> contribuintes =  contribuinteService.filtrar(documento, nome, rua);
 		return contribuintes;
 	}
@@ -74,6 +84,8 @@ public class ContribuinteController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deletar(@PathVariable("id") Long id) {
 		try {
+			logger.info("deletando contribuinte de id {}",id);
+			
 			Contribuinte contribuinte = contribuinteService.porId(id)
 					.orElseThrow(() -> new NegocioException("Nao existe contribuinte com o id passado",NegocioException.BADREQUEST));
 			
@@ -91,12 +103,16 @@ public class ContribuinteController {
 	
 	@GetMapping("/documento/{documento}")
 	public ResponseEntity<?> porDocumento(@PathVariable("documento") String documento) {
+		logger.info("busca de contribuinte por documento : {}",documento);
+		
 		Contribuinte contribuinte = contribuinteService.buscarPorDocumento(documento);
 		return ResponseEntity.status(HttpStatus.OK).body(contribuinte);
 	}
 	
 	@GetMapping("/{idContribuinte}")
 	public Contribuinte buscarPorId(@PathVariable("idContribuinte") Long idContribuinte) throws NegocioException {
+		logger.info("busca de contribuinte por id {}",idContribuinte);
+		
 		Contribuinte  contribuinte  = contribuinteService.porId(idContribuinte).get();
 		if(contribuinte == null) {
 			throw new NegocioException("Contribuinte com o id passado nao existe");
@@ -107,11 +123,14 @@ public class ContribuinteController {
 	
 	@GetMapping("/{idContribuinte}/enderecos")
 	public List<Endereco> porContribuinte(@PathVariable("idContribuinte") Long idContribuinte){
+		logger.info("buscando endereco por contribuinte {}",idContribuinte);
+		
 		return enderecoService.porContribuinte(idContribuinte);
 	}
 	
 	@PostMapping("/{idContribuinte}/enderecos")
 	public List<Endereco> enderecoporContribuinte(@PathVariable("idContribuinte") Long idContribuinte,@RequestBody List<Endereco> enderecos){
+		logger.info("adicionando enderecos ao contribuinte ");
 		
 		enderecoService.deletarPorContribuinte(idContribuinte);
 		
@@ -122,9 +141,6 @@ public class ContribuinteController {
 			e.setContribuinte(cont);
 			e = enderecoService.save(e);
 		}
-		
 		return enderecos;
 	}
-	
-
 }

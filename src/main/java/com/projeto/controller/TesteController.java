@@ -151,5 +151,23 @@ public class TesteController {
 	}
 	
 	
+	@GetMapping("/teste2")
+	public ResponseEntity teste2() throws InterruptedException {
+		System.out.println("teste2");
+		//Thread.sleep(10000);
+		
+		return ResponseEntity.ok().body("blz 2");
+	}
+	
+	@GetMapping("/teste3")
+	public ResponseEntity teste3() throws InterruptedException {
+		System.out.println("teste3");
+		//Thread.sleep(10000);
+		
+		return ResponseEntity.ok().body("blz 3");
+	}
+	
+	
+	
 
 }

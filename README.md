@@ -5,7 +5,7 @@
 - FlyAway
 - JWT, Spring Security
 - Maven
-- swagger (REST API's RESTFul do 0 à AWS com Spring Boot 2.x e Docker U - 15.103)
+- swagger (REST API's RESTFul do 0 à AWS com Spring Boot 2.x e Docker U - 15.103)(http://localhost:8080/swagger-ui.html)
 - Bean validation
 - Modelmapper   (Especialista Spring rest - 11.14)
 
@@ -16,7 +16,7 @@
 -job schedule
 -(falta)teste unitarios e integracao
 -(falta)Logge da aplicacao
--banco em memoria M2
+-profile de teste com banco em memoria M2
 -(falta)pegar parametro do properties e de variaveis de ambiente 
 
 -imprementar um crud one to many com a abordagem do blog 

@@ -5,7 +5,4 @@ CREATE TABLE public.usuario
    sobre_nome character varying(80), 
    email character varying(80), 
    senha character varying(50)
-) 
-WITH (
-  OIDS = FALSE
 );
