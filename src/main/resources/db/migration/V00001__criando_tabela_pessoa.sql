@@ -11,7 +11,6 @@ CREATE TABLE public.pessoa
 CREATE TABLE public.lancamento
 (
    id serial primary key,
-   tipo character varying(50), 
    valor numeric, 
    data_emissao date, 
    situacao character varying(50)
