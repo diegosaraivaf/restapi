@@ -1,8 +1,10 @@
 package com.projeto.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Nfse {
+public class Nfse implements Serializable{
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +33,12 @@ public class Nfse {
 	@Column(name = "local_prestacao")
 	private String localPrestacao;//criar objeto municipio
 	
-	@Column(name="lista_items")
-	private String listaItens;//criar objeto de item de servico (descricao,quantidade,valor)
+//	@Column(name="lista_items")
+//	private String listaItens;//criar objeto de item de servico (descricao,quantidade,valor)
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "nfse_id")
+	private List<ItemNfse> itensNfse;
 	
 	@Column(name="valor_servico")
 	private BigDecimal valorServico;
@@ -67,12 +75,12 @@ public class Nfse {
 		this.localPrestacao = localPrestacao;
 	}
 
-	public String getListaItens() {
-		return listaItens;
+	public List<ItemNfse> getItensNfse() {
+		return itensNfse;
 	}
 
-	public void setListaItens(String listaItens) {
-		this.listaItens = listaItens;
+	public void setItensNfse(List<ItemNfse> itensNfse) {
+		this.itensNfse = itensNfse;
 	}
 
 	public BigDecimal getValorServico() {

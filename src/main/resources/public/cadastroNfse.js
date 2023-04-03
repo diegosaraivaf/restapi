@@ -8,6 +8,7 @@ var inputValor = document.getElementById('valor')
 var inputItens = document.getElementById('itens')
 var prestador = null
 var tomador = null
+var itensNota = []
 
 window.onload = function () {
 	var params = window.location.search.substring(1).split('&');
@@ -18,27 +19,20 @@ window.onload = function () {
  }
 
 const carregarInformacoes = (id) =>{
-	
-	axios.get(`lancamentos/${id}`)
+	axios.get(`nfses/${id}`)
 		.then(response => {
-			var lancamento = response.data
-			lancamentoId = lancamento.id
-			inputDocumento.value = lancamento.contribuinte.documento
-			inputNome.value = lancamento.contribuinte.nome
-			contribuinteId = lancamento.contribuinte.id
-			inputValor.value = lancamento.valor
-			inputQtdParcela.value = lancamento.parcelas.length
-			selectTipo.value = lancamento.tipoLancamento
+			var nfse = response.data
+			inputPrestador.value = nfse.prestador.documento
+			inputTomador.value = nfse.tomaodr.documento
 			
-			var parcelas = []
-			lancamento.parcelas.forEach(e => {
-				parcelas.push([e.id,e.valor])
+			var itemTable = []
+			nfse.itensNfse.forEach(i => {
+				itemTable.push([i.id,i.descricao])
 			})
-			preecherTabela('tableData',parcelas)
+			preecherTabela('tableData',itemTable)
 		}).catch(error => {
 			console.log(error)
 		})
-	
 }
 
 /*
@@ -56,13 +50,24 @@ function manipularFormulario() {
 
 const salvar = async () => {
 	event.preventDefault()
+	
+	var tabela = getValoresTBody('tableData')
+	var itensNfse = []
+	
+	for(let tab of tabela){
+		itensNfse.push({
+			descricao: tab[1],
+			valor: tab[2].replaceAll('.', '').replaceAll(',', '.'),
+			quantidade: tab[3]
+		})
+	}
 
 	var nfse = {
 		prestador,
 		tomador,
 		localPrestacao : inputLocalPrestacao.value,
 		valor : inputValor.value,
-		listaItens : inputItens.value
+		itensNfse : itensNfse
 	}
 	
 	/*if(lancamentoId != null){
@@ -90,17 +95,17 @@ const aoMudarTomador = (event) => {
 	})
 }
 
-const aoMudarQtdParcelas = (e) =>{
-	var qtdParcelas  = e.target.value
-	var valorParcela = inputValor.value / qtdParcelas
-	var dados = []
+const adicionarItem = (e) =>{
+	event.preventDefault()
 	
-	for(var i = 0; i < qtdParcelas; i++ ){
-		dados.push([i+1,valorParcela])
-	}
+	itensNota.push([
+		itensNota.length +1,
+		document.getElementById('itemDescricao').value,
+		document.getElementById('itemValor').value,
+		document.getElementById('itemQuantidade').value
+	])
 	
-	preecherTabela('tableData',dados)
-	
+	preecherTabela('tableData',itensNota)
 	
 //	var qtdParcelas  = e.target.value
 //	const tableBody  = document.getElementById('tableData')
@@ -120,7 +125,12 @@ const aoMudarQtdParcelas = (e) =>{
 
 
 
+
 document.getElementById('voltar').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/consultaLancamento.html" })
 document.getElementById('salvar').addEventListener('click',salvar)
 document.getElementById('prestadorDocumento').addEventListener('change',e => aoMudarPrestador(e))
 document.getElementById('tomadorDocumento').addEventListener('change',e => aoMudarTomador(e))
+document.getElementById('adicionar').addEventListener('click',e => adicionarItem(e))
+
+
+

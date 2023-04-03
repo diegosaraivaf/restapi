@@ -5,16 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projeto.entity.ItemNfse;
 import com.projeto.entity.Nfse;
+import com.projeto.repository.ItemNfseRepository;
 import com.projeto.repository.NfseRepository;
 
 @Service
-public class NfseService {
+public class ItemNfseService {
 	@Autowired
-	private NfseRepository nfseRepository;
+	private ItemNfseRepository itemNfseRepository;
 	
-	public Nfse salvar(Nfse nfse) {
-		return nfseRepository.save(nfse);
+	public ItemNfse salvar(ItemNfse item) {
+		return itemNfseRepository.save(item);
 	}
 	
 	public void atualizar() {
@@ -25,11 +27,11 @@ public class NfseService {
 		
 	}
 	
-	public Nfse buscarPorId(Long id) {
-		return nfseRepository.findById(id).get();
+	public void listarPorId() {
+		
 	}
 	
 	public List<Nfse> listarTodos() {
-		return nfseRepository.findAll();
+		return null;
 	}
 }

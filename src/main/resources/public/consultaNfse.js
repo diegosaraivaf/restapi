@@ -48,10 +48,17 @@ async function pesquisar(){
 			e.id,
 			e.prestador?e.prestador.documento:'' ,
 			e.tomador?e.tomador.documento:'' ,
-			e.valorServico])
+			e.valorServico,
+			`<input type="button" onClick="editar(${e.id})"  value="Editar" >`
+		])
 	})
 	preecherTabela('tableData',notas)
 	
+}
+
+const editar = (id) => {
+	console.log('teste')
+	window.location.href = `http://localhost:8080/cadastroNfse.html?${id}`;
 }
 
 app()

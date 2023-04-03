@@ -100,7 +100,6 @@ const handlerDeletar = (id) =>{
 }
 
 const editar = (id) => {
-	console.log('teste')
 	window.location.href = `http://localhost:8080/cadastroContribuinte.html?${id}`;
 }
 
