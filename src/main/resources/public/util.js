@@ -5,8 +5,8 @@ export const getValoresTBody = (id) => {
 	for(var i = 0;i < tableBody.rows.length;i++){
 		var linha = []
 		 for(var i2 = 0;i2 < tableBody.rows[i].cells.length;i2++){
-			 console.log(tableBody.rows[i])
-			 linha.push(tableBody.rows[i].cells[i2].childNodes[0].nodeValue)
+			 console.log(tableBody.rows[i].cells[i2])
+			 linha.push(tableBody.rows[i].cells[i2].childNodes[0] != undefined  ?  tableBody.rows[i].cells[i2].childNodes[0].nodeValue : null)
 		 }
 		tabela.push(
 			linha

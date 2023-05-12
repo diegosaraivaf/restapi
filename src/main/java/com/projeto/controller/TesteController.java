@@ -9,10 +9,12 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +36,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.projeto.dto.LancamentoDTO;
 import com.projeto.entity.Contribuinte;
 import com.projeto.entity.Lancamento;
+import com.projeto.entity.Nfse;
 import com.projeto.entity.Parcela;
 import com.projeto.entity.SituacaoLancamento;
 import com.projeto.entity.TipoLancamento;
+import com.projeto.exeption.NegocioException;
 import com.projeto.repository.LancamentoRepository;
 import com.projeto.repository.ParcelaRepository;
+import com.projeto.service.ContribuinteService;
 import com.projeto.service.LancamentoService;
+import com.projeto.service.NfseService;
 
 @RestController
 @RequestMapping("testes")
@@ -50,6 +56,12 @@ public class TesteController {
 	
 	@Autowired
 	private ParcelaRepository parcelaRepository;
+	
+	@Autowired
+	private ContribuinteService contribuinteService;
+	
+	@Autowired
+	private NfseService nfseService;
 	
 	/**
 	 * Teste de validacao com bean validator
@@ -160,13 +172,34 @@ public class TesteController {
 	}
 	
 	@GetMapping("/teste3")
-	public ResponseEntity teste3() throws InterruptedException {
-		System.out.println("teste3");
-		//Thread.sleep(10000);
+	public ResponseEntity teste3() throws NegocioException  {
+		Contribuinte prestador =  new Contribuinte();
+		Contribuinte tomador = new Contribuinte();
+		tomador.setId(2L);
+		prestador.setId(1L);
 		
-		return ResponseEntity.ok().body("blz 3");
+		Nfse nota = new Nfse();
+		nota.setId(1L);
+		nota.setItensNfse(new ArrayList<>());
+		nota.setPrestador(prestador);
+		nota.setTomador(tomador);
+		
+		nota = nfseService.save(nota);
+		nota.getPrestador().getNome();
+		
+		return ResponseEntity.ok().body(nota);
 	}
 	
+	
+	@Transactional
+	public Contribuinte criaPrestador() throws NegocioException   {
+		Contribuinte prestador = new Contribuinte();
+		prestador.setDocumento("556785678");
+		prestador.setNome("teste 392847534985");
+		
+		prestador = contribuinteService.salvar(prestador);
+		return prestador;
+	}
 	
 	
 

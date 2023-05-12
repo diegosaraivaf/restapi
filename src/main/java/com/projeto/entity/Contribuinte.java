@@ -10,13 +10,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 public class Contribuinte {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	 @ApiModelProperty(value = "ID do endereço", example = "1") 
 	private Long id;
 	
 	private String nome;

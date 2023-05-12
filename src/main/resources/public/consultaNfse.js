@@ -1,6 +1,8 @@
+
 import {teste} from './teste.js';
 import {getValoresTBody,preecherTabela} from './util.js'
-/*import {axios} from './axios.min.js';*/
+//import {axios} from './axios.min.js';
+
 
 function app(){
 	manipularFormulario()
@@ -9,12 +11,12 @@ function app(){
 function manipularFormulario() {
 
 	
-	const form_lancamento = document.getElementById('form-lancamento')
+	const form_lancamento = document.getElementById('form-nfse')
 	
 	form_lancamento.onsubmit = async (event) => {
 		event.preventDefault()
 		
-		pesquisarLancamento()
+		pesquisar()
 	}
 }
 
@@ -43,24 +45,39 @@ async function pesquisar(){
 	
 	var notas = []
 	nfses.forEach(e => {
-		 
+		 //tive divicudade ao colocar nome do metodo no botao,ele nao encontrava por alguma motivo, pode ter relacao com o module 
 		notas.push([
 			e.id,
 			e.prestador?e.prestador.documento:'' ,
 			e.tomador?e.tomador.documento:'' ,
 			e.valorServico,
-			`<input type="button" onClick="editar(${e.id})"  value="Editar" >`
+			`<input type="button" class="btn btn-secondary" onclick="window.location.href = 'http://localhost:8080/cadastroNfse.html?${e.id}'"  value="Editar" >`
 		])
 	})
 	preecherTabela('tableData',notas)
 	
 }
 
+//function editar(id) {
+//	console.log('teste')
+	//window.location.href = `http://localhost:8080/cadastroNfse.html?${id}`;
+//}
+
 const editar = (id) => {
 	console.log('teste')
-	window.location.href = `http://localhost:8080/cadastroNfse.html?${id}`;
 }
+
+
+
+
+
+
+//alert('teste ')
+
 
 app()
 document.getElementById('pesquisar').addEventListener('click',pesquisar)
 document.getElementById('nome').addEventListener('change',(e) => {nome = e.target.value })
+
+
+

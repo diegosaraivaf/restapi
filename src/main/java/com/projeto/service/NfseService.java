@@ -2,6 +2,9 @@ package com.projeto.service;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +16,23 @@ public class NfseService {
 	@Autowired
 	private NfseRepository nfseRepository;
 	
-	public Nfse salvar(Nfse nfse) {
-		return nfseRepository.save(nfse);
+	@Autowired
+	private EntityManager manager;
+	
+	@Transactional(rollbackOn = Throwable.class)
+	public Nfse save(Nfse nfse) {
+		return manager.merge(nfse);
 	}
 	
-	public void atualizar() {
-		
+	public Nfse atualizar(Nfse nfse) {
+		return nfseRepository.save(nfse);
 	}
 	
 	public void detelar() {
 		
 	}
 	
-	public Nfse buscarPorId(Long id) {
+	public Nfse findById(Long id) {
 		return nfseRepository.findById(id).get();
 	}
 	

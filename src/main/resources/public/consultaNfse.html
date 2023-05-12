@@ -1,13 +1,16 @@
 <html>
 	<head>
-    <title>T�tulo da p�gina</title>
-    
+    <title>Título da página</title>
+    <meta charset="UTF-8">
     <script defer src="axios.min.js"></script>
-    <script defer type="module" src="consultaNfse.js"></script>
+	
+	 <!-- type="module" -->
+	<script defer  type="module" src="consultaNfse.js"></script>
     
     <!-- bootstrap -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" defer integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" defer integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+	
 	</head>
   	<body>
 	  	<div class="container bg-light">
@@ -16,7 +19,7 @@
 		    <a href="http://localhost:8080/cadastroNfse.html" class="btn btn-primary"  >Cadastrar</a>
 			<button id="pesquisar" class="btn btn-secondary offset-10" >Pesquisar</button>
 		    
-		    <form id="form-lancamento" >
+		    <form id="form-nfse" >
 		    	<div class="row">
 		    		<div class="col-4">
 		    			<label  class="form-label">Id</label>
@@ -40,9 +43,9 @@
 		    			<label  class="form-label">Nome</label>
 		    			<input type="text" id="nome" class="form-control"  >
 		    		</div>
-		    	
 		    	</div>
 		    </form>
+		    
 		    <table id="tableLancamento" class="table table-striped">
 			    <thead>
 						<tr>

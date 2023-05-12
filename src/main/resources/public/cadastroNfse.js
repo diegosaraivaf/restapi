@@ -1,14 +1,19 @@
 import {getValoresTBody,preecherTabela} from './util.js'
 
+//eu poderia colocar a mudanca de estado do objeto no onchage dos inputs filds ,fazer isso depois,acho que necesse senario aqui e mais dificil gerencia o estado do objeto, melhor apenas construi o objeto no fim 
+
 axios.defaults.baseURL = 'http://localhost:8080'
-var inputPrestador = document.getElementById('prestador')
-var inputTomador = document.getElementById('tomador')
+var inputPrestadorDocumento = document.getElementById('prestadorDocumento')
+var inputTomadorDocumento = document.getElementById('tomadorDocumento')
+var inputPrestadorNome = document.getElementById('prestadorNome')
+var inputTomadorNome = document.getElementById('tomadorNome')
 var inputLocalPrestacao = document.getElementById('localPrestacao')
 var inputValor = document.getElementById('valor')
 var inputItens = document.getElementById('itens')
-var prestador = null
-var tomador = null
+var prestador = {}
+var tomador = {}
 var itensNota = []
+var idNfse = null
 
 window.onload = function () {
 	var params = window.location.search.substring(1).split('&');
@@ -22,14 +27,18 @@ const carregarInformacoes = (id) =>{
 	axios.get(`nfses/${id}`)
 		.then(response => {
 			var nfse = response.data
-			inputPrestador.value = nfse.prestador.documento
-			inputTomador.value = nfse.tomaodr.documento
+			idNfse = nfse.id
+			prestador = nfse.prestador
+			inputPrestadorDocumento.value = nfse.prestador.documento
+			inputPrestadorNome.value = nfse.prestador.nome
+			tomador = nfse.tomador
+			inputTomadorDocumento.value = nfse.tomador.documento
+			inputTomadorNome.value = nfse.tomador.nome
 			
-			var itemTable = []
 			nfse.itensNfse.forEach(i => {
-				itemTable.push([i.id,i.descricao])
+				itensNota.push([i.id,i.descricao,i.valor,i.quantidade])
 			})
-			preecherTabela('tableData',itemTable)
+			preecherTabela('tableData',itensNota)
 		}).catch(error => {
 			console.log(error)
 		})
@@ -56,42 +65,72 @@ const salvar = async () => {
 	
 	for(let tab of tabela){
 		itensNfse.push({
+			id: tab[0],
 			descricao: tab[1],
 			valor: tab[2].replaceAll('.', '').replaceAll(',', '.'),
 			quantidade: tab[3]
 		})
 	}
+	
+	if(prestador.id == null){
+		prestador.documento = inputPrestadorDocumento.value
+		prestador.nome = inputPrestadorNome.value
+		
+		const response = await axios.post('contribuintes/',prestador)
+		prestador = response.data
+	}
+	if(tomador.id == null){
+		tomador.documento = inputTomadorDocumento.value
+		tomador.nome = inputTomadorNome.value
+		
+		const response = await axios.post('contribuintes/',tomador)
+		tomador = response.data
+	}
 
 	var nfse = {
-		prestador,
-		tomador,
-		localPrestacao : inputLocalPrestacao.value,
+		//prestadorId : null,
+		tomadorId :tomador.id ,
+		localPrestacao : null,
 		valor : inputValor.value,
 		itensNfse : itensNfse
 	}
 	
-	/*if(lancamentoId != null){
-		await axios.put('lancamentos/'+lancamentoId,lancamento)
+	if(idNfse != null){
+		await axios.put('nfses/'+idNfse,nfse)
 	}
 	else{
-		await axios.post('lancamentos',nfse)
-	}*/
-	await axios.post('nfses',nfse)
+		await axios.post('nfses',nfse)
+	}
 	
 	window.location.href = "consultaNfse.html";
 }
 
 const aoMudarPrestador = (event) => {
 	axios.get(`contribuintes/documento/${event.target.value}`).then(response => {
-		document.getElementById('prestadorNome').value = response.data.nome
-		prestador = response.data
+		if(response.data.id != null){
+			document.getElementById('prestadorNome').value = response.data.nome
+			prestador = response.data
+			inputPrestadorNome.readOnly = true
+		}else{
+			inputPrestadorNome.readOnly = false
+			inputPrestadorNome.value = ''
+			prestador = {}
+		}
 	})
+
 }
 
 const aoMudarTomador = (event) => {
 	axios.get(`contribuintes/documento/${event.target.value}`).then(response => {
-		document.getElementById('tomadorNome').value = response.data.nome
-		tomador = response.data
+		if(response.data.id != null){
+			document.getElementById('tomadorNome').value = response.data.nome
+			tomador = response.data
+			inputTomadorNome.readOnly = true
+		}else{
+			inputTomadorNome.readOnly = false
+			inputTomadorNome.value = ''
+			tomador = {}
+		}
 	})
 }
 
@@ -99,7 +138,7 @@ const adicionarItem = (e) =>{
 	event.preventDefault()
 	
 	itensNota.push([
-		itensNota.length +1,
+		'',
 		document.getElementById('itemDescricao').value,
 		document.getElementById('itemValor').value,
 		document.getElementById('itemQuantidade').value
@@ -126,7 +165,7 @@ const adicionarItem = (e) =>{
 
 
 
-document.getElementById('voltar').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/consultaLancamento.html" })
+document.getElementById('voltar').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/consultaNfse.html" })
 document.getElementById('salvar').addEventListener('click',salvar)
 document.getElementById('prestadorDocumento').addEventListener('change',e => aoMudarPrestador(e))
 document.getElementById('tomadorDocumento').addEventListener('change',e => aoMudarTomador(e))
