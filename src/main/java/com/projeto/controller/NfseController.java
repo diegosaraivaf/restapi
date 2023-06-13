@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projeto.dto.NfseDTO;
+import com.projeto.dto.NfseDTORequest;
+import com.projeto.dto.NfseDTOResponse;
 import com.projeto.entity.Lancamento;
 import com.projeto.entity.Nfse;
 import com.projeto.exeption.NegocioException;
@@ -40,8 +42,9 @@ public class NfseController {
 	//para exibir apenas os ids da referencia parece ser necessario criar um dto :/
 	@ApiOperation(value = "Salva nfse")
 	@PostMapping
-	public Nfse salva(@Valid @RequestBody Nfse nfse) throws NegocioException{
-		return nfseService.save(nfse);
+	public Nfse salva(@Valid @RequestBody NfseDTORequest nfse) throws NegocioException{
+		Nfse n = new Nfse(nfse);
+		return nfseService.save(n);
 	}
 	
 	public void deletar() {
@@ -49,7 +52,7 @@ public class NfseController {
 	}
 	
 	@PutMapping("/{id}")
-	public void alterar(@PathVariable("id") Long id, @RequestBody NfseDTO nfse) {
+	public void alterar(@PathVariable("id") Long id, @RequestBody NfseDTORequest nfse) {
 		Nfse n = new Nfse(nfse);
 		n.setId(id);
 		
@@ -57,9 +60,9 @@ public class NfseController {
 	}
 	
 	@GetMapping
-	public List<NfseDTO> listarTodos() {
-		nfseService.listarTodos();
-		return null;
+	public List<NfseDTOResponse> listarTodos() {
+		List<NfseDTOResponse> nfses =  nfseService.listarTodos().stream().map(n -> new NfseDTOResponse(n)).collect(Collectors.toList());
+		return nfses;
 	}
 	
 	@GetMapping("/{id}")

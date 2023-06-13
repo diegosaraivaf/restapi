@@ -37,6 +37,8 @@ public class NfseService {
 	}
 	
 	public List<Nfse> listarTodos() {
-		return nfseRepository.findAll();
+		List<Nfse> result = nfseRepository.findAll();
+		
+		return result;
 	}
 }

@@ -88,7 +88,7 @@ const salvar = async () => {
 	}
 
 	var nfse = {
-		//prestadorId : null,
+		prestadorId : prestador.id,
 		tomadorId :tomador.id ,
 		localPrestacao : null,
 		valor : inputValor.value,

@@ -72,7 +72,6 @@
   		<groupId>org.springframework.boot</groupId>
   		<artifactId>spring-boot-starter-security</artifactId>
   	</dependency>
-  	
   	<dependency>
 		<groupId>io.jsonwebtoken</groupId>
 		<artifactId>jjwt</artifactId>
@@ -90,11 +89,33 @@
 		<artifactId>springfox-swagger2</artifactId>
 		<version>2.9.2</version>
 	</dependency>
-	
 	<dependency>
 		<groupId>io.springfox</groupId>
 		<artifactId>springfox-swagger-ui</artifactId>
 		<version>2.9.2</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>net.sf.jasperreports</groupId>
+	    <artifactId>jasperreports</artifactId>
+	    <version>6.17.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.lowagie</groupId>
+	    <artifactId>itext</artifactId>
+	    <version>2.1.7</version>
+	</dependency>
+	
+	<!-- Flying Saucer -->
+	<dependency>
+	    <groupId>org.xhtmlrenderer</groupId>
+	    <artifactId>flying-saucer-core</artifactId>
+	    <version>9.1.22</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.xhtmlrenderer</groupId>
+	    <artifactId>flying-saucer-pdf</artifactId>
+	    <version>9.1.22</version>
 	</dependency>
   	
   </dependencies>

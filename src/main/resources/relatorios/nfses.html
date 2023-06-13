@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Content</title>
+
+	<style>
+	    /* Content to be added at the top of each page */
+	    #header {
+	        position: running(header);
+	    }
+	
+	    /* Style for the header content */
+	    #header {
+	        text-align: center;
+	        font-size: 16px;
+	        font-weight: bold;
+	        padding: 10px;
+	    }
+	
+	    /* Page break settings */
+	    @page {
+	        @top-center {
+	            content: element(header);
+	        }
+	    }
+	
+	    tbody tr {
+	        page-break-inside: avoid;
+	    }
+	
+		@media print {
+		  .print-table-container thead {
+		    display: table-header-group;
+		  }
+		}
+	</style> 
+
+
+</head>
+<body>
+   <div id="header">
+        Your header content goes here
+   </div>
+   
+	<div class="print-table-container">
+		<table class="fixed-header">
+		    <thead class="table-header">
+		        <tr class="row">
+		            <th class="cell">Header 1</th>
+		            <th class="cell">Header 2</th>
+		            <!-- Add more table headers as needed -->
+		        </tr>
+		    </thead>
+		    <tbody>
+		       {table_data}
+		    </tbody>
+		
+		</table>
+	</div>
+
+</body>
+</html>

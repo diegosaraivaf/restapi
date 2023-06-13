@@ -1,8 +1,13 @@
 package com.projeto.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.Hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import com.projeto.entity.Contribuinte;
 import com.projeto.entity.ItemNfse;
+import com.projeto.entity.Nfse;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -18,16 +24,12 @@ import io.swagger.annotations.ApiModelProperty;
 
 @JsonInclude(Include.ALWAYS)
 @JsonIgnoreProperties(value = {"tomador.nome"})
-public class NfseDTO {
+public class NfseDTOResponse implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
+	private Contribuinte prestador;
 	
-//	dataType  = "com.projeto.entity.Contribuinte"
-	 @ApiModelProperty(value = "Id referente ao Contribuinte", required = true  )
-	private Long prestadorId;
-	
-	 
-	//@JsonIgnoreProperties({"nome", "documento"})
-	 //@ApiModelProperty(value = "Endereço da pessoa", required = true,  example = "{'id':1}",dataType  = "com.projeto.entity.Contribuinte",hidden=true)
-	@ApiModelProperty(value = "Id referente o Contribuinte da nota", required = true, example = "{'id': '1', 'nome': 'Cliente A','documento':'2112312'}"  )
 	private Contribuinte tomador;
 	
 	private String localPrestacao;
@@ -35,13 +37,23 @@ public class NfseDTO {
 	private List<ItemNfse> itensNfse;
 	
 	private BigDecimal valorServico;
-
-	public Long getPrestadorId() {
-		return prestadorId;
+	
+	public NfseDTOResponse() {
+	}
+	
+	public NfseDTOResponse(Nfse nfse) {
+		prestador = nfse.getPrestador();
+		tomador = nfse.getTomador();
+		localPrestacao = nfse.getLocalPrestacao();
+		itensNfse  = nfse.getItensNfse();
 	}
 
-	public void setPrestadorId(Long prestadorId) {
-		this.prestadorId = prestadorId;
+	public Contribuinte getPrestador() {
+		return prestador;
+	}
+
+	public void setPrestador(Contribuinte prestador) {
+		this.prestador = prestador;
 	}
 
 	public Contribuinte getTomador() {
@@ -49,7 +61,7 @@ public class NfseDTO {
 	}
 
 	public void setTomador(Contribuinte tomador) {
-//		this.tomador = tomador;
+		this.tomador = tomador;
 	}
 
 	public String getLocalPrestacao() {

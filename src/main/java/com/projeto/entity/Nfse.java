@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.projeto.dto.NfseDTO;
+import com.projeto.dto.NfseDTORequest;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -66,11 +66,15 @@ public class Nfse implements Serializable{
 	public Nfse() {
 	}
 	
-	public Nfse(NfseDTO dto) {
-		prestador = new Contribuinte();
-		//prestador.setId(dto.getPrestador().getId());
-		tomador = new Contribuinte();
-		tomador.setId(dto.getTomador().getId());
+	public Nfse(NfseDTORequest dto) {
+		if(dto.getPrestadorId() != null) {
+			prestador = new Contribuinte();
+			prestador.setId(dto.getPrestadorId());
+		}
+		if(dto.getTomadorId() != null) {
+			tomador = new Contribuinte();
+			tomador.setId(dto.getTomadorId());
+		}
 		localPrestacao = dto.getLocalPrestacao();
 		itensNfse  = dto.getItensNfse();
 	}
