@@ -31,7 +31,7 @@ public class PdfFlyingSaucerController {
         // Load HTML template from file
         ClassPathResource templateResource = new ClassPathResource("relatorios/nfses.html");
         InputStream templateInputStream = templateResource.getInputStream();
-        byte[] templateBytes = templateInputStream.readAllBytes();
+        byte[] templateBytes = templateInputStream.readAllBytes(); //parece so funcionar com java 9 
         String htmlTemplate = new String(templateBytes, StandardCharsets.UTF_8);
  
        //Load the data -  Replace the {table_data} placeholder with the actual table rows HTML

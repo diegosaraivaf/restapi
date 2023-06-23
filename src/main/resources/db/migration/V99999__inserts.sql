@@ -15,7 +15,20 @@ insert into parcela(id,valor,situacao,lancamento_id,data_vencimento) values(4,15
 insert into parcela(id,valor,situacao,lancamento_id,data_vencimento) values(5,400,'EMITIDO',3,'2021-10-10');
 
 insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(1,1,2,'Fortaleza',200);
-insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(2,1,2,'Maracanau',400);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(2,1,2,'Maracanau',200);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(3,1,2,'Maracanau',200);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(4,1,2,'Maracanau',200);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(5,1,1,'Maracanau',200);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(6,2,1,'Maracanau',300);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(7,2,1,'Maracanau',300);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(8,2,1,'Maracanau',300);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(9,2,1,'Maracanau',300);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(10,2,1,'Maracanau',300);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(11,3,2,'Maracanau',400);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(12,3,2,'Maracanau',400);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(13,3,2,'Maracanau',400);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(14,3,2,'Maracanau',400);
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico) values(15,3,2,'Maracanau',400);
 
 insert into item_nfse(id,descricao,valor,quantidade,nfse_id) values(1,'Troca de ar comdicionado',200,3,1);
 insert into item_nfse(id,descricao,valor,quantidade,nfse_id) values(2,'Manutenção de ar comdicionado',200,3,1);

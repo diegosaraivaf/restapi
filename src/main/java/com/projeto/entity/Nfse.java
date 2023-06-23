@@ -41,14 +41,13 @@ public class Nfse implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "prestador_id")
-	//@JsonSerialize(using = Contribuinte.class)
 	private Contribuinte prestador;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tomador_id")
 	private Contribuinte tomador;
 	
-	@NotNull
+
 	@Column(name = "local_prestacao")
 	private String localPrestacao;//criar objeto municipio
 	
@@ -76,6 +75,7 @@ public class Nfse implements Serializable{
 			tomador.setId(dto.getTomadorId());
 		}
 		localPrestacao = dto.getLocalPrestacao();
+		valorServico = dto.getValorServico();
 		itensNfse  = dto.getItensNfse();
 	}
 

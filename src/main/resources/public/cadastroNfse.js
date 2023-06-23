@@ -34,6 +34,8 @@ const carregarInformacoes = (id) =>{
 			tomador = nfse.tomador
 			inputTomadorDocumento.value = nfse.tomador.documento
 			inputTomadorNome.value = nfse.tomador.nome
+			inputLocalPrestacao.value = nfse.localPrestacao
+			inputValor.value = nfse.valorServico
 			
 			nfse.itensNfse.forEach(i => {
 				itensNota.push([i.id,i.descricao,i.valor,i.quantidade])
@@ -90,8 +92,8 @@ const salvar = async () => {
 	var nfse = {
 		prestadorId : prestador.id,
 		tomadorId :tomador.id ,
-		localPrestacao : null,
-		valor : inputValor.value,
+		localPrestacao : inputLocalPrestacao.value,
+		valorServico : inputValor.value,
 		itensNfse : itensNfse
 	}
 	

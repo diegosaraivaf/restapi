@@ -26,20 +26,20 @@ async function pesquisar(){
 	const inputTipo = document.getElementById('tipo').value
 	const inputValor = document.getElementById('valor').value
 	
-	var url = 'http://localhost:8080/nfses?'
-	
-	if(inputId != null){
+	var url = 'http://localhost:8080/nfses?offset=0&pageNumber=0&pageSize=5'
+
+	if(inputId.length > 0){
 		url = url+'&id='+ inputId;
 	}
-	if(inputTipo != null){
+	if(inputTipo.length > 0){
 		url = url+'&tipo='+ inputTipo;
 	}
-	if(inputValor != null){
+	if(inputValor.length > 0){
 		url = url+'&valor='+ inputValor;
 	}
 	
 	const response = await axios.get(url)
-	const nfses  = response.data
+	const nfses  = response.data.content
 	
 	console.log(nfses)
 	

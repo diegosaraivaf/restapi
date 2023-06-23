@@ -27,7 +27,9 @@ import io.swagger.annotations.ApiModelProperty;
 public class NfseDTOResponse implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
+	
+	private Long id;
+	
 	private Contribuinte prestador;
 	
 	private Contribuinte tomador;
@@ -42,10 +44,20 @@ public class NfseDTOResponse implements Serializable{
 	}
 	
 	public NfseDTOResponse(Nfse nfse) {
+		id = nfse.getId();
 		prestador = nfse.getPrestador();
 		tomador = nfse.getTomador();
 		localPrestacao = nfse.getLocalPrestacao();
+		valorServico = nfse.getValorServico();
 		itensNfse  = nfse.getItensNfse();
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Contribuinte getPrestador() {
