@@ -18,19 +18,19 @@ import io.swagger.v3.oas.models.servers.Server;
 public class OpenAPIConfig {
 //
 //  @Value("${bezkoder.openapi.dev-url}")
-//  private String devUrl;
+  private String devUrl = "http://localhost:8080";
 
 //  @Value("${bezkoder.openapi.prod-url}")
-//  private String prodUrl;
+  private String prodUrl = "http://localhost:8080";
 
   @Bean
   public OpenAPI myOpenAPI() {
     Server devServer = new Server();
-    //devServer.setUrl(devUrl);
+    devServer.setUrl(devUrl);
     devServer.setDescription("Server URL in Development environment");
 
     Server prodServer = new Server();
-    //prodServer.setUrl(prodUrl);
+    prodServer.setUrl(prodUrl);
     prodServer.setDescription("Server URL in Production environment");
 
     Contact contact = new Contact();

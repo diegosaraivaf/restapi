@@ -1,18 +1,15 @@
 package com.projeto.controller;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 import javax.validation.Valid;
 
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.proxy.LazyInitializer;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,15 +23,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.dto.NfseDTORequest;
 import com.projeto.dto.NfseDTOResponse;
-import com.projeto.entity.Contribuinte;
 import com.projeto.entity.Nfse;
 import com.projeto.exeption.NegocioException;
 import com.projeto.service.NfseService;
 import com.projeto.util.HibernateUtil;
 import com.projeto.util.PathUtil;
 
-import io.swagger.annotations.ApiOperation;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Nfse", description = "Acoes relacionadas a emissao de notas ")
 @RestController
 @RequestMapping("/nfses")
 public class NfseController {
@@ -45,36 +47,48 @@ public class NfseController {
 	@Autowired
 	private PathUtil pathUtil; 
 	
-	//para exibir apenas os ids da referencia parece ser necessario criar um dto :/
-	@ApiOperation(value = "Salva nfse")
+	ModelMapper mapper = new ModelMapper();
+	
 	@PostMapping
 	public Nfse salva(@Valid @RequestBody NfseDTORequest nfse) throws NegocioException{
-		Nfse n = new Nfse(nfse);
+		Nfse n = new Nfse();
+		n.convertFromDTO(nfse);
+		n.setDataEmissao(LocalDate.now());
+		
 		nfseService.save(n);
 		return n;
 	}
 	
 	public void deletar() {
-		
 	}
 	
 	@PutMapping("/{id}")
-	public void alterar(@PathVariable("id") Long id, @RequestBody NfseDTORequest nfse) {
-		Nfse n = new Nfse(nfse);
-		n.setId(id);
+	public void alterar(@PathVariable("id") Long id, @RequestBody NfseDTORequest nfse) throws NegocioException {
+		Nfse n = nfseService.findById(id);
 		
+		if(n == null) {
+			throw new NegocioException("Nfse com id "+id+" nao encontrada");
+		}
+
+		n.convertFromDTO(nfse);
+		n.setId(id);
+
 		nfseService.save(n);
 	}
 	
 	@GetMapping
+	@Operation(summary = "Consulta as notas a partir de um filtro")
+	@Parameters({
+	    @Parameter(name = "page", description = "numero da pagiana", in = ParameterIn.QUERY),
+	    @Parameter(name = "size", description = "quantidade de registros por pagina", in = ParameterIn.QUERY),
+	    @Parameter(name = "sort", description = "campo que a consulta via ser ordenada", in = ParameterIn.QUERY)
+	})
 	public Page<NfseDTOResponse> filtrar(
 		@RequestParam(required = false) String localPrestacao,
 		@RequestParam(required = false) BigDecimal valor,
-		Pageable pageable
+		@Parameter(hidden = true) Pageable pageable
 	) {
-		//.findProductsByFilters(name, category, price);
-		//pageable = PageRequest.of(0, 2);
-		Page<NfseDTOResponse> nfses =  nfseService.findByFilter(null,null,pageable).map(n -> new NfseDTOResponse(n));
+		Page<NfseDTOResponse> nfses =  nfseService.findByFilter(localPrestacao,valor,pageable).map(n -> new NfseDTOResponse(n));
 		return nfses;
 	}
 	
@@ -85,15 +99,8 @@ public class NfseController {
 		if(nfse == null) {
 			throw new NegocioException("Nao existe nota com o id :" +id);
 		}
-		nfse.setPrestador(HibernateUtil.unwrapProxy(nfse.getPrestador())); 
-		nfse.setTomador(HibernateUtil.unwrapProxy(nfse.getTomador())); 
-		
 		return nfse;
 	}
-	
-	
-	
-	
 	
 	@PatchMapping("/{id}")
 	public Nfse updatePerson(@PathVariable(value = "id") Long id, @RequestBody  @Valid Map<String, Object> atributos) throws InstantiationException, IllegalAccessException {
@@ -101,6 +108,5 @@ public class NfseController {
 
 	    return nfseService.save(p);
 	}
-
 
 }

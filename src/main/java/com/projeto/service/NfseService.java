@@ -47,7 +47,7 @@ public class NfseService {
 	}
 	
 	public Page<Nfse> findByFilter(String localPrestacao,BigDecimal valor,Pageable pageable) {    
-		Page<Nfse> result = nfseRepository.findByFilters(null,null, pageable);
+		Page<Nfse> result = nfseRepository.findByFilters(localPrestacao,valor, pageable);
 		return result;
 	}
 }

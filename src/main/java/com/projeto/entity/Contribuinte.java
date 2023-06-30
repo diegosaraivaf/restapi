@@ -9,7 +9,6 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -18,7 +17,6 @@ public class Contribuinte implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	 @ApiModelProperty(value = "ID do endereço", example = "1") 
 	private Long id;
 	
 	private String nome;

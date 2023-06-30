@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projeto.entity.Endereco;
 import com.projeto.service.EnderecoService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+@Tag(name = "Endereco", description = "Acoes relacionadas a endereco ")
 @RestController
 @RequestMapping("/enderecos")
 public class EnderecoController {

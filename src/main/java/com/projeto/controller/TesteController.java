@@ -47,6 +47,9 @@ import com.projeto.service.ContribuinteService;
 import com.projeto.service.LancamentoService;
 import com.projeto.service.NfseService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Teste", description = "Acoes relacionadas a contribuintes ")
 @RestController
 @RequestMapping("testes")
 public class TesteController {

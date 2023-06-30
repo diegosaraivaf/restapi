@@ -19,6 +19,12 @@
 -profile de teste com banco em memoria M2
 -(falta)pegar parametro do properties e de variaveis de ambiente 
 -(falta)relatorios pdf 
+-envio de email 
+-criacao de graficos
+-paginacao com filtros 
+-aws
+-integracao continua, doker ,microservico 
+-relacionamento oneToMany
 
 -imprementar um crud one to many com a abordagem do blog 
 -colocar docker

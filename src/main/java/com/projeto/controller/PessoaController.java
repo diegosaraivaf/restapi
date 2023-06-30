@@ -25,6 +25,10 @@ import com.projeto.entity.Pessoa;
 import com.projeto.exeption.NegocioException;
 import com.projeto.service.PessoaService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+@Tag(name = "Pessoa", description = "Acoes relacionadas a pessoa ")
 @RestController
 @RequestMapping(value = "/api/pessoas")
 public class PessoaController {

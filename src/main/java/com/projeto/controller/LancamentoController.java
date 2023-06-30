@@ -1,22 +1,15 @@
 package com.projeto.controller;
 
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
-import org.hibernate.mapping.OneToMany;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -37,22 +29,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projeto.dto.LancamentoDTO;
 import com.projeto.entity.Lancamento;
-import com.projeto.entity.Pessoa;
+
 import com.projeto.entity.TipoLancamento;
 import com.projeto.exeption.NegocioException;
-import com.projeto.repository.RepositoryGeneric;
-import com.projeto.repository.RepositoryGenericoImpl;
 import com.projeto.service.LancamentoService;
 import com.projeto.util.PathUtil;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-//@Api(value="Endpoint Lancamentos",description="Descricao sobre esse endpoint",tags= {"Endpoint Lancamentos"})
-@Api(tags= {"Endpoint Lancamentos"})
+@Tag(name =  "Lancamento")
 @RestController
 @RequestMapping("/lancamentos")
 public class LancamentoController {
@@ -83,7 +70,6 @@ public class LancamentoController {
 		return lancamentoService.findAll(pageable);
 	}
 	
-	@ApiOperation(value = "Filtra lancamentos")
 	@GetMapping
 	public List<Lancamento> filtrarLancamentos(
 			@RequestParam(value = "id", required=false) Long id,
@@ -102,7 +88,6 @@ public class LancamentoController {
 		lancamentoService.testeTransaction();
 	}
 	
-	@ApiOperation(value = "Salva lancamento")
 	@PostMapping
 	public Lancamento salvar(@RequestBody @Valid LancamentoDTO lancamentoDTO) throws NegocioException {
 		if(lancamentoDTO.getTipoLancamento()== null) {
@@ -116,7 +101,6 @@ public class LancamentoController {
 		return lancamentoService.salvar(lancamento);
 	}
 	
-	@ApiOperation(value = "Atualiza lancamento por id")
 	@PutMapping("/{id}")
 	public Lancamento atualizar(@PathVariable("id")Long id, @RequestBody Lancamento lancamento) throws NegocioException {
 		
@@ -134,7 +118,6 @@ public class LancamentoController {
 		return lancamentoService.salvar(lancamento);
 	}
 	
-	@ApiOperation(value = "Remove lancamento por id")
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable("id") Long id) {
 		//mudar esse optional depois
@@ -142,7 +125,6 @@ public class LancamentoController {
 		lancamentoService.deletar(lancamento.get());
 	}
 	
-	@ApiOperation(value = "Busca lancamento por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<?>  buscarPorId(@PathVariable("id") Long id) {
 		//retirar Optional

@@ -23,6 +23,9 @@ import com.projeto.exeption.NegocioException;
 import com.projeto.service.ContribuinteService;
 import com.projeto.service.EnderecoService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Contribuinte", description = "Acoes relacionadas a contribuintes ")
 @RestController
 @RequestMapping("/contribuintes")
 public class ContribuinteController {

@@ -31,8 +31,7 @@ public interface NfseRepository extends JpaRepository<Nfse, Long>{
 	    "left join n.tomador t "+
 	    "left join n.itensNfse i "+
 	    "WHERE (:localPrestacao IS NULL OR n.localPrestacao LIKE %:localPrestacao%) " +
-	    "AND (:valorServico IS NULL OR n.valorServico = :valorServico) "+
-	    "order by n.id" 
+	    "AND (:valorServico IS NULL OR n.valorServico = :valorServico) "
 	)
 	Page<Nfse> findByFilters(String localPrestacao, BigDecimal valorServico, Pageable pageable);
 	

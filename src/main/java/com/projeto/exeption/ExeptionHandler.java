@@ -13,21 +13,32 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.hibernate.QueryException;
 
 @ControllerAdvice
 public class ExeptionHandler 
 //extends ResponseEntityExceptionHandler
 {
 	
-	/*Handler retirado pois esta capturando os erros 500 e retornado 400, assim mascarando o erro
-	 * 
-	 * @ExceptionHandler(Exception.class) public ResponseEntity<?>
-	 * handlerExeption(Exception e) {
-	 * 
-	 * ErroResponse erro = new ErroResponse("teste", e.getMessage());
-	 * e.printStackTrace(); //new HttpRequestMethodNotSupportedException(null);
-	 * return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro); }
-	 */
+//Handler retirado pois nao estava deixando os hadles especificos tratarem a execao
+//	@ExceptionHandler(Exception.class) 
+//	public ResponseEntity<?>handlerExeption(Exception e) {
+//		ErroResponse erro = new ErroResponse("Erro desconhecido ", e.getMessage());
+//		e.printStackTrace(); //new HttpRequestMethodNotSupportedException(null);
+//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro); 
+//	}
+	
+	@ExceptionHandler(QueryException.class) 
+	public ResponseEntity<?>handlerQueryException(QueryException e) {
+//		ErroResponse erro = new ErroResponse("Erro na consulta", e.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); 
+	}
+	
+	@ExceptionHandler(IllegalArgumentException.class) 
+	public ResponseEntity<?>handlerIllegalArgumentException(IllegalArgumentException e) {
+		//ErroResponse erro = new ErroResponse("Erro na consulta", e.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); 
+	}
 	
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<?> handlerNullPointerException(NullPointerException e) {

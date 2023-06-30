@@ -2,6 +2,8 @@ package com.projeto.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,23 +16,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.projeto.dto.NfseDTORequest;
 
-import io.swagger.annotations.ApiModelProperty;
-
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @JsonInclude(content = Include.NON_NULL)
 public class Nfse implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -51,10 +42,6 @@ public class Nfse implements Serializable{
 	@Column(name = "local_prestacao")
 	private String localPrestacao;//criar objeto municipio
 	
-//	@Column(name="lista_items")
-//	private String listaItens;//criar objeto de item de servico (descricao,quantidade,valor)
-	
-	//@NotBlank
 	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "nfse_id")
 	private List<ItemNfse> itensNfse;
@@ -62,21 +49,10 @@ public class Nfse implements Serializable{
 	@Column(name="valor_servico")
 	private BigDecimal valorServico;
 	
-	public Nfse() {
-	}
+	@Column
+	private LocalDate dataEmissao;
 	
-	public Nfse(NfseDTORequest dto) {
-		if(dto.getPrestadorId() != null) {
-			prestador = new Contribuinte();
-			prestador.setId(dto.getPrestadorId());
-		}
-		if(dto.getTomadorId() != null) {
-			tomador = new Contribuinte();
-			tomador.setId(dto.getTomadorId());
-		}
-		localPrestacao = dto.getLocalPrestacao();
-		valorServico = dto.getValorServico();
-		itensNfse  = dto.getItensNfse();
+	public Nfse() {
 	}
 
 	public Long getId() {
@@ -126,4 +102,31 @@ public class Nfse implements Serializable{
 	public void setValorServico(BigDecimal valorServico) {
 		this.valorServico = valorServico;
 	}
+
+	public LocalDate getDataEmissao() {
+		return dataEmissao;
+	}
+
+	public void setDataEmissao(LocalDate dataEmissao) {
+		this.dataEmissao = dataEmissao;
+	}
+	
+	public void convertFromDTO(NfseDTORequest dto) {
+		if(dto.getPrestadorId() != null) {
+			prestador = new Contribuinte();
+			prestador.setId(dto.getPrestadorId());
+		}
+		if(dto.getTomadorId() != null) {
+			tomador = new Contribuinte();
+			tomador.setId(dto.getTomadorId());
+		}
+		localPrestacao = dto.getLocalPrestacao();
+		valorServico = dto.getValorServico();
+		if(itensNfse ==null) {
+			itensNfse = new ArrayList<>();
+		}
+		
+		itensNfse.addAll(dto.getItensNfse());	
+	}
+	
 }

@@ -19,7 +19,7 @@ export const getValoresTBody = (id) => {
 export const preecherTabela = (idTabela, dados) =>{
 	const tableBody  = document.getElementById(idTabela)
 	var linha = ''
-	console.log(dados)
+
 	for(var i = 0; i < dados.length; i++ ){
 		linha += '<tr>'
 		for(var i2 = 0; i2 < dados[i].length; i2++ ){

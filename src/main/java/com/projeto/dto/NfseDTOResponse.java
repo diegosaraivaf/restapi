@@ -2,6 +2,7 @@ package com.projeto.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ import com.projeto.entity.Contribuinte;
 import com.projeto.entity.ItemNfse;
 import com.projeto.entity.Nfse;
 
-import io.swagger.annotations.ApiModelProperty;
+//import io.swagger.annotations.ApiModelProperty;
 
 //a serializacao olha pro set? (funcionou uma vez )
 //quando e um tipo nativo do java o 'example' funciona, mas quando e entity nao(tentar atualizar swagger depois )
@@ -40,6 +41,8 @@ public class NfseDTOResponse implements Serializable{
 	
 	private BigDecimal valorServico;
 	
+	private LocalDate dataEmissao;
+	
 	public NfseDTOResponse() {
 	}
 	
@@ -50,6 +53,7 @@ public class NfseDTOResponse implements Serializable{
 		localPrestacao = nfse.getLocalPrestacao();
 		valorServico = nfse.getValorServico();
 		itensNfse  = nfse.getItensNfse();
+		dataEmissao  = nfse.getDataEmissao();
 	}
 	
 	public Long getId() {
@@ -99,4 +103,14 @@ public class NfseDTOResponse implements Serializable{
 	public void setValorServico(BigDecimal valorServico) {
 		this.valorServico = valorServico;
 	}
+
+	public LocalDate getDataEmissao() {
+		return dataEmissao;
+	}
+
+	public void setDataEmissao(LocalDate dataEmissao) {
+		this.dataEmissao = dataEmissao;
+	}
+	
+	
 }

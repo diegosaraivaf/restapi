@@ -26,7 +26,7 @@ async function pesquisar(){
 	const inputTipo = document.getElementById('tipo').value
 	const inputValor = document.getElementById('valor').value
 	
-	var url = 'http://localhost:8080/nfses?size=5&page=0'
+	var url = 'http://localhost:8080/nfses?sort=id&size=5&page=0'
 
 	if(inputId.length > 0){
 		url = url+'&id='+ inputId;
@@ -38,16 +38,31 @@ async function pesquisar(){
 		url = url+'&valor='+ inputValor;
 	}
 	
-	var response = await axios.get(url)
+	var response
+	try{
+		response = await axios.get(url)
+	}catch(error){
+		new Notify ({
+		    title: 'Erro',
+		    text: error.response.data,
+		    autoclose: true,
+		    autotimeout: 3000,
+		    status: 'error'/*‘success’, ‘error’, or ‘warning’*/
+		})
+	}
+	
 	const nfses  = response.data.content
+	document.getElementById('lbPaginaAtual').innerText = response.data.pageable.pageNumber +1
+	document.getElementById('lbTotalPaginas').innerText = Number(response.data.totalPages)  
 	
 	var notas = []
 	nfses.forEach(e => {
 		 //tive divicudade ao colocar nome do metodo no botao,ele nao encontrava por alguma motivo, pode ter relacao com o module 
 		notas.push([
 			e.id,
-			e.prestador?e.prestador.documento:'' ,
-			e.tomador?e.tomador.documento:'' ,
+			e.dataEmissao,
+			e.prestador?e.prestador.documento +'-'+e.prestador.nome :'' ,
+			e.tomador?e.tomador.documento+'-'+e.tomador.nome:'' ,
 			e.valorServico,
 			`<input type="button" class="btn btn-secondary" onclick="window.location.href = 'http://localhost:8080/cadastroNfse.html?${e.id}'"  value="Editar" >`
 		])
@@ -66,10 +81,29 @@ const editar = (id) => {
 }
 
 
-var page = 0
+
+var paginaAtual  
+var totalPaginas
+	
 async function proximo(){
-	page = page +1
-	var response = await axios.get(`http://localhost:8080/nfses?size=5&page=${page}`)
+	const inputId = document.getElementById('id').value
+	const inputTipo = document.getElementById('tipo').value
+	const inputValor = document.getElementById('valor').value
+	var url = `http://localhost:8080/nfses?sort=id&size=5&page=${Number(document.getElementById('lbPaginaAtual').innerText)}`
+
+	if(inputId.length > 0){
+		url = url+'&id='+ inputId;
+	}
+	if(inputTipo.length > 0){
+		url = url+'&tipo='+ inputTipo;
+	}
+	if(inputValor.length > 0){
+		url = url+'&valor='+ inputValor;
+	}
+	
+	var response = await axios.get(url)
+	document.getElementById('lbPaginaAtual').innerText = response.data.pageable.pageNumber +1
+	document.getElementById('lbTotalPaginas').innerText = Number(response.data.totalPages)  
 	console.log(response)
 	
 	const nfses  = response.data.content
@@ -79,8 +113,9 @@ async function proximo(){
 		 //tive divicudade ao colocar nome do metodo no botao,ele nao encontrava por alguma motivo, pode ter relacao com o module 
 		notas.push([
 			e.id,
-			e.prestador?e.prestador.documento:'' ,
-			e.tomador?e.tomador.documento:'' ,
+			e.dataEmissao,
+			e.prestador?e.prestador.documento +'-'+e.prestador.nome :'' ,
+			e.tomador?e.tomador.documento+'-'+e.tomador.nome:'' ,
 			e.valorServico,
 			`<input type="button" class="btn btn-secondary" onclick="window.location.href = 'http://localhost:8080/cadastroNfse.html?${e.id}'"  value="Editar" >`
 		])
@@ -88,9 +123,58 @@ async function proximo(){
 	preecherTabela('tableData',notas)
 }
 
+function voltar(){
+	const inputId = document.getElementById('id').value
+	const inputTipo = document.getElementById('tipo').value
+	const inputValor = document.getElementById('valor').value
+	var url = `http://localhost:8080/nfses?sort=id&size=5&page=${Number(document.getElementById('lbPaginaAtual').innerText -2)}`
+
+	if(inputId.length > 0){
+		url = url+'&id='+ inputId;
+	}
+	if(inputTipo.length > 0){
+		url = url+'&tipo='+ inputTipo;
+	}
+	if(inputValor.length > 0){
+		url = url+'&valor='+ inputValor;
+	}
+	
+	axios.get(url)
+		.then(response => { 
+			const nfses  = response.data.content
+			document.getElementById('lbPaginaAtual').innerText = response.data.pageable.pageNumber +1
+			document.getElementById('lbTotalPaginas').innerText = Number(response.data.totalPages)  
+	
+			var notas = []
+			nfses.forEach(e => {
+				 //tive divicudade ao colocar nome do metodo no botao,ele nao encontrava por alguma motivo, pode ter relacao com o module 
+				notas.push([
+					e.id,
+					e.dataEmissao,
+					e.prestador?e.prestador.documento +'-'+e.prestador.nome :'' ,
+					e.tomador?e.tomador.documento+'-'+e.tomador.nome:'' ,
+					e.valorServico,
+					`<input type="button" class="btn btn-secondary" onclick="window.location.href = 'http://localhost:8080/cadastroNfse.html?${e.id}'"  value="Editar" >`
+				])
+			})
+			preecherTabela('tableData',notas)
+		})
+		.catch(error => {
+			new Notify ({
+			    title: 'Sucesso',
+			    text: error.response.data,
+			    autoclose: true,
+			    autotimeout: 3000,
+			    status: 'error'/*‘success’, ‘error’, or ‘warning’*/
+			})
+		});
+	
+}
+
 app()
 document.getElementById('pesquisar').addEventListener('click', pesquisar)
 document.getElementById('btnProximo').addEventListener('click', proximo)
+document.getElementById('btnVoltar').addEventListener('click', voltar)
 document.getElementById('nome').addEventListener('change',(e) => {nome = e.target.value })
 
 

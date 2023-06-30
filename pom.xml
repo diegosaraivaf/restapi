@@ -84,7 +84,7 @@
 		<version>2.3.0</version>
 	</dependency>	
 	
-	<!-- Swagger 3 -->
+	<!-- Swagger 3 (so para spring 2.x)-->
 	<dependency>
 	  <groupId>org.springdoc</groupId>
 	  <artifactId>springdoc-openapi-ui</artifactId>

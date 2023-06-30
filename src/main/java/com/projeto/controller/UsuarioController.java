@@ -19,6 +19,11 @@ import com.projeto.exeption.NegocioException;
 import com.projeto.service.JwtService;
 import com.projeto.service.UsuarioService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+//import io.swagger.annotations.Api;
+
+@Tag(name = "Usuario", description = "Acoes relacionadas a usuario")
 @RestController
 @RequestMapping(value = "/usuarios")
 public class UsuarioController {  

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.projeto.entity.Contribuinte;
 import com.projeto.entity.ItemNfse;
 
-import io.swagger.annotations.ApiModelProperty;
+//import io.swagger.annotations.ApiModelProperty;
 
 //a serializacao olha pro set? (funcionou uma vez )
 //quando e um tipo nativo do java o 'example' funciona, mas quando e entity nao(tentar atualizar swagger depois )
@@ -22,8 +22,6 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonIgnoreProperties(value = {"tomador.nome"})
 public class NfseDTORequest {
 	
-//	dataType  = "com.projeto.entity.Contribuinte"
-	@ApiModelProperty(value = "Id referente ao Contribuinte", required = true  )
 	@NotNull
 	private Long prestadorId;
 	
@@ -31,7 +29,7 @@ public class NfseDTORequest {
 	//@JsonIgnoreProperties({"nome", "documento"})
 	 //@ApiModelProperty(value = "Endereço da pessoa", required = true,  example = "{'id':1}",dataType  = "com.projeto.entity.Contribuinte",hidden=true)
 	//@ApiModelProperty(value = "Id referente o Contribuinte da nota", required = true, example = "{'id': '1', 'nome': 'Cliente A','documento':'2112312'}"  )
-	@ApiModelProperty(value = "Id referente ao Contribuinte", required = true  )
+	//@ApiModelProperty(value = "Id referente ao Contribuinte", required = true  )
 	@NotNull
 	private Long tomadorId;
 	
