@@ -16,6 +16,7 @@
 -job schedule com @Scheduled
 -(falta)teste unitarios e integracao
 -(falta)Logge da aplicacao
+-utilizar auditorio de banco com hibernate.envers.Audited ?
 -profile de teste com banco em memoria M2
 -(falta)pegar parametro do properties e de variaveis de ambiente 
 -(falta)relatorios pdf 
@@ -25,6 +26,8 @@
 -aws
 -integracao continua, doker ,microservico 
 -relacionamento oneToMany
+-enum
+-mascaras e campos com valores data,monetario
 
 -imprementar um crud one to many com a abordagem do blog 
 -colocar docker

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,10 +34,12 @@ public class NfseDTORequest {
 	@NotNull
 	private Long tomadorId;
 	
+	@NotBlank
 	private String localPrestacao;
 	
 	private List<ItemNfse> itensNfse;
 	
+	@NotNull
 	private BigDecimal valorServico;
 
 	public Long getPrestadorId() {

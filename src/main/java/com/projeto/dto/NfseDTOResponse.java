@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.projeto.entity.Contribuinte;
 import com.projeto.entity.ItemNfse;
 import com.projeto.entity.Nfse;
+import com.projeto.entity.SituacaoNfse;
 
 //import io.swagger.annotations.ApiModelProperty;
 
@@ -43,6 +44,8 @@ public class NfseDTOResponse implements Serializable{
 	
 	private LocalDate dataEmissao;
 	
+	private SituacaoNfse situacaoNfse;
+	
 	public NfseDTOResponse() {
 	}
 	
@@ -54,6 +57,7 @@ public class NfseDTOResponse implements Serializable{
 		valorServico = nfse.getValorServico();
 		itensNfse  = nfse.getItensNfse();
 		dataEmissao  = nfse.getDataEmissao();
+		situacaoNfse  = nfse.getSituacaoNfse();
 	}
 	
 	public Long getId() {
@@ -111,6 +115,13 @@ public class NfseDTOResponse implements Serializable{
 	public void setDataEmissao(LocalDate dataEmissao) {
 		this.dataEmissao = dataEmissao;
 	}
-	
-	
+
+	public SituacaoNfse getSituacaoNfse() {
+		return situacaoNfse;
+	}
+
+	public void setSituacaoNfse(SituacaoNfse situacaoNfse) {
+		this.situacaoNfse = situacaoNfse;
+	}
+
 }

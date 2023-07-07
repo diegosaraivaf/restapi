@@ -59,8 +59,30 @@ function manipularFormulario() {
 	}
 }*/
 
-const salvar = async () => {
+
+
+
+function validar(event) {
+	// Fetch all the forms to apply custom Bootstrap validation styles
+	var forms = document.querySelectorAll('.needs-validation');
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms).forEach(function(form) {
+      //  event.stopPropagation();
+        form.classList.add('was-validated');
+    });
+    
+		     // Stop execution if there are invalid forms
+    var invalidForms = document.querySelectorAll('.was-validated:invalid');
+    if (invalidForms.length > 0) {
+        return true;
+    }
+}
+
+const salvar = async (event) => {
 	event.preventDefault()
+	if(validar(event)){return}
+
 	
 	var tabela = getValoresTBody('tableData')
 	var itensNfse = []

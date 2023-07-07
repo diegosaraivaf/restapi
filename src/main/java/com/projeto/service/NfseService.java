@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.projeto.entity.Nfse;
+import com.projeto.entity.SituacaoNfse;
 import com.projeto.repository.NfseRepository;
 
 @Service
@@ -32,12 +33,13 @@ public class NfseService {
 		return nfseRepository.save(nfse);
 	}
 	
-	public void detelar() {
-		
+	@Transactional
+	public void detelarLongicamente(Nfse nfse) {
+		nfseRepository.deletarLogicamente(nfse);
 	}
 	
 	public Nfse findById(Long id) {
-		return nfseRepository.findById(id).get();
+		return nfseRepository.findById(id).orElse(null);
 	}
 	
 	public List<Nfse> listarTodos() {
@@ -46,8 +48,8 @@ public class NfseService {
 		return result;
 	}
 	
-	public Page<Nfse> findByFilter(String localPrestacao,BigDecimal valor,Pageable pageable) {    
-		Page<Nfse> result = nfseRepository.findByFilters(localPrestacao,valor, pageable);
+	public Page<Nfse> findByFilter(String localPrestacao,BigDecimal valor,SituacaoNfse situacaoNfse, Pageable pageable) {    
+		Page<Nfse> result = nfseRepository.findByFilters(localPrestacao,valor,situacaoNfse, pageable);
 		return result;
 	}
 }

@@ -3,6 +3,7 @@ package com.projeto.exeption;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -73,11 +77,17 @@ public class ExeptionHandler
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {		
-		String mensagem = String.format("Campo '%s' %s. ", 
-				e.getBindingResult().getFieldError().getField(),
-				e.getBindingResult().getFieldError().getDefaultMessage());
+		List<FieldError> erros = e.getBindingResult().getFieldErrors();
+		List<String> result = new ArrayList<>();
+		
+		for(FieldError fe : erros) {
+			String mensagem = String.format("Campo '%s' %s. ", 
+					fe.getField(),
+					fe.getDefaultMessage());
+			result.add(mensagem);
+		}
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagem);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
 	}
 	
 	@ExceptionHandler(NegocioException.class)

@@ -9,6 +9,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -51,6 +53,10 @@ public class Nfse implements Serializable{
 	
 	@Column
 	private LocalDate dataEmissao;
+	
+	@Column
+	@Enumerated(EnumType.STRING)
+	private SituacaoNfse situacaoNfse;
 	
 	public Nfse() {
 	}
@@ -111,6 +117,14 @@ public class Nfse implements Serializable{
 		this.dataEmissao = dataEmissao;
 	}
 	
+	public SituacaoNfse getSituacaoNfse() {
+		return situacaoNfse;
+	}
+
+	public void setSituacaoNfse(SituacaoNfse situacaoNfse) {
+		this.situacaoNfse = situacaoNfse;
+	}
+
 	public void convertFromDTO(NfseDTORequest dto) {
 		if(dto.getPrestadorId() != null) {
 			prestador = new Contribuinte();
@@ -125,7 +139,7 @@ public class Nfse implements Serializable{
 		if(itensNfse ==null) {
 			itensNfse = new ArrayList<>();
 		}
-		
+		itensNfse.clear();
 		itensNfse.addAll(dto.getItensNfse());	
 	}
 	

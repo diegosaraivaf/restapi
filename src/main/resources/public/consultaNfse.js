@@ -9,8 +9,6 @@ function app(){
 }
 
 function manipularFormulario() {
-
-	
 	const form_lancamento = document.getElementById('form-nfse')
 	
 	form_lancamento.onsubmit = async (event) => {
@@ -20,13 +18,14 @@ function manipularFormulario() {
 	}
 }
 
-
 async function pesquisar(){
 	const inputId = document.getElementById('id').value
 	const inputTipo = document.getElementById('tipo').value
 	const inputValor = document.getElementById('valor').value
+	const selectSituacaoNfse = document.getElementById('situacaoNfse').value
+	var page  = Number(document.getElementById('lbPaginaAtual').innerText) === 0 ? 0 : Number(document.getElementById('lbPaginaAtual').innerText) -1
 	
-	var url = 'http://localhost:8080/nfses?sort=id&size=5&page=0'
+	var url = `http://localhost:8080/nfses?sort=id&size=5&page=${page}`
 
 	if(inputId.length > 0){
 		url = url+'&id='+ inputId;
@@ -36,6 +35,9 @@ async function pesquisar(){
 	}
 	if(inputValor.length > 0){
 		url = url+'&valor='+ inputValor;
+	}
+	if(selectSituacaoNfse.length > 0){
+		url = url+'&situacaoNfse='+ selectSituacaoNfse;
 	}
 	
 	var response
@@ -64,23 +66,14 @@ async function pesquisar(){
 			e.prestador?e.prestador.documento +'-'+e.prestador.nome :'' ,
 			e.tomador?e.tomador.documento+'-'+e.tomador.nome:'' ,
 			e.valorServico,
-			`<input type="button" class="btn btn-secondary" onclick="window.location.href = 'http://localhost:8080/cadastroNfse.html?${e.id}'"  value="Editar" >`
+			e.situacaoNfse,
+			`<input type="button" class="btn btn-secondary" onclick="editar(${e.id})"  value="Editar" >`+
+			`<input type="button" class="btn btn-danger" onclick="excluir(${e.id})"  value="Cancelar" >`
 		])
 	})
 	preecherTabela('tableData',notas)
 	
 }
-
-//function editar(id) {
-//	console.log('teste')
-	//window.location.href = `http://localhost:8080/cadastroNfse.html?${id}`;
-//}
-
-const editar = (id) => {
-	console.log('teste')
-}
-
-
 
 var paginaAtual  
 var totalPaginas
@@ -89,6 +82,7 @@ async function proximo(){
 	const inputId = document.getElementById('id').value
 	const inputTipo = document.getElementById('tipo').value
 	const inputValor = document.getElementById('valor').value
+	const selectSituacaoNfse = document.getElementById('situacaoNfse').value
 	var url = `http://localhost:8080/nfses?sort=id&size=5&page=${Number(document.getElementById('lbPaginaAtual').innerText)}`
 
 	if(inputId.length > 0){
@@ -99,6 +93,9 @@ async function proximo(){
 	}
 	if(inputValor.length > 0){
 		url = url+'&valor='+ inputValor;
+	}
+	if(selectSituacaoNfse.length > 0){
+		url = url+'&situacaoNfse='+ selectSituacaoNfse;
 	}
 	
 	var response = await axios.get(url)
@@ -117,7 +114,9 @@ async function proximo(){
 			e.prestador?e.prestador.documento +'-'+e.prestador.nome :'' ,
 			e.tomador?e.tomador.documento+'-'+e.tomador.nome:'' ,
 			e.valorServico,
-			`<input type="button" class="btn btn-secondary" onclick="window.location.href = 'http://localhost:8080/cadastroNfse.html?${e.id}'"  value="Editar" >`
+			e.situacaoNfse,
+			`<input type="button" class="btn btn-secondary" onclick="editar(${e.id})"  value="Editar" >`+
+			`<input type="button" class="btn btn-danger" onclick="excluir(${e.id})"  value="Cancelar" >`
 		])
 	})
 	preecherTabela('tableData',notas)
@@ -127,6 +126,7 @@ function voltar(){
 	const inputId = document.getElementById('id').value
 	const inputTipo = document.getElementById('tipo').value
 	const inputValor = document.getElementById('valor').value
+	const selectSituacaoNfse = document.getElementById('situacaoNfse').value
 	var url = `http://localhost:8080/nfses?sort=id&size=5&page=${Number(document.getElementById('lbPaginaAtual').innerText -2)}`
 
 	if(inputId.length > 0){
@@ -137,6 +137,9 @@ function voltar(){
 	}
 	if(inputValor.length > 0){
 		url = url+'&valor='+ inputValor;
+	}
+	if(selectSituacaoNfse.length > 0){
+		url = url+'&situacaoNfse='+ selectSituacaoNfse;
 	}
 	
 	axios.get(url)
@@ -154,7 +157,9 @@ function voltar(){
 					e.prestador?e.prestador.documento +'-'+e.prestador.nome :'' ,
 					e.tomador?e.tomador.documento+'-'+e.tomador.nome:'' ,
 					e.valorServico,
-					`<input type="button" class="btn btn-secondary" onclick="window.location.href = 'http://localhost:8080/cadastroNfse.html?${e.id}'"  value="Editar" >`
+					e.situacaoNfse,
+					`<input type="button" class="btn btn-secondary" onclick="editar(${e.id})"  value="Editar" >`+
+					`<input type="button" class="btn btn-danger" onclick="excluir(${e.id})"  value="Cancelar" >`
 				])
 			})
 			preecherTabela('tableData',notas)
@@ -170,6 +175,23 @@ function voltar(){
 		});
 	
 }
+
+function editar(id) {
+	window.location.href = `http://localhost:8080/cadastroNfse.html?${id}`;
+}
+window.editar = editar;
+
+function excluir(id) {
+	console.log('excluir id=' + id);
+	axios.delete(`http://localhost:8080/nfses/${id}`).then(response =>{
+		pesquisar()
+	}).catch(error =>{
+		console.log(error)
+	})
+}
+window.excluir = excluir;
+
+
 
 app()
 document.getElementById('pesquisar').addEventListener('click', pesquisar)

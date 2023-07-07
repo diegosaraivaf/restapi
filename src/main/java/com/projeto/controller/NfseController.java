@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projeto.dto.NfseDTORequest;
 import com.projeto.dto.NfseDTOResponse;
 import com.projeto.entity.Nfse;
+import com.projeto.entity.SituacaoNfse;
 import com.projeto.exeption.NegocioException;
 import com.projeto.service.NfseService;
 import com.projeto.util.HibernateUtil;
@@ -54,12 +56,10 @@ public class NfseController {
 		Nfse n = new Nfse();
 		n.convertFromDTO(nfse);
 		n.setDataEmissao(LocalDate.now());
+		n.setSituacaoNfse(SituacaoNfse.EMITIDA);
 		
 		nfseService.save(n);
 		return n;
-	}
-	
-	public void deletar() {
 	}
 	
 	@PutMapping("/{id}")
@@ -86,9 +86,10 @@ public class NfseController {
 	public Page<NfseDTOResponse> filtrar(
 		@RequestParam(required = false) String localPrestacao,
 		@RequestParam(required = false) BigDecimal valor,
+		@RequestParam(required = false) SituacaoNfse situacaoNfse,
 		@Parameter(hidden = true) Pageable pageable
 	) {
-		Page<NfseDTOResponse> nfses =  nfseService.findByFilter(localPrestacao,valor,pageable).map(n -> new NfseDTOResponse(n));
+		Page<NfseDTOResponse> nfses =  nfseService.findByFilter(localPrestacao,valor,situacaoNfse, pageable).map(n -> new NfseDTOResponse(n));
 		return nfses;
 	}
 	
@@ -100,6 +101,17 @@ public class NfseController {
 			throw new NegocioException("Nao existe nota com o id :" +id);
 		}
 		return nfse;
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deletar(@PathVariable Long id) throws NegocioException {
+		Nfse nfse = nfseService.findById(id);
+		
+		if(nfse == null) {
+			throw new NegocioException("Nao existe nota com o id :" +id);
+		}
+		
+		nfseService.detelarLongicamente(nfse);
 	}
 	
 	@PatchMapping("/{id}")

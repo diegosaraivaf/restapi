@@ -8,10 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.projeto.entity.Nfse;
+import com.projeto.entity.SituacaoNfse;
 
 @Repository
 public interface NfseRepository extends JpaRepository<Nfse, Long>{
@@ -31,9 +33,10 @@ public interface NfseRepository extends JpaRepository<Nfse, Long>{
 	    "left join n.tomador t "+
 	    "left join n.itensNfse i "+
 	    "WHERE (:localPrestacao IS NULL OR n.localPrestacao LIKE %:localPrestacao%) " +
-	    "AND (:valorServico IS NULL OR n.valorServico = :valorServico) "
+	    "AND (:valorServico IS NULL OR n.valorServico = :valorServico) "+
+	    "AND (:situacaoNfse IS NULL OR n.situacaoNfse = :situacaoNfse ) "
 	)
-	Page<Nfse> findByFilters(String localPrestacao, BigDecimal valorServico, Pageable pageable);
+	Page<Nfse> findByFilters(String localPrestacao, BigDecimal valorServico,SituacaoNfse situacaoNfse, Pageable pageable);
 	
 	
 	//solucao com fetch join no select, mas neste caso ele execulta a consulta sem limit, e faz o limit em memoria. 
@@ -54,5 +57,9 @@ public interface NfseRepository extends JpaRepository<Nfse, Long>{
 //	)
 //	Page<Nfse> findByFilters(String localPrestacao, BigDecimal valorServico, Pageable pageable);
 	
-
+	
+	@Modifying
+    @Query("UPDATE Nfse n SET n.situacaoNfse = 'CANCELADA' WHERE n = :nfse")
+	public void deletarLogicamente(Nfse nfse);
+	
 }
