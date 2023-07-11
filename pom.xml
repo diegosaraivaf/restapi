@@ -91,16 +91,19 @@
 	  <version>1.6.15</version>
 	</dependency>
 	
+	<!-- Jasper Report-->
 	<dependency>
 	    <groupId>net.sf.jasperreports</groupId>
 	    <artifactId>jasperreports</artifactId>
-	    <version>6.17.0</version>
+	    <version>6.20.0</version>
 	</dependency>
+	
 	<dependency>
 	    <groupId>com.lowagie</groupId>
 	    <artifactId>itext</artifactId>
 	    <version>2.1.7</version>
 	</dependency>
+	
 	
 	<!-- Flying Saucer -->
 	<dependency>
