@@ -34,12 +34,10 @@ public class NfseDTORequest {
 	@NotNull
 	private Long tomadorId;
 	
-	@NotBlank
 	private String localPrestacao;
 	
 	private List<ItemNfse> itensNfse;
 	
-	@NotNull
 	private BigDecimal valorServico;
 
 	public Long getPrestadorId() {

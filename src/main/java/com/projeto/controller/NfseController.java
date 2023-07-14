@@ -2,6 +2,7 @@ package com.projeto.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 
@@ -11,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,6 +31,7 @@ import com.projeto.entity.SituacaoNfse;
 import com.projeto.exeption.NegocioException;
 import com.projeto.service.NfseService;
 import com.projeto.util.HibernateUtil;
+import com.projeto.util.JasperReportUtil;
 import com.projeto.util.PathUtil;
 
 
@@ -48,6 +51,9 @@ public class NfseController {
 	
 	@Autowired
 	private PathUtil pathUtil; 
+	
+	@Autowired
+	private JasperReportUtil jasper;
 	
 	ModelMapper mapper = new ModelMapper();
 	
@@ -119,6 +125,23 @@ public class NfseController {
 		Nfse p = pathUtil.parseToObject(atributos,Nfse.class);
 
 	    return nfseService.save(p);
+	}
+	
+	@GetMapping("/pdf")
+	@Operation(summary = "Consulta as notas a partir de um filtro")
+	@Parameters({
+	    @Parameter(name = "page", description = "numero da pagiana", in = ParameterIn.QUERY),
+	    @Parameter(name = "size", description = "quantidade de registros por pagina", in = ParameterIn.QUERY),
+	    @Parameter(name = "sort", description = "campo que a consulta via ser ordenada", in = ParameterIn.QUERY)
+	})
+	public ResponseEntity gerarPdf(
+		@RequestParam(required = false) String localPrestacao,
+		@RequestParam(required = false) BigDecimal valor,
+		@RequestParam(required = false) SituacaoNfse situacaoNfse,
+		@Parameter(hidden = true) Pageable pageable
+	) {
+		List<Nfse> nfses =  nfseService.findByFilter(localPrestacao,valor,situacaoNfse, pageable).getContent();
+		return jasper.gerarPdf(nfses,null);
 	}
 
 }

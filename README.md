@@ -11,20 +11,21 @@
 
 # 
 -tratamento te execoes com handle
+-validacão de campos no front e no back(nfse)
 -transactions 
 -(falta )upload/download de arquivo
--job schedule com @Scheduled
+-job schedule com @Scheduled  (ScheduleConfig)
 -(falta)teste unitarios e integracao
 -(falta)Logge da aplicacao
 -utilizar auditorio de banco com hibernate.envers.Audited ?
 -profile de teste com banco em memoria M2
 -(falta)pegar parametro do properties e de variaveis de ambiente 
 -(falta)relatorios pdf 
--envio de email 
--criacao de graficos
+-(falta)envio de email 
+-(falta)criacao de graficos
 -paginacao com filtros 
--aws
--integracao continua, doker ,microservico 
+-(falta)aws
+-(falta)integracao continua, doker ,microservico 
 -relacionamento oneToMany
 -enum
 -mascaras e campos com valores data,monetario

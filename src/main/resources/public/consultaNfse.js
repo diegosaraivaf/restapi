@@ -74,9 +74,6 @@ async function pesquisar(){
 	preecherTabela('tableData',notas)
 	
 }
-
-var paginaAtual  
-var totalPaginas
 	
 async function proximo(){
 	const inputId = document.getElementById('id').value
@@ -192,11 +189,39 @@ function excluir(id) {
 window.excluir = excluir;
 
 
+async function gerarPdf(){
+	const inputId = document.getElementById('id').value
+	const inputTipo = document.getElementById('tipo').value
+	const inputValor = document.getElementById('valor').value
+	const selectSituacaoNfse = document.getElementById('situacaoNfse').value
+	var page  = Number(document.getElementById('lbPaginaAtual').innerText) === 0 ? 0 : Number(document.getElementById('lbPaginaAtual').innerText) -1
+	
+	var url = `http://localhost:8080/nfses/pdf?sort=id&size=5&page=${page}`
+
+	if(inputId.length > 0){
+		url = url+'&id='+ inputId;
+	}
+	if(inputTipo.length > 0){
+		url = url+'&tipo='+ inputTipo;
+	}
+	if(inputValor.length > 0){
+		url = url+'&valor='+ inputValor;
+	}
+	if(selectSituacaoNfse.length > 0){
+		url = url+'&situacaoNfse='+ selectSituacaoNfse;
+	}
+	
+	 window.open(url, '_blank');
+	
+}
+
+
 
 app()
 document.getElementById('pesquisar').addEventListener('click', pesquisar)
 document.getElementById('btnProximo').addEventListener('click', proximo)
 document.getElementById('btnVoltar').addEventListener('click', voltar)
+document.getElementById('btnPdf').addEventListener('click', gerarPdf)
 document.getElementById('nome').addEventListener('change',(e) => {nome = e.target.value })
 
 

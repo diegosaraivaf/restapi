@@ -1,6 +1,5 @@
-package com.projeto.controller;
+package com.projeto.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.projeto.entity.Contribuinte;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -23,27 +18,16 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-@RestController
-@RequestMapping()
-public class JasperReportController {
-
+@Component
+public class JasperReportUtil {
 	
-	@GetMapping("/pdf/teste")
-	public ResponseEntity<byte[]> getEmployeeRecordReport() {
-
+	public ResponseEntity gerarPdf(List list,List<String> parametros) {
 		try {
-			// create employee data
-			Contribuinte emp1 = new Contribuinte();
-			
-			List<Contribuinte> empLst = new ArrayList<Contribuinte>();
-			empLst.add(emp1);
-
-
 			//dynamic parameters required for report
 			Map<String, Object> empParams = new HashMap<String, Object>();
 			empParams.put("CompanyName", "TechGeekNext");
-			empParams.put("employeeData", new JRBeanCollectionDataSource(empLst));
-
+			empParams.put("employeeData", new JRBeanCollectionDataSource(list));
+	
 			JasperPrint empReport =
 					JasperFillManager.fillReport
 				   (
@@ -51,19 +35,22 @@ public class JasperReportController {
 							ResourceUtils.getFile("classpath:relatorios/nfse.jrxml")
 									.getAbsolutePath()) // path of the jasper report
 							, empParams // dynamic parameters
-							, new JREmptyDataSource()
+							, list == null? new JREmptyDataSource() : new JRBeanCollectionDataSource(list)
 					);
-
+	
 			HttpHeaders headers = new HttpHeaders();
 			//set the PDF format
 			headers.setContentType(MediaType.APPLICATION_PDF);
-			headers.setContentDispositionFormData("filename", "employees-details.pdf");
+	//		headers.setContentDispositionFormData("filename", "employees-details.pdf"); //faz apenas o download do arquivo
+			headers.add("Content-Disposition", "inline; filename=employees-details.pdf");//faz o pdf ser exibido na pagina
 			
 			//create the report in PDF format
 			return new ResponseEntity<byte[]>(JasperExportManager.exportReportToPdf(empReport), headers, HttpStatus.OK);
 		} 
 		catch(Exception e) {
-			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+
 	}
 }

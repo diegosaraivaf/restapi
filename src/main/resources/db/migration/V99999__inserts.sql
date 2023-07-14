@@ -29,6 +29,17 @@ insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_e
 insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(13,3,2,'Maracanau',400,'2023-10-10','EMITIDA');
 insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(14,3,2,'Maracanau',400,'2023-10-10','CANCELADA');
 insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(15,3,2,'Maracanau',400,'2023-10-10','CANCELADA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(16,1,1,'Maracanau',1200,'2020-10-10','EMITIDA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(17,2,1,'Maracanau',1200,'2020-10-10','EMITIDA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(18,2,1,'Maracanau',1200,'2020-10-10','EMITIDA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(19,2,1,'Maracanau',5300,'2020-10-10','EMITIDA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(20,2,1,'Maracanau',5300,'2020-10-10','EMITIDA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(21,2,1,'Maracanau',5300,'2020-10-10','EMITIDA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(22,3,2,'Maracanau',50,'2019-10-10','EMITIDA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(23,3,2,'Maracanau',50,'2019-10-10','EMITIDA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(24,3,2,'Maracanau',50,'2019-10-10','EMITIDA');
+insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(25,3,2,'Maracanau',50,'2019-10-10','CANCELADA');
+
 
 insert into item_nfse(id,descricao,valor,quantidade,nfse_id) values(1,'Troca de ar comdicionado',200,3,1);
 insert into item_nfse(id,descricao,valor,quantidade,nfse_id) values(2,'Manutenção de ar comdicionado',200,3,1);
