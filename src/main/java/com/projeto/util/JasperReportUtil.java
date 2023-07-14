@@ -21,7 +21,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @Component
 public class JasperReportUtil {
 	
-	public ResponseEntity gerarPdf(List list,List<String> parametros) {
+	public ResponseEntity gerarPdf(String nomeRelatorio, List list,List<String> parametros) {
 		try {
 			//dynamic parameters required for report
 			Map<String, Object> empParams = new HashMap<String, Object>();
@@ -32,7 +32,7 @@ public class JasperReportUtil {
 					JasperFillManager.fillReport
 				   (
 							JasperCompileManager.compileReport(
-							ResourceUtils.getFile("classpath:relatorios/nfse.jrxml")
+							ResourceUtils.getFile("classpath:relatorios/"+nomeRelatorio)
 									.getAbsolutePath()) // path of the jasper report
 							, empParams // dynamic parameters
 							, list == null? new JREmptyDataSource() : new JRBeanCollectionDataSource(list)

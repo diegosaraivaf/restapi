@@ -71,10 +71,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.POST,"/usuarios/autenticar").permitAll()
 				.antMatchers(HttpMethod.POST,"/usuarios/autenticar/").permitAll()
 				.antMatchers(HttpMethod.POST,"/usuarios").permitAll()
+				.antMatchers(HttpMethod.GET,"/login.html","/login.js","/axios.min.js","/favicon.ico","/simple-notify-master/**").permitAll()
 				.antMatchers(HttpMethod.GET,
-						"/v2/api-docs", "/swagger-resources/configuration/ui", 
+						"/v3/api-docs/**", "/swagger-resources/configuration/ui", 
 						"/swagger-resources", "/swagger-resources/configuration/security", 
-						"/swagger-ui.html", "/webjars/**").permitAll()
+						"/swagger-ui/**", "/webjars/**").permitAll()
 				//.antMatchers(HttpMethod.GET,"/**").permitAll()
 				//.antMatchers(HttpMethod.POST,"/**").permitAll()
 				//.antMatchers(HttpMethod.PUT,"/**").permitAll()
