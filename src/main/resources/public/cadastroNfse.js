@@ -24,7 +24,7 @@ window.onload = function () {
  }
 
 const carregarInformacoes = (id) =>{
-	axios.get(`nfses/${id}`)
+	axios.get(`nfses/${id}`,{headers : { 'Authorization': localStorage.getItem('Authorization')}})
 		.then(response => {
 			var nfse = response.data
 			idNfse = nfse.id
@@ -130,7 +130,7 @@ const salvar = async (event) => {
 }
 
 const aoMudarPrestador = (event) => {
-	axios.get(`contribuintes/documento/${event.target.value}`).then(response => {
+	axios.get(`contribuintes/documento/${event.target.value}`,{headers : { 'Authorization': localStorage.getItem('Authorization')}}).then(response => {
 		if(response.data.id != null){
 			document.getElementById('prestadorNome').value = response.data.nome
 			prestador = response.data
@@ -145,7 +145,7 @@ const aoMudarPrestador = (event) => {
 }
 
 const aoMudarTomador = (event) => {
-	axios.get(`contribuintes/documento/${event.target.value}`).then(response => {
+	axios.get(`contribuintes/documento/${event.target.value}`,{headers : { 'Authorization': localStorage.getItem('Authorization')}}).then(response => {
 		if(response.data.id != null){
 			document.getElementById('tomadorNome').value = response.data.nome
 			tomador = response.data

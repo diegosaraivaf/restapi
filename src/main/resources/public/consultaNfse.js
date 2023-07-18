@@ -95,7 +95,7 @@ async function proximo(){
 		url = url+'&situacaoNfse='+ selectSituacaoNfse;
 	}
 	
-	var response = await axios.get(url)
+	var response = await axios.get(url,{headers : { 'Authorization': localStorage.getItem('Authorization')}})
 	document.getElementById('lbPaginaAtual').innerText = response.data.pageable.pageNumber +1
 	document.getElementById('lbTotalPaginas').innerText = Number(response.data.totalPages)  
 	console.log(response)
@@ -139,7 +139,7 @@ function voltar(){
 		url = url+'&situacaoNfse='+ selectSituacaoNfse;
 	}
 	
-	axios.get(url)
+	axios.get(url,{headers : { 'Authorization': localStorage.getItem('Authorization')}})
 		.then(response => { 
 			const nfses  = response.data.content
 			document.getElementById('lbPaginaAtual').innerText = response.data.pageable.pageNumber +1
@@ -180,7 +180,7 @@ window.editar = editar;
 
 function excluir(id) {
 	console.log('excluir id=' + id);
-	axios.delete(`http://localhost:8080/nfses/${id}`).then(response =>{
+	axios.delete(`http://localhost:8080/nfses/${id}`,{headers : { 'Authorization': localStorage.getItem('Authorization')}}).then(response =>{
 		pesquisar()
 	}).catch(error =>{
 		console.log(error)
@@ -210,8 +210,19 @@ async function gerarPdf(){
 	if(selectSituacaoNfse.length > 0){
 		url = url+'&situacaoNfse='+ selectSituacaoNfse;
 	}
-	
-	 window.open(url, '_blank');
+	 
+	fetch(url,{headers : { 'Authorization': localStorage.getItem('Authorization')}})
+	.then(response => response.blob())
+	.then(blob => {
+	   // Create an object URL from the response blob
+	   const objectUrl = URL.createObjectURL(blob);
+	    
+	   // Open the URL in a new window or tab
+	   window.open(objectUrl, '_blank');
+	})
+	.catch(error => {
+	   console.error('Error:', error);
+	});
 }
 
 
