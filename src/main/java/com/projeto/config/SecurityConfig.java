@@ -3,6 +3,8 @@ package com.projeto.config;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -71,7 +73,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.POST,"/usuarios/autenticar").permitAll()
 				.antMatchers(HttpMethod.POST,"/usuarios/autenticar/").permitAll()
 				.antMatchers(HttpMethod.POST,"/usuarios").permitAll()
-				.antMatchers(HttpMethod.GET,"/login.html","/login.js","/axios.min.js","/favicon.ico","/simple-notify-master/**").permitAll()
 				.antMatchers(HttpMethod.GET,
 						"/v3/api-docs/**", "/swagger-resources/configuration/ui", 
 						"/swagger-resources", "/swagger-resources/configuration/security", 
@@ -82,8 +83,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				//.antMatchers(HttpMethod.PATCH,"/**").permitAll()
 				//.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 				//.antMatchers(HttpMethod.DELETE,"/**").permitAll()
-				.antMatchers("/**").permitAll() //mermite tudo 
-				
+				//.antMatchers("/**").permitAll() //mermite tudo  
+				.antMatchers("/**/*.html","/**/*.js","/**/*.css","/**/*.ico").permitAll() //permiter as paginas html 
 				.anyRequest().authenticated()
 		.and()
 			//impede que o spring crie sessoes
@@ -94,6 +95,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		;
 		
 		http.headers().frameOptions().disable();//configuracao pro h2 funciona
+		http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> { // retorno persolalizado para acesso negado 
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("Acesso não autorizado para este recurso. Favor fazer login.");
+        });
 	}
 	
 	//este filter parece nao esta sendo utilizado 
