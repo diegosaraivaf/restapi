@@ -1,5 +1,30 @@
-document.getElementById('btnConsultaContribuinte').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/consultaContribuinte.html" })
-document.getElementById('btnConsultaLancamento').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/consultaLancamento.html" })
-document.getElementById('btnNfse').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/consultaNfse.html" })
-document.getElementById('btnApi').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/swagger-ui.html" })
-document.getElementById('btnDataBase').addEventListener('click',e =>{ window.location.href = "http://localhost:8080/h2-console" })
+
+
+
+function logar(){
+	var url = "usuarios/autenticar"
+	axios.post(url,
+			{
+				email:document.getElementById('usuario').value ,
+				senha:document.getElementById('senha').value
+			}
+		)
+		.then(response => { 
+			console.log(response)		
+			localStorage.setItem('Authorization', 'Bearer '+response.data.token);
+			window.location.href = "home.html"
+			
+		})
+		.catch(error => {
+			new Notify ({
+			    title: 'Sucesso',
+			    text: error.response.data,
+			    autoclose: true,
+			    autotimeout: 3000,
+			    status: 'error'/*‘success’, ‘error’, or ‘warning’*/
+			})
+		});
+}
+
+
+document.getElementById('btLogin').addEventListener('click',e =>logar())

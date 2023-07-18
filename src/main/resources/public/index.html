@@ -1,21 +1,23 @@
 <html>
 	<head>
-    <title>Titulo da página</title>
-    
-    <script src="axios.min.js"></script>
-    <script defer src="index.js"></script>
-    
-    <!-- bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" defer integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+	    <title>Titulo da página</title>
+	    
+	    <script src="axios.min.js"></script>
+	    <script defer src="index.js"></script>
+	    
+	    <!-- bootstrap -->
+	    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" defer integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+	  	
+	  	<!-- simple-notify-master -->
+		<link rel="stylesheet" href="simple-notify-master/dist/simple-notify.min.css" />
+		<script src="simple-notify-master/dist/simple-notify.min.js"></script>
   	</head>
   	<body>
-	  	<div class="container bg-light">
-		    <button id="btnConsultaContribuinte" class="btn btn-secondary col-2" >Consulta Contribuinte</button>
-		    <button id="btnConsultaLancamento" class="btn btn-secondary col-2" >Consulta Lancamento</button>
-		    <button id="btnNfse" class="btn btn-secondary col-2" >NFSe</button>
-		    <button id="btnApi" class="btn btn-secondary col-2" >API</button>
-		    <button id="btnDataBase" class="btn btn-secondary col-2" >Data Base</button>
-	    </div>
+  		<label>Usuario</label>
+		<input id="usuario" >
+		<label>Senha</label>
+		<input id="senha">
+		<button id="btLogin">Login</button>
   	</body>
 </html>
