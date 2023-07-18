@@ -42,7 +42,7 @@ async function pesquisar(){
 	
 	var response
 	try{
-		response = await axios.get(url)
+		response = await axios.get(url,{headers : { 'Authorization': localStorage.getItem('Authorization')}})
 	}catch(error){
 		new Notify ({
 		    title: 'Erro',

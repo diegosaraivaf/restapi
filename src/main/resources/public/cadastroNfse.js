@@ -100,14 +100,14 @@ const salvar = async (event) => {
 		prestador.documento = inputPrestadorDocumento.value
 		prestador.nome = inputPrestadorNome.value
 		
-		const response = await axios.post('contribuintes/',prestador)
+		const response = await axios.post('contribuintes/',prestador,{headers : { 'Authorization': localStorage.getItem('Authorization')}})
 		prestador = response.data
 	}
 	if(tomador.id == null){
 		tomador.documento = inputTomadorDocumento.value
 		tomador.nome = inputTomadorNome.value
 		
-		const response = await axios.post('contribuintes/',tomador)
+		const response = await axios.post('contribuintes/',tomador,{headers : { 'Authorization': localStorage.getItem('Authorization')}})
 		tomador = response.data
 	}
 
@@ -120,10 +120,10 @@ const salvar = async (event) => {
 	}
 	
 	if(idNfse != null){
-		await axios.put('nfses/'+idNfse,nfse)
+		await axios.put('nfses/'+idNfse,nfse,{headers : { 'Authorization': localStorage.getItem('Authorization')}})
 	}
 	else{
-		await axios.post('nfses',nfse)
+		await axios.post('nfses',nfse,{headers : { 'Authorization': localStorage.getItem('Authorization')}})
 	}
 	
 	window.location.href = "consultaNfse.html";
