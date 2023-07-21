@@ -25,7 +25,7 @@ async function pesquisar(){
 	const selectSituacaoNfse = document.getElementById('situacaoNfse').value
 	var page  = Number(document.getElementById('lbPaginaAtual').innerText) === 0 ? 0 : Number(document.getElementById('lbPaginaAtual').innerText) -1
 	
-	var url = `http://localhost:8080/nfses?sort=id&size=5&page=${page}`
+	var url = `http://localhost:8080/nfses?sort=prestador.nome,asc&size=5&page=${page}`
 
 	if(inputId.length > 0){
 		url = url+'&id='+ inputId;

@@ -26,12 +26,18 @@ public interface NfseRepository extends JpaRepository<Nfse, Long>{
 	)
 	public List<Nfse> findAll() ;
 	
-	
+	//nao pode adicionar relacionamento OneToMane
 	@Query(
-	    value = "SELECT distinct n FROM Nfse n "+
+	    value = "SELECT  n FROM Nfse n "+
+	    "left join fetch n.prestador p "+
+	    "left join fetch n.tomador t "+
+	    "WHERE (:localPrestacao IS NULL OR n.localPrestacao LIKE %:localPrestacao%) " +
+	    "AND (:valorServico IS NULL OR n.valorServico = :valorServico) "+
+	    "AND (:situacaoNfse IS NULL OR n.situacaoNfse = :situacaoNfse ) ",
+	    
+	    countQuery = "SELECT  count(n.id) FROM Nfse n "+
 	    "left join n.prestador p "+
 	    "left join n.tomador t "+
-	    "left join n.itensNfse i "+
 	    "WHERE (:localPrestacao IS NULL OR n.localPrestacao LIKE %:localPrestacao%) " +
 	    "AND (:valorServico IS NULL OR n.valorServico = :valorServico) "+
 	    "AND (:situacaoNfse IS NULL OR n.situacaoNfse = :situacaoNfse ) "
