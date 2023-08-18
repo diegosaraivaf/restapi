@@ -4,6 +4,8 @@ import { Card } from './componente/Card';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from './pages/Home';
 import { About } from './pages/About';
+import { CadastroNfse } from './pages/CadastroNfse';
+import { ConsultaNfse } from './pages/ConsultaNfse';
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/ConsultaNfse" element={<ConsultaNfse />} />
+        <Route path="/CadastroNfse" element={<CadastroNfse />} />
       </Routes>
     </BrowserRouter>
   );
