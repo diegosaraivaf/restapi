@@ -5,25 +5,30 @@ import { Head } from "./head";
 export function ConsultaNfse() {
   return (
     <>
-    <Head/>
-    
-    {/* <a href="#" className="block rounded-md bg-indigo-600  h-52 font-medium text-white  hover:bg-indigo-700">Checkout</a> */}
+    <div className="container md mx-auto">
+      <Head/>
+      
+      <h1 className="mx-auto">Consulta NFSe</h1>
 
-    <h1>Consulta NFSe</h1>
+      <Button label="Cadastro" onClick={e=> {window.location.href = `/CadastroNfse`}}/>
+      <Button label="Pesquisa" />
+      <button className="btn btn-secondary">teste</button>
 
-    <Button label="Cadastro" onClick={e=> {window.location.href = `/CadastroNfse`}}/>
-    <Button label="Pesquisa" />
-    
-
-
-    id 
-    <Input />
-    Tipo
-    Valor
-    Documento
-    Nome 
-    Situacao
-
+      <div className="grid grid-cols-2 gap-4">
+        <div className="relative mb-6" data-te-input-wrapper-init>
+          id  
+          <Input />
+        </div>
+        <div className="relative mb-6" data-te-input-wrapper-init>
+          Tipo
+          <Input />
+        </div>
+      </div>
+      Valor
+      Documento
+      Nome 
+      Situacao
+    </div>
     pdf
 
     table
