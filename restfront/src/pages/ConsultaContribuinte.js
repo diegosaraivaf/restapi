@@ -1,22 +1,21 @@
-
-import { Button, Container, Grid, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
-import { Input } from "../componente/Input";
-import { Head } from "./head";
-import { useForm } from "react-hook-form";
+import { Button, Grid, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-export function ConsultaNfse() {
+
+export function ConsultaContribuinte() {
   const { register,  handleSubmit} = useForm();
-  const [notas, setNotas] = useState([]);
-  
+  const [contribuintes, setContribuintes] = useState([]);
+
+
   const onSubmit = data => {
     console.log(data);
 
-    fetch('http://localhost:8080/nfses', { method: 'GET' })
+    fetch('http://localhost:8080/contribuintes', { method: 'GET' })
     .then(json => json.json())
     .then(response => {
       console.log(response.content)
-      setNotas(response.content)
+      setContribuintes(response.content)
     })
     .catch(err => {
       console.log(err.message)
@@ -28,32 +27,29 @@ export function ConsultaNfse() {
     <form onSubmit={handleSubmit(onSubmit)}>
     <Paper className="container" >
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={3}>
           <TextField label="Id" {...register("id")} fullWidth/>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField label="Tipo" {...register("tipo")} fullWidth/>
+        <Grid item xs={12} sm={5}>
+          <TextField label="Nome" {...register("nome")} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField label="Valor" {...register("valor")} fullWidth/>
-        </Grid>
-        <Grid item xs={12} sm={6}>
           <TextField label="Documento" {...register("documento")} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField label="Nome" {...register("nome")}fullWidth/>
+          <TextField label="Rua" {...register("rua")} fullWidth/>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField label="Bairro" {...register("bairro")}fullWidth/>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField label="Situacao" {...register("situacao")} fullWidth/>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField label="Data Emissao" {...register("dataEmissao")} fullWidth/>
+          <TextField label="CEP" {...register("cep")} fullWidth/>
         </Grid>
       </Grid>
 
 
       <Stack direction={"row"} justifyContent="space-between" sx={{ mt: 2 }}>
-          <Button onClick={e=> {window.location.href = `/CadastroNfse`}} variant="contained" color="secondary" >Cadastro</Button>
+          <Button onClick={e=> {window.location.href = `/CadastroContribuinte`}} variant="contained" color="secondary" >Cadastro</Button>
           <Button type="submit" variant="contained"  >Pesquisar</Button>
      </Stack>
     </Paper>
@@ -72,7 +68,7 @@ export function ConsultaNfse() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {notas.map((row) => (
+          {contribuintes.map((row) => (
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
