@@ -1,21 +1,20 @@
 import { Button, Grid, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-
 
 export function ConsultaContribuinte() {
-  const { register,  handleSubmit} = useForm();
+
+  const [filtro, setFiltro] = useState({});
   const [contribuintes, setContribuintes] = useState([]);
 
 
-  const onSubmit = data => {
-    console.log(data);
+  const onSubmit = (e) => {
+    e.preventDefault()
 
     fetch('http://localhost:8080/contribuintes', { method: 'GET' })
     .then(json => json.json())
     .then(response => {
-      console.log(response.content)
-      setContribuintes(response.content)
+      console.log(response)
+      setContribuintes(response)
     })
     .catch(err => {
       console.log(err.message)
@@ -24,33 +23,33 @@ export function ConsultaContribuinte() {
 
   return (
     <>
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form >
     <Paper className="container" >
       <Grid container spacing={2}>
         <Grid item xs={12} sm={3}>
-          <TextField label="Id" {...register("id")} fullWidth/>
+          <TextField label="Id" onChange={(e)=>{setFiltro({...filtro, id : e.target.value})}}  fullWidth/>
         </Grid>
         <Grid item xs={12} sm={5}>
-          <TextField label="Nome" {...register("nome")} fullWidth/>
+          <TextField label="Nome" onChange={(e)=>{setFiltro({...filtro, nome : e.target.value})}} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField label="Documento" {...register("documento")} fullWidth/>
+          <TextField label="Documento" onChange={(e)=>{setFiltro({...filtro, documento : e.target.value})}} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField label="Rua" {...register("rua")} fullWidth/>
+          <TextField label="Rua" onChange={(e)=>{setFiltro({...filtro, rua : e.target.value})}} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField label="Bairro" {...register("bairro")}fullWidth/>
+          <TextField label="Bairro" onChange={(e)=>{setFiltro({...filtro, bairro : e.target.value})}} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField label="CEP" {...register("cep")} fullWidth/>
+          <TextField label="CEP" onChange={(e)=>{setFiltro({...filtro, cep : e.target.value})}} fullWidth/>
         </Grid>
       </Grid>
 
 
       <Stack direction={"row"} justifyContent="space-between" sx={{ mt: 2 }}>
           <Button onClick={e=> {window.location.href = `/CadastroContribuinte`}} variant="contained" color="secondary" >Cadastro</Button>
-          <Button type="submit" variant="contained"  >Pesquisar</Button>
+          <Button type="submit" variant="contained" onClick={onSubmit} >Pesquisar</Button>
      </Stack>
     </Paper>
 
@@ -59,12 +58,10 @@ export function ConsultaContribuinte() {
         <TableHead>
           <TableRow>
             <TableCell>Id</TableCell>
-            <TableCell align="right">Data Emissao</TableCell>
-            <TableCell align="right">Prestador</TableCell>
-            <TableCell align="right">Tomador</TableCell>
-            <TableCell align="right">Valor</TableCell>
-            <TableCell align="right">Situacao</TableCell>
-            <TableCell align="right">Acoes</TableCell>
+            <TableCell >Documento</TableCell>
+            <TableCell >Nome</TableCell>
+            <TableCell >Ações</TableCell>
+
           </TableRow>
         </TableHead>
         <TableBody>
@@ -73,12 +70,10 @@ export function ConsultaContribuinte() {
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">{row.id}</TableCell>
-              <TableCell align="right">{row.dataEmissao}</TableCell>
-              <TableCell align="right">{row.prestador.documento}</TableCell>
-              <TableCell align="right">{row.tomador.nome}</TableCell>
-              <TableCell align="right">{row.valorServico}</TableCell>
-              <TableCell align="right">{row.situacaoNfse}</TableCell>
+              <TableCell >{row.id}</TableCell>
+              <TableCell >{row.documento}</TableCell>
+              <TableCell >{row.nome}</TableCell>
+
             </TableRow>
           ))}
         </TableBody>
