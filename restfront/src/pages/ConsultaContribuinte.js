@@ -1,9 +1,11 @@
 import { Button, Grid, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { useState } from "react";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 export function ConsultaContribuinte() {
 
   const [filtro, setFiltro] = useState({});
+  const navigate = useNavigate();
   const [contribuintes, setContribuintes] = useState([]);
 
 
@@ -19,6 +21,18 @@ export function ConsultaContribuinte() {
     .catch(err => {
       console.log(err.message)
     })
+  }
+
+  const onEdit = (id)=>{
+
+    navigate({
+      pathname: "/CadastroContribuinte",
+      search: createSearchParams({
+          id
+      }).toString()
+  });
+
+    // navigate(`/CadastroContribuinte/${id}`);
   }
 
   return (
@@ -73,6 +87,7 @@ export function ConsultaContribuinte() {
               <TableCell >{row.id}</TableCell>
               <TableCell >{row.documento}</TableCell>
               <TableCell >{row.nome}</TableCell>
+              <TableCell ><Button onClick={() =>{onEdit(row.id)}}>Editar</Button></TableCell>
 
             </TableRow>
           ))}

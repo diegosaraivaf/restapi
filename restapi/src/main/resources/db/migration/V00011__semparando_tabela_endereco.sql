@@ -2,7 +2,7 @@ begin ;
 	
 CREATE TABLE IF NOT EXISTS public.endereco
 (	
-	id bigint NOT NULL,
+	id serial primary key,
     rua character varying(255),
     bairro character varying ,
     numero character varying ,
