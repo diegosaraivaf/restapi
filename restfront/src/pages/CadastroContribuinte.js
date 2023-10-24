@@ -12,55 +12,78 @@ export function CadastroContribuinte() {
   const {message} = useContext(SnackbarContext)
   const navigate = useNavigate();
   const location = useLocation();
-  const [contribuinte, setContribuinte]  = useState({enderecos:[]})
+  const [contribuinte, setContribuinte]  = useState({
+    nome:'',
+    documento:'',
+    enderecos:[]
+  })
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-
-  useEffect(() => {
+  useEffect( () => {
     const id = searchParams.get("id")
     if(id != null){
-      fetch(`http://localhost:8080/contribuintes/${id}`, { method: 'GET' })
-      .then(json => json.json())
-      .then(response => {
-        console.log(response)
-        response.enderecos = []
-        setContribuinte(response)
+      let contribuinte = {}
 
-      })
-      .catch(err => {
-        console.log(err.message)
-      })
+      const carregar = async() =>{
+        await fetch(`http://localhost:8080/contribuintes/${id}`, { method: 'GET' })
+        .then(json => json.json())
+        .then(response => {
+          contribuinte = response
+        })
+        .catch(err => {
+          message(err,'error')
+        })
+
+        await fetch(`http://localhost:8080/contribuintes/${id}/enderecos`, { method: 'GET' })
+        .then(json => json.json())
+        .then(response => {
+          console.log(contribuinte)
+          contribuinte  = {...contribuinte,enderecos:response}
+          setContribuinte(contribuinte)
+          console.log(contribuinte)
+        })
+        .catch(err => {
+          message(err,'error')
+        })
+      }
+      carregar()
+
     }else{
 
     }
 
-}, []);
+  }, []);
 
-  
   const onSubmit = async ()=>{
-    // console.log(contribuinte);
     try{
       const response = await fetch('http://localhost:8080/contribuintes', { 
-        method: 'POST', body: JSON.stringify(contribuinte) ,
+        method: 'POST', 
+        body: JSON.stringify(contribuinte) ,
         headers: {"Content-type": "application/json; charset=UTF-8"}
       })
       const contribuinteJson = await response.json();
-      console.log(`http://localhost:8080/contribuintes/${contribuinteJson.id}/enderecos`);
 
       const response2 = await fetch(`http://localhost:8080/contribuintes/${contribuinteJson.id}/enderecos`, { 
-        method: 'POST', body: JSON.stringify(contribuinte.enderecos) ,
+        method: 'POST', 
+        body: JSON.stringify(contribuinte.enderecos) ,
         headers: {"Content-type": "application/json; charset=UTF-8"}
       })
       navigate("/ConsultaContribuinte");
       message('Contribuinte cadastrado com sucesso','success')
-    }catch{
+    }
+    catch{
       message('Erro ao cadastrar','warning')
     }
   } 
 
   const onAdicionarItem = ()=>{
-    setContribuinte({...contribuinte, enderecos:contribuinte.enderecos.concat( [{}]) }) 
+    setContribuinte({...contribuinte, enderecos:contribuinte.enderecos.concat( [{rua:'',bairro:''}]) }) 
+  }
+
+  const removerItem=(row)=>{
+    contribuinte.enderecos.splice(row,1)
+    setContribuinte({...contribuinte, enderecos:contribuinte.enderecos})
   }
  
   return (
@@ -69,10 +92,20 @@ export function CadastroContribuinte() {
     <Paper className="container" >
       <Grid container spacing={2}>
         <Grid item xs={12} sm={3}>
-          <TextField label="Nome" value={contribuinte.nome} onChange={(e)=>{setContribuinte({...contribuinte, nome : e.target.value})}}  fullWidth/>
+          <TextField 
+            label="Nome" 
+            value={contribuinte.nome} 
+            onChange={(e)=>{setContribuinte({...contribuinte, nome : e.target.value})}}  
+            fullWidth    
+            InputLabelProps={{ shrink: contribuinte.nome?.length > 0 }}/>
         </Grid>
         <Grid item xs={12} sm={5}>
-          <TextField label="Documento" value={contribuinte.documento} onChange={(e)=>{setContribuinte({...contribuinte, documento : e.target.value})}} fullWidth/>
+          <TextField 
+            label="Documento" 
+            value={contribuinte.documento} 
+            onChange={(e)=>{setContribuinte({...contribuinte, documento : e.target.value})}} 
+            fullWidth
+            InputLabelProps={{ shrink: contribuinte.documento?.length > 0 }}/>
         </Grid>
       </Grid>
       <Stack direction={"row"}  sx={{ mt:5 }}>
@@ -84,6 +117,7 @@ export function CadastroContribuinte() {
             <TableCell>Id</TableCell>
             <TableCell>Rua</TableCell>
             <TableCell>Bairro</TableCell>
+            <TableCell>Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -92,19 +126,24 @@ export function CadastroContribuinte() {
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-      {/*  onChange={(e)=>{}} setContribuinte(contribuinte.enderecos[index].rua = 'teste') */}
               <TableCell >{index}</TableCell>
               <TableCell >
-                <TextField onChange={(e)=>{
-                contribuinte.enderecos[index].rua = e.target.value; 
-                setContribuinte({...contribuinte})
+                <TextField value={contribuinte.enderecos[index].rua} 
+                onChange={(e)=>{
+                  contribuinte.enderecos[index].rua = e.target.value; 
+                  setContribuinte({...contribuinte})
                 }}/>
               </TableCell>
               <TableCell >
-                <TextField onChange={(e)=>{
-                contribuinte.enderecos[index].bairro = e.target.value; 
-                setContribuinte({...contribuinte})
+                <TextField 
+                value={contribuinte.enderecos[index].bairro} 
+                onChange={(e)=>{
+                  contribuinte.enderecos[index].bairro = e.target.value; 
+                  setContribuinte({...contribuinte})
                 }}/>
+              </TableCell>
+              <TableCell >
+                <Button onClick={()=>removerItem(index)}>Remover</Button>
               </TableCell>
             </TableRow>
           ))}

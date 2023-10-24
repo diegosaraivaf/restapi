@@ -1,11 +1,14 @@
 package com.projeto.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,7 +103,11 @@ public class ContribuinteController {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("erro inesperado");
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.add("Charset", "UTF-8");
+
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).body("erro inesperado");
 		}
 	}
 	

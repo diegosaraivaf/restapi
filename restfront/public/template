@@ -1,0 +1,8 @@
+--criar um componente TextField onde a proprietade InputLabelProps={{ shrink: contribuinte.nome?.length > 0 }} 
+pegue o mesmo valor da propriedade value , caso contrario ao setar valor a label nao sobe.
+<TextField 
+            label="Nome" 
+            value={contribuinte.nome} 
+            onChange={(e)=>{setContribuinte({...contribuinte, nome : e.target.value})}}  
+            fullWidth    
+            InputLabelProps={{ shrink: contribuinte.nome?.length > 0 }}/>

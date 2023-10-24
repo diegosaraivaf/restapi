@@ -11,10 +11,12 @@ import { ConsultaContribuinte } from './pages/ConsultaContribuinte';
 import Layout from './pages/Layout';
 import { CadastroContribuinte } from './pages/CadastroContribuinte';
 import { SnackBarProvider } from './componente/SnackbarContext';
+import { ConfirmDialogProvider } from './componente/ConfirmDialogContext';
 
 function App() {
   return (
     <BrowserRouter>
+      <ConfirmDialogProvider>
       <SnackBarProvider>
         <Layout>
           <Routes>
@@ -27,6 +29,7 @@ function App() {
           </Routes>
         </Layout>
       </SnackBarProvider>
+      </ConfirmDialogProvider>
     </BrowserRouter>
   );
 }

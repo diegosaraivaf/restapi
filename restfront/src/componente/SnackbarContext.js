@@ -46,7 +46,7 @@ export const SnackBarProvider = ({children}) =>{
                     onClose={()=>handleClose(item.id)}
                 >
                     <Alert severity={item.severity}>
-                        {item.message + item.id}
+                        {item.message}
                     </Alert>
                 </Snackbar>
                 ))

@@ -1,42 +1,63 @@
 import { Button, Grid, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import { SnackbarContext } from "../componente/SnackbarContext";
+import {  ConfirmDialogContext } from "../componente/ConfirmDialogContext";
 
 export function ConsultaContribuinte() {
-
-  const [filtro, setFiltro] = useState({});
+  const {message} = useContext(SnackbarContext)
+  const {confirmDialog} = useContext(ConfirmDialogContext)
   const navigate = useNavigate();
+  const [filtro, setFiltro] = useState({});
   const [contribuintes, setContribuintes] = useState([]);
 
-
-  const onSubmit = (e) => {
+  const onSubmit = (e) =>{
     e.preventDefault()
+    pesquisar()
+  }
 
+  const pesquisar = ()=>{
     fetch('http://localhost:8080/contribuintes', { method: 'GET' })
     .then(json => json.json())
     .then(response => {
-      console.log(response)
       setContribuintes(response)
     })
     .catch(err => {
-      console.log(err.message)
+      message(err,'error')
     })
   }
 
   const onEdit = (id)=>{
-
     navigate({
       pathname: "/CadastroContribuinte",
       search: createSearchParams({
           id
       }).toString()
-  });
+    });
+  }
 
-    // navigate(`/CadastroContribuinte/${id}`);
+  const excluir =  (id)=>{
+      confirmDialog('Voçê realmente desaja excluir este registro?',()=>{
+        fetch(`http://localhost:8080/contribuintes/${id}`, { method: 'DELETE' })
+        .then(response => {
+          if (!response.ok) {
+            // throw new Error(response.text());
+            return response.text().then(text => { throw new Error(text) })
+          }
+          pesquisar()
+          message('registro excluido ')
+        })
+        .catch(error => {
+          console.log(error)
+          message(String(error),'error')
+        })
+    })
   }
 
   return (
     <>
+    
+
     <form >
     <Paper className="container" >
       <Grid container spacing={2}>
@@ -59,7 +80,6 @@ export function ConsultaContribuinte() {
           <TextField label="CEP" onChange={(e)=>{setFiltro({...filtro, cep : e.target.value})}} fullWidth/>
         </Grid>
       </Grid>
-
 
       <Stack direction={"row"} justifyContent="space-between" sx={{ mt: 2 }}>
           <Button onClick={e=> {window.location.href = `/CadastroContribuinte`}} variant="contained" color="secondary" >Cadastro</Button>
@@ -87,7 +107,10 @@ export function ConsultaContribuinte() {
               <TableCell >{row.id}</TableCell>
               <TableCell >{row.documento}</TableCell>
               <TableCell >{row.nome}</TableCell>
-              <TableCell ><Button onClick={() =>{onEdit(row.id)}}>Editar</Button></TableCell>
+              <TableCell >
+                <Button onClick={() =>{onEdit(row.id)}}>Editar</Button>
+                <Button onClick={()=>{excluir(row.id)}}>Excluir</Button>
+              </TableCell>
 
             </TableRow>
           ))}
