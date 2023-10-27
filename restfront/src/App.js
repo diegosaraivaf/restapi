@@ -20,7 +20,7 @@ function App() {
       <SnackBarProvider>
         <Layout>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" exact element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/ConsultaNfse" element={<ConsultaNfse />} />
             <Route path="/CadastroNfse" element={<CadastroNfse />}  />
