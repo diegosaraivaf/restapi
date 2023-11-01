@@ -1,6 +1,6 @@
 import { Button, Grid, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { useContext, useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate,} from "react-router-dom";
 import { SnackbarContext } from "../componente/SnackbarContext";
 import {  ConfirmDialogContext } from "../componente/ConfirmDialogContext";
 
@@ -34,6 +34,7 @@ export function ConsultaContribuinte() {
           id
       }).toString()
     });
+   
   }
 
   const excluir =  (id)=>{

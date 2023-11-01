@@ -32,3 +32,4 @@
 -imprementar um crud one to many com a abordagem do blog 
 -colocar docker
 -adicionar rederizacao/bloqueio condicional para campos dependendo das permicoes/regra interna do sistema(ex: um nota so pode ser editada se em uma determinada situacao)
+-consumir uma outra api do aqui do backend (vi um cara utilizado rest templat do spring, nao sei se ela e a mais utilizada)

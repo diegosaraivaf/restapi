@@ -12,16 +12,16 @@ export function CadastroContribuinte() {
   const {message} = useContext(SnackbarContext)
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id")
   const [contribuinte, setContribuinte]  = useState({
     nome:'',
     documento:'',
     enderecos:[]
   })
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
   useEffect( () => {
-    const id = searchParams.get("id")
+    console.log('parametro: '+ id)
     if(id != null){
       let contribuinte = {}
 
