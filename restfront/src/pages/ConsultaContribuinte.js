@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { createSearchParams, useNavigate,} from "react-router-dom";
 import { SnackbarContext } from "../componente/SnackbarContext";
 import {  ConfirmDialogContext } from "../componente/ConfirmDialogContext";
+import Api from "../componente/Api";
 
 export function ConsultaContribuinte() {
   const {message} = useContext(SnackbarContext)
@@ -15,15 +16,19 @@ export function ConsultaContribuinte() {
     e.preventDefault()
     pesquisar()
   }
-
+ 
   const pesquisar = ()=>{
-    fetch('http://localhost:8080/contribuintes', { method: 'GET' })
-    .then(json => json.json())
-    .then(response => {
-      setContribuintes(response)
+    Api.get('/contribuintes',{
+      params: {
+        teste: 'axios',
+        page: 2
+      }
+    }).then(response =>{
+      setContribuintes(response.data)    
     })
-    .catch(err => {
-      message(err,'error')
+    .catch(error =>{
+      console.log(error)
+      message(error.message,'error')
     })
   }
 

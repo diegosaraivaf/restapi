@@ -7,6 +7,7 @@ import { Menu } from "./Menu";
 import { useContext, useEffect, useState } from "react";
 import { SnackbarContext } from "../componente/SnackbarContext";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import Api from "../componente/Api";
 
 export function CadastroContribuinte() {
   const {message} = useContext(SnackbarContext)
@@ -21,31 +22,33 @@ export function CadastroContribuinte() {
   })
 
   useEffect( () => {
-    console.log('parametro: '+ id)
     if(id != null){
       let contribuinte = {}
 
       const carregar = async() =>{
-        await fetch(`http://localhost:8080/contribuintes/${id}`, { method: 'GET' })
-        .then(json => json.json())
-        .then(response => {
-          contribuinte = response
-        })
-        .catch(err => {
-          message(err,'error')
-        })
+        contribuinte =  (await Api.get(`/contribuintes/${id}`)).data
+        contribuinte.enderecos =  (await Api.get(`/contribuintes/${id}/enderecos`)).data
+        setContribuinte(contribuinte)
+        // await fetch(`http://localhost:8080/contribuintes/${id}`, { method: 'GET' })
+        // .then(json => json.json())
+        // .then(response => {
+        //   contribuinte = response
+        // })
+        // .catch(err => {
+        //   message(err,'error')
+        // })
 
-        await fetch(`http://localhost:8080/contribuintes/${id}/enderecos`, { method: 'GET' })
-        .then(json => json.json())
-        .then(response => {
-          console.log(contribuinte)
-          contribuinte  = {...contribuinte,enderecos:response}
-          setContribuinte(contribuinte)
-          console.log(contribuinte)
-        })
-        .catch(err => {
-          message(err,'error')
-        })
+        // await fetch(`http://localhost:8080/contribuintes/${id}/enderecos`, { method: 'GET' })
+        // .then(json => json.json())
+        // .then(response => {
+        //   console.log(contribuinte)
+        //   contribuinte  = {...contribuinte,enderecos:response}
+        //   setContribuinte(contribuinte)
+        //   console.log(contribuinte)
+        // })
+        // .catch(err => {
+        //   message(err,'error')
+        // })
       }
       carregar()
 
@@ -57,23 +60,17 @@ export function CadastroContribuinte() {
 
   const onSubmit = async ()=>{
     try{
-      const response = await fetch('http://localhost:8080/contribuintes', { 
-        method: 'POST', 
-        body: JSON.stringify(contribuinte) ,
-        headers: {"Content-type": "application/json; charset=UTF-8"}
-      })
-      const contribuinteJson = await response.json();
+      const contrib  = (await Api.post('/contribuintes',contribuinte)).data
+      if(contribuinte.enderecos.length > 0){
+        await Api.post(`/contribuintes/${contrib.id}/enderecos`, contribuinte.enderecos)
+      }
 
-      const response2 = await fetch(`http://localhost:8080/contribuintes/${contribuinteJson.id}/enderecos`, { 
-        method: 'POST', 
-        body: JSON.stringify(contribuinte.enderecos) ,
-        headers: {"Content-type": "application/json; charset=UTF-8"}
-      })
       navigate("/ConsultaContribuinte");
       message('Contribuinte cadastrado com sucesso','success')
     }
-    catch{
-      message('Erro ao cadastrar','warning')
+    catch(error){
+      console.log(error)
+      message(error.response.data.message ,'error')
     }
   } 
 
