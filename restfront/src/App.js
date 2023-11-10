@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { Card } from './componente/Card';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { CadastroNfse } from './pages/CadastroNfse';
@@ -19,21 +19,30 @@ function App() {
     <BrowserRouter>
       <ConfirmDialogProvider>
       <SnackBarProvider>
-        <Layout>
+    
           <Routes>
-            <Route path="/" exact element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/ConsultaNfse" element={<ConsultaNfse />} />
-            <Route path="/CadastroNfse" element={<CadastroNfse />}  />
-            <Route path="/ConsultaContribuinte" element={<ConsultaContribuinte />} />
-            <Route path="/CadastroContribuinte/:id?" element={<CadastroContribuinte />} />
-            <Route path="/Login" element={<Login />} />
+            <Route  element={<Layout> <Outlet /> </Layout>}>
+              <Route path="/Home" exact element={<Home />} />
+              <Route path="/About" element={<About />} />
+              <Route path="/ConsultaNfse" element={<ConsultaNfse />} />
+              <Route path="/CadastroNfse" element={<CadastroNfse />}  />
+              <Route path="/ConsultaContribuinte" element={<ConsultaContribuinte />} />
+              <Route path="/CadastroContribuinte/:id?" element={<CadastroContribuinte />} />
+            </Route>
+            <Route path="/" element={<Login />} />
           </Routes>
-        </Layout>
+   
+        
       </SnackBarProvider>
       </ConfirmDialogProvider>
     </BrowserRouter>
   );
 }
+
+const LayoutWithHome = ({ children }) => (
+  <Layout>
+    {children}
+  </Layout>
+);
 
 export default App;

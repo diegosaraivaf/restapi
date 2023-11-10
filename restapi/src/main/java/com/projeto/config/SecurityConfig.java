@@ -83,7 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				//.antMatchers(HttpMethod.PATCH,"/**").permitAll()
 				//.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 				//.antMatchers(HttpMethod.DELETE,"/**").permitAll()
-				.antMatchers("/**").permitAll() //mermite tudo  
+				//.antMatchers("/**").permitAll() //mermite tudo  
 				.antMatchers("/**/*.html","/**/*.js","/**/*.css","/**/*.ico").permitAll() //permiter as paginas html 
 				.anyRequest().authenticated()
 		.and()
