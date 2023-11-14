@@ -77,13 +77,15 @@ public class ContribuinteController {
 	
 	@GetMapping
 	public List<Contribuinte> filtrar(
+			@RequestParam(value = "id", required=false) Long id,
 			@RequestParam(value = "documento", required=false) String documento,
 			@RequestParam(value = "nome", required=false) String nome,
-			@RequestParam(value = "rua", required=false) String rua
+			@RequestParam(value = "rua", required=false) String rua,
+			@RequestParam(value = "bairro", required=false) String bairro
 			){
 		logger.info("filtrando contribuinte");
 		
-		List<Contribuinte> contribuintes =  contribuinteService.filtrar(documento, nome, rua);
+		List<Contribuinte> contribuintes =  contribuinteService.filtrar(id,documento, nome, rua,bairro);
 		return contribuintes;
 	}
 	

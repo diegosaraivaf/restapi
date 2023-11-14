@@ -80,12 +80,11 @@ export function CadastroContribuinte() {
 
   const removerItem=(row)=>{
     contribuinte.enderecos.splice(row,1)
-    setContribuinte({...contribuinte, enderecos:contribuinte.enderecos})
+    setContribuinte({...contribuinte})
   }
  
   return (
     <>
-
     <Paper className="container" >
       <Grid container spacing={2}>
         <Grid item xs={12} sm={3}>
@@ -125,7 +124,8 @@ export function CadastroContribuinte() {
             >
               <TableCell >{index}</TableCell>
               <TableCell >
-                <TextField value={contribuinte.enderecos[index].rua} 
+                <TextField 
+                value={contribuinte.enderecos[index].rua} 
                 onChange={(e)=>{
                   contribuinte.enderecos[index].rua = e.target.value; 
                   setContribuinte({...contribuinte})
@@ -149,7 +149,7 @@ export function CadastroContribuinte() {
 
 
       <Stack direction={"row"} justifyContent="space-between" sx={{ mt: 5 }}>
-          <Button onClick={e=> {window.location.href = `/ConsultaContribuinte`}} variant="contained" color="secondary" startIcon={<KeyboardReturnIcon/>}>Voltar</Button>
+          <Button onClick={e=> {navigate(`/ConsultaContribuinte`)}} variant="contained" color="secondary" startIcon={<KeyboardReturnIcon/>}>Voltar</Button>
           <Button type="submit" variant="contained" onClick={onSubmit} startIcon={<AddCircleOutlineIcon/>}>Cadastrar</Button>
      </Stack>
     </Paper>

@@ -26,12 +26,12 @@ public class ContribuinteService {
 		return contribuinteRepository.salvar(contribuinte);
 	}
 	
-	public List<Contribuinte> filtrar(String documento,String nome,String endereco) {
+	public List<Contribuinte> filtrar(Long id,String documento,String nome,String rua,String bairro) {
 		///teste
 		Contribuinte c = contribuinteRepository.porId(1L);
 		//fim teste
 		
-		return contribuinteRepository.filtrar(documento, nome, endereco);
+		return contribuinteRepository.filtrar(id,documento, nome, rua, bairro);
 	}
 	
 	public void deletar(Contribuinte contribuinte) throws NegocioException {

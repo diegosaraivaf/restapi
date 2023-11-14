@@ -9,7 +9,13 @@ export function ConsultaContribuinte() {
   const {message} = useContext(SnackbarContext)
   const {confirmDialog} = useContext(ConfirmDialogContext)
   const navigate = useNavigate();
-  const [filtro, setFiltro] = useState({});
+  const [filtro, setFiltro] = useState({
+    id:'',
+    nome:'',
+    documento:'',
+    rua:'',
+    bairro:''
+  });
   const [contribuintes, setContribuintes] = useState([]);
 
   const onSubmit = (e) =>{
@@ -20,8 +26,11 @@ export function ConsultaContribuinte() {
   const pesquisar = ()=>{
     Api.get('/contribuintes',{
       params: {
-        teste: 'axios',
-        page: 2
+        id: filtro.id.length > 0 ?  filtro.id : null ,
+        nome: filtro.nome.length > 0 ?  filtro.nome : null ,
+        documento: filtro.documento.length > 0 ?  filtro.documento : null ,
+        rua: filtro.rua.length > 0 ?  filtro.rua : null ,
+        bairro: filtro.bairro.length > 0 ?  filtro.bairro : null 
       }
     }).then(response =>{
       setContribuintes(response.data)    
@@ -88,7 +97,7 @@ export function ConsultaContribuinte() {
       </Grid>
 
       <Stack direction={"row"} justifyContent="space-between" sx={{ mt: 2 }}>
-          <Button onClick={e=> {window.location.href = `/CadastroContribuinte`}} variant="contained" color="secondary" >Cadastro</Button>
+          <Button onClick={e=> {navigate(`/CadastroContribuinte`)}} variant="contained" color="secondary" >Cadastro</Button>
           <Button type="submit" variant="contained" onClick={onSubmit} >Pesquisar</Button>
      </Stack>
     </Paper>

@@ -20,11 +20,16 @@ public class ContribuinteRepositoryImpl extends RepositoryGenericoImpl<Contribui
 	@PersistenceContext
 	private EntityManager manager;
 	
-	public List<Contribuinte> filtrar(String documento,String nome,String rua) {
+	public List<Contribuinte> filtrar(Long id,String documento,String nome,String rua,String bairro) {
 		StringBuilder jpql = new StringBuilder();
 		Map<String,Object> parametros = new HashMap<String, Object>();
 		
 		jpql.append("select distinct c from Contribuinte c left join Endereco e on e.contribuinte = c  where 1=1 ");
+		
+		if(id != null ) {
+			jpql.append("and c.id = :id ");
+			parametros.put("id", id);
+		}
 		
 		if(documento != null ) {
 			jpql.append("and c.documento like :documento ");
@@ -32,13 +37,18 @@ public class ContribuinteRepositoryImpl extends RepositoryGenericoImpl<Contribui
 		}
 		
 		if(nome != null ) {
-			jpql.append("and c.nome like :nome ");
-			parametros.put("nome", "%"+nome+"%");
+			jpql.append("and UPPER(c.nome) like :nome ");
+			parametros.put("nome", "%"+nome.toUpperCase()+"%");
 		}
 		
 		if(rua != null ) {
 			jpql.append("and e.rua like :rua ");
 			parametros.put("rua", "%"+rua+"%");
+		}
+		
+		if(bairro != null ) {
+			jpql.append("and e.bairro like :bairro ");
+			parametros.put("rua", "%"+bairro+"%");
 		}
 		jpql.append("order by c.id desc ");
 		
