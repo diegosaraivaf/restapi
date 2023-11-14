@@ -4,23 +4,38 @@ import { Input } from "../componente/Input";
 import { Head } from "./head";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import Api from "../componente/Api";
+import {createSearchParams, useNavigate } from "react-router-dom";
 
 export function ConsultaNfse() {
   const { register,  handleSubmit} = useForm();
   const [notas, setNotas] = useState([]);
+  const navigate = useNavigate();
   
   const onSubmit = data => {
     console.log(data);
+    Api.get('/nfses').then(response =>{
+      setNotas(response.data.content)
+    }).catch(error =>{
+      console.log(error)
+    })
 
-    fetch('http://localhost:8080/nfses', { method: 'GET' })
-    .then(json => json.json())
-    .then(response => {
-      console.log(response.content)
-      setNotas(response.content)
-    })
-    .catch(err => {
-      console.log(err.message)
-    })
+    // fetch('http://localhost:8080/nfses', { method: 'GET' })
+    // .then(json => json.json())
+    // .then(response => {
+    //   console.log(response.content)
+    //   setNotas(response.content)
+    // })
+    // .catch(err => {
+    //   console.log(err.message)
+    // })
+  }
+
+  const editar = (id)=>{
+    navigate({
+      pathname: "/CadastroNfse",
+      search: createSearchParams({id}).toString()
+    });
   }
 
   return (
@@ -78,11 +93,12 @@ export function ConsultaNfse() {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">{row.id}</TableCell>
-              <TableCell align="right">{row.dataEmissao}</TableCell>
-              <TableCell align="right">{row.prestador.documento}</TableCell>
-              <TableCell align="right">{row.tomador.nome}</TableCell>
-              <TableCell align="right">{row.valorServico}</TableCell>
-              <TableCell align="right">{row.situacaoNfse}</TableCell>
+              <TableCell>{row.dataEmissao}</TableCell>
+              <TableCell>{row.prestador.documento}</TableCell>
+              <TableCell>{row.tomador.nome}</TableCell>
+              <TableCell>{row.valorServico}</TableCell>
+              <TableCell>{row.situacaoNfse}</TableCell>
+              <TableCell><Button onClick={e =>{ editar(row.id)}}>Editar</Button> </TableCell>
             </TableRow>
           ))}
         </TableBody>

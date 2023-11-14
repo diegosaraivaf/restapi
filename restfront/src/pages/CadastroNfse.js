@@ -2,43 +2,104 @@ import { Button, Card, CardContent, CardHeader, Grid, Paper, Stack, Table, Table
 import { Head } from "./head";
 import { useForm ,useFieldArray} from "react-hook-form";
 import { Menu } from "./Menu";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import Api from "../componente/Api";
 
 export function CadastroNfse() {
-  const { register,  handleSubmit,control} = useForm();
-  const {fields, append, remove} = useFieldArray({name:"itens", control});
+//const { register,  handleSubmit,control,setValue} = useForm();
+ //const {fields, append, remove} = useFieldArray({name:"itens", control});
+  const [nfse,setNfse] = useState({
+    id:'',
+    prestador:{
+      id:'',
+      documento:''
+    },
+    tomador:{
+      id:'',
+      documento:''
+    },
+    itensNfse : []
+  })
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id")
+
+
+  useEffect( () => {
+    if(id != null){
+      const carregar = async() =>{
+        debugger
+        const nfse =  (await Api.get(`/nfses/${id}`)).data
+        setNfse(nfse)
+      }
+      
+      carregar()
+
+    }else{
+
+    }
+  }, []);
 
   const onSubmit = data => {
     console.log(data);
 
-    fetch('http://localhost:8080/nfses', { 
-      method: 'POST', body: JSON.stringify(data) ,
-      headers: {"Content-type": "application/json; charset=UTF-8"}
+    Api.post('/nfses',nfse).then(response =>{
+
+    }).catch(error =>{
+
     })
-    .then(json => json.json())
-    .then(response => {
-      console.log(response.content)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+
+    // fetch('http://localhost:8080/nfses', { 
+    //   method: 'POST', body: JSON.stringify(data) ,
+    //   headers: {"Content-type": "application/json; charset=UTF-8"}
+    // })
+    // .then(json => json.json())
+    // .then(response => {
+    //   console.log(response.content)
+    // })
+    // .catch(err => {
+    //   console.log(err)
+    // })
   }
 
-  const onAdicionarItem = ()=>{
-    append({descricao:''})
+  const adicionarItem = ()=>{
+    // append({descricao:''})
+    setNfse({...nfse, itensNfse:nfse.itensNfse.concat([{}])})
     console.log('adiciona item');
+  }
+
+  function deleteItem(row){
+    nfse.itensNfse.splice(row,1)
+    setNfse({...nfse})
   }
 
   return (
     <>
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form >
       <Paper className="container" >
         Prestador
         <Grid container spacing={2}>
           <Grid item>
-            <TextField label="Documento" {...register("prestador.documento")} fullWidth/>
+            <TextField 
+              label="Documento"
+              value={nfse.prestador.documento} 
+              onChange={(e)=>{
+                nfse.prestador.documento = e.target.value
+                setNfse({...nfse})
+              }} 
+              fullWidth
+            />
           </Grid>
           <Grid item>
-          <TextField label="Nome" {...register("prestador.nome")} fullWidth/>
+          <TextField 
+            label="Nome" 
+            value={nfse.prestador.nome} 
+            onChange={(e)=>{
+              nfse.prestador.nome = e.target.value
+              setNfse({...nfse})
+            }}  
+            fullWidth
+          />
           </Grid>
         </Grid>
       </Paper>
@@ -47,10 +108,20 @@ export function CadastroNfse() {
         Tomador
         <Grid container spacing={2}>
           <Grid item>
-            <TextField label="Documento" {...register("documentoTomador")} fullWidth/>
+            <TextField label="Documento" 
+            value={nfse.tomador.documento} 
+            onChange={(e)=>{
+              nfse.tomador.documento = e.target.value
+              setNfse({...nfse})
+            }}  fullWidth/>
           </Grid>
           <Grid item>
-          <TextField label="Nome" {...register("nomeTomador")} fullWidth/>
+          <TextField label="Nome" 
+          value={nfse.prestador.nome} 
+          onChange={(e)=>{
+            nfse.tomador.nome = e.target.value
+            setNfse({...nfse})
+          }}  fullWidth/>
           </Grid>
         </Grid>
       </Paper>
@@ -58,10 +129,10 @@ export function CadastroNfse() {
       <Paper className="container" >
         <Grid container spacing={2}>
           <Grid item>
-            <TextField label="Local Prestacao" {...register("localPrestacao")} fullWidth/>
+            <TextField label="Local Prestacao"  fullWidth/>
           </Grid>
           <Grid item>
-          <TextField label="Valor" {...register("valorServico")} fullWidth/>
+          <TextField label="Valor"  fullWidth/>
           </Grid>
         </Grid>
 
@@ -87,22 +158,22 @@ export function CadastroNfse() {
               <TableCell >Descricao</TableCell>
               <TableCell >Valor</TableCell>
               <TableCell >Quantidade</TableCell>
-              <TableCell > <Button onClick={onAdicionarItem} >Adicionar</Button></TableCell>
+              <TableCell > <Button onClick={adicionarItem} >Adicionar</Button></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {fields.map((field,index) =>{
+           <TableBody>
+            {nfse.itensNfse?.map((field,index) =>{
               return (
-                <TableRow>
+                <TableRow key={index}>
                   <TableCell>${index}</TableCell>
-                  <TableCell><TextField {...register(`itens.${index}.descricao`)}/></TableCell>
-                  <TableCell ><TextField {...register(`itens.${index}.valor`)}/></TableCell>
-                  <TableCell ><TextField {...register(`itens.${index}.quantidade`)}/></TableCell>
-                  <TableCell><Button onClick={()=> {remove(index)}}>Excluir</Button></TableCell>
+                   <TableCell><TextField value={nfse.itensNfse[index].descricao}/></TableCell>
+                  <TableCell ><TextField value={nfse.itensNfse[index].value}/></TableCell>
+                  <TableCell ><TextField value={nfse.itensNfse[index].quantidade}/></TableCell>
+                  <TableCell><Button onClick={()=> {deleteItem(index)}}>Excluir</Button></TableCell> 
                 </TableRow>
               );
             })}
-            </TableBody>
+            </TableBody> 
         </Table>
       </Paper>
 
