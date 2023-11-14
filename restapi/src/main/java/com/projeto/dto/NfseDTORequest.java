@@ -14,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.projeto.entity.Contribuinte;
 import com.projeto.entity.ItemNfse;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 //import io.swagger.annotations.ApiModelProperty;
 
 //a serializacao olha pro set? (funcionou uma vez )
@@ -23,6 +26,8 @@ import com.projeto.entity.ItemNfse;
 @JsonIgnoreProperties(value = {"tomador.nome"})
 public class NfseDTORequest {
 	
+
+	@Schema(description = "se refere ao endpoins /contribuintes/",example = "{teste : value}" )
 	@NotNull
 	private Long prestadorId;
 	
@@ -31,6 +36,7 @@ public class NfseDTORequest {
 	 //@ApiModelProperty(value = "Endereço da pessoa", required = true,  example = "{'id':1}",dataType  = "com.projeto.entity.Contribuinte",hidden=true)
 	//@ApiModelProperty(value = "Id referente o Contribuinte da nota", required = true, example = "{'id': '1', 'nome': 'Cliente A','documento':'2112312'}"  )
 	//@ApiModelProperty(value = "Id referente ao Contribuinte", required = true  )
+
 	@NotNull
 	private Long tomadorId;
 	
