@@ -8,38 +8,23 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import LocalLibraryOutlinedIcon from "@mui/icons-material/LocalLibraryOutlined";
 import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
+import { useNavigate } from "react-router-dom";
 // import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 
 const menu = [
     {
       icon: <HomeOutlinedIcon />,
       title: "Home",
-      items: []
+      items: [],
+      to: "/Home"
     },
     {
       icon: <LocalLibraryOutlinedIcon />,
-      title: "Education",
+      title: "Notas",
       items: [
         {
-          title: "Technical Analysis",
-          items: [
-            {
-              title: "The Dow Theory",
-              to: "/thedowtheory"
-            },
-            {
-              title: "Charts & Chart Patterns",
-              to: "/chart"
-            },
-            {
-              title: "Trend & Trend Lines",
-              to: "/trendlines"
-            },
-            {
-              title: "Support & Resistance",
-              to: "/sandr"
-            }
-          ]
+          title: "NFSe",
+          to: '/ConsultaNfse'
         },
         {
           title: "Fundamental Analysis",
@@ -87,74 +72,37 @@ const menu = [
     },
     {
       icon: <TrendingUpOutlinedIcon />,
-      title: "Options"
+      title: "Contribuinte",
+      to: "/ConsultaContribuinte"
     },
     {
     //   icon: <DescriptionOutlinedIcon />,
-      title: "Blog"
+      title: "Api Documentacao",
+      to:'http://localhost:8080/swagger-ui/index.html'
     }
   ];
 
 export function Menu(){
-    return (<>
+    return (
         <aside id="aside-layout">
-        <Drawer
-            sx={{
-                width: 240,
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                width: 240,
-                boxSizing: 'border-box',
-                },
-            }}
-            variant="permanent"
-            anchor="left"
-        >
-            <List> 
-                <MontarMenu/>
-                {/* <ListItem disablePadding>
-                    <ListItemButton onClick={e=> {window.location.href = `/`}}>
-                        <ListItemIcon>
-                            <InboxIcon /> 
-                        </ListItemIcon>
-                        <ListItemText primary="Inicio" />
-                    </ListItemButton>
-                </ListItem>
-           
-                <ListItem disablePadding>
-                    <ListItemButton onClick={e=> {window.location.href = `/ConsultaNfse`}}>
-                        <ListItemIcon>
-                            <MailIcon /> 
-                        </ListItemIcon>
-                        <ListItemText primary="Noto Fiscal" />
-                    </ListItemButton>
-                </ListItem>
-          
-                <ListItem disablePadding>
-                    <ListItemButton onClick={e=> {window.location.href = `/ConsultaContribuinte`}} >
-                        <ListItemIcon>
-                            <InboxIcon /> 
-                        </ListItemIcon>
-                        <ListItemText primary="Contribuinte" />
-                    </ListItemButton>
-                </ListItem>
-
-                <Collapse in={true} timeout="auto" unmountOnExit>
-                    <Divider />
-                    <List component="div" disablePadding>
-                    <ListItem >
-                        <ListItemText inset primary="Nested Page 1" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemText inset primary="Nested Page 2" />
-                    </ListItem>
-                    </List>
-                </Collapse> */}
-            </List> 
-  
-        </Drawer>
+          <Drawer
+              sx={{
+                  
+                  flexShrink: 0,
+                  '& .MuiDrawer-paper': {
+                
+                  },
+              }}
+              variant="permanent"
+              anchor="left"
+          >
+          <List> 
+              <MontarMenu/>
+          </List> 
+    
+          </Drawer>
         </aside>
-        </>);
+        );
 }
 
 function MontarMenu() {
@@ -162,17 +110,19 @@ function MontarMenu() {
 }
 
 const MenuItem = ({ item }) => {
-    const Component = hasChildren(item) ? MultiLevel : SingleLevel;
-    return <Component item={item} />;
+  const Component = hasChildren(item) ? MultiLevel : SingleLevel;
+  return <Component item={item} />;
 };
 
 const SingleLevel = ({ item }) => {
-    return (
-        <ListItem >
-        <ListItemIcon>{item.icon}</ListItemIcon>
-        <ListItemText primary={item.title} />
-        </ListItem>
-    );
+  const navigate = useNavigate();
+  
+  return (
+      <ListItem onClick={e=> {navigate(item.to)}} >
+      <ListItemIcon>{item.icon}</ListItemIcon>
+      <ListItemText primary={item.title}  />
+      </ListItem>
+  );
 };
 
 const MultiLevel = ({ item }) => {

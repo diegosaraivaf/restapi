@@ -7,9 +7,11 @@ function Layout({ children }) {
     <>
       <div className='flex flex-wrap'>
         <header id='head-layout'>Header Content</header>
-        <aside id="aside-layout"><Menu/></aside>
+        <Menu/>
         <main id="main-layout">{children}</main>
-        <footer id='footer-layout'>Fotter</footer>
+        <footer id='footer-layout'>
+         
+        </footer>
       </div>
     </>
   );
