@@ -15,8 +15,6 @@ export function Login() {
  
 
   const enviar = async ()=>{
-    
-    
     try{
       const response = await Api.post('/usuarios/autenticar',usuario)
    
@@ -26,14 +24,7 @@ export function Login() {
       message('entrar','success')
     }catch(e){
       console.log(e)
-      if(e.code == "ERR_NETWORK"){
-        message("API fora dor ar",'error')  
-        //e.message : "Network Error"
-        // e.code : "ERR_NETWORK"   
-      }else{
-        message(e.response.data,'error')
-      }
-     
+      message(e.response.data,'error')
     }
 
   }
