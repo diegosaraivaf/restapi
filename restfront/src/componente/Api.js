@@ -13,10 +13,11 @@ Api.defaults.headers.common['Authorization'] =
 //interceptador de responses
 Api.interceptors.response.use(
     response => response,
-    error => {
+    error =>  {
         if(error.code == "ERR_NETWORK"){
             alert("API fora dor ar")  
         }
+        return Promise.reject(error) 
     }
 );
 
