@@ -1,10 +1,8 @@
-import { Button, Card, CardContent, CardHeader, Grid, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
-import { Head } from "./head";
-import { useForm ,useFieldArray} from "react-hook-form";
-import { Menu } from "./Menu";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Alert, Button, DialogTitle, Grid, Input, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Api from "../componente/Api";
+import { SnackbarContext } from "../componente/SnackbarContext";
 
 export function CadastroNfse() {
 //const { register,  handleSubmit,control,setValue} = useForm();
@@ -13,14 +11,18 @@ export function CadastroNfse() {
     id:'',
     prestador:{
       id:'',
+      nome:'',
       documento:''
     },
     tomador:{
       id:'',
+      nome:'',
       documento:''
     },
     itensNfse : []
   })
+  const navigate = useNavigate();
+  const {message} = useContext(SnackbarContext)
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
 
@@ -73,11 +75,63 @@ export function CadastroNfse() {
     setNfse({...nfse})
   }
 
+  //melhorar essa logica depois 
+  const carregarPreatadorPorDocumento = async (documento)=>{
+    let contribuinte = null;
+
+    if(!!documento && !!documento.trim()){
+      contribuinte = (await Api.get(`/contribuintes/documento/${documento}`)).data
+    }
+      
+    if(!!contribuinte){
+      setNfse({...nfse,prestador: contribuinte})
+    }else{
+      nfse.prestador.nome = ''
+      setNfse({...nfse})
+    }
+  }
+  
+  //melhorar essa logica depois 
+  const carregarTomadorPorDocumento = async (documento)=>{
+    let contribuinte = null;
+
+    if(!!documento && !!documento.trim()){
+      contribuinte = (await Api.get(`/contribuintes/documento/${documento}`)).data
+    }
+      
+    if(!!contribuinte){
+      setNfse({...nfse,tomador: contribuinte})
+    }else{
+      nfse.tomador.nome = ''
+      setNfse({...nfse})
+    }
+   }
+
+   const cadastrar = ()=>{
+    console.log("teste")
+    Api.post(`/nfses`,{
+      ...nfse,
+      prestadorId: nfse.prestador.id,
+      tomadorId: nfse.tomador.id,
+    })
+    .then(response =>{
+      console.log('entro aqui')
+      navigate('/ConsultaNfse')
+      message('Nfse cadastrada com sucesso')
+    }).catch(error=>{
+      console.log(error.data)
+      message(error.response.data,'error')
+    })
+   }
+
   return (
     <>
     <form >
+
       <Paper className="container" >
-        Prestador
+        <div className="title">
+          Prestador
+        </div>
         <Grid container spacing={2}>
           <Grid item>
             <TextField 
@@ -86,9 +140,12 @@ export function CadastroNfse() {
               onChange={(e)=>{
                 nfse.prestador.documento = e.target.value
                 setNfse({...nfse})
+                carregarPreatadorPorDocumento(nfse.prestador.documento)
               }} 
               fullWidth
             />
+
+          
           </Grid>
           <Grid item>
           <TextField 
@@ -105,28 +162,36 @@ export function CadastroNfse() {
       </Paper>
 
       <Paper className="container" >
-        Tomador
+        <div className="title">
+          Tomador
+        </div>
         <Grid container spacing={2}>
           <Grid item>
             <TextField label="Documento" 
-            value={nfse.tomador.documento} 
-            onChange={(e)=>{
-              nfse.tomador.documento = e.target.value
-              setNfse({...nfse})
-            }}  fullWidth/>
+              value={nfse.tomador.documento} 
+              onChange={(e)=>{
+                nfse.tomador.documento = e.target.value
+                setNfse({...nfse})
+                carregarTomadorPorDocumento(nfse.tomador.documento)
+              }}  
+              fullWidth/>
           </Grid>
           <Grid item>
           <TextField label="Nome" 
-          value={nfse.prestador.nome} 
-          onChange={(e)=>{
-            nfse.tomador.nome = e.target.value
-            setNfse({...nfse})
-          }}  fullWidth/>
+            value={nfse.tomador.nome} 
+            onChange={(e)=>{
+              nfse.tomador.nome = e.target.value
+              setNfse({...nfse})
+            }}  
+            fullWidth/>
           </Grid>
         </Grid>
       </Paper>
 
       <Paper className="container" >
+      <div className="title">
+          Informações da nota
+        </div>
         <Grid container spacing={2}>
           <Grid item>
             <TextField label="Local Prestacao"  fullWidth/>
@@ -178,8 +243,8 @@ export function CadastroNfse() {
       </Paper>
 
       <Stack direction={"row"} justifyContent="space-between" sx={{ mt: 2 }}>
-          <Button onClick={e=> {window.location.href = `/ConsultaNfse`}} variant="contained" color="secondary" >Voltar</Button>
-          <Button type="submit" variant="contained"  >Cadastrar</Button>
+          <Button onClick={e=> navigate(`/ConsultaNfse`)} variant="contained" color="secondary" >Voltar</Button>
+          <Button onClick={cadastrar} variant="contained"  >Cadastrar</Button>
      </Stack>
 
     </form>
