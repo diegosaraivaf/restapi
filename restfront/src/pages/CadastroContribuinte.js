@@ -93,7 +93,8 @@ export function CadastroContribuinte() {
             value={contribuinte.nome} 
             onChange={(e)=>{setContribuinte({...contribuinte, nome : e.target.value})}}  
             fullWidth    
-            InputLabelProps={{ shrink: contribuinte.nome?.length > 0 }}/>
+            // InputLabelProps={{ shrink: contribuinte.nome?.length > 0 }}
+            />
         </Grid>
         <Grid item xs={12} sm={5}>
           <TextField 
@@ -101,7 +102,15 @@ export function CadastroContribuinte() {
             value={contribuinte.documento} 
             onChange={(e)=>{setContribuinte({...contribuinte, documento : e.target.value})}} 
             fullWidth
-            InputLabelProps={{ shrink: contribuinte.documento?.length > 0 }}/>
+            // InputLabelProps={{ shrink: contribuinte.documento?.length > 0 }}
+            />
+
+          <TextField 
+            label="Telefone" 
+            
+            fullWidth
+            // InputLabelProps={{ shrink: contribuinte.documento?.length > 0 }}
+            />
         </Grid>
       </Grid>
       <Stack direction={"row"}  sx={{ mt:5 }}>

@@ -119,6 +119,10 @@ code {
   border-top-right-radius: 4px;
 }
 
+.menu-list-selected.css-bshv44-MuiButtonBase-root-MuiListItem-root {
+  background-color: rgb(218, 217, 217);
+}
+
 
 
 

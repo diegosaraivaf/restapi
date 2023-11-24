@@ -5,12 +5,15 @@ import { useContext, useState } from "react";
 import Api from "../componente/Api";
 import {createSearchParams, useNavigate } from "react-router-dom";
 import { SnackbarContext } from "../componente/SnackbarContext";
+import { ConfirmDialogContext } from "../componente/ConfirmDialogContext";
 
 export function ConsultaNfse() {
   //const { register,  handleSubmit} = useForm();
   const [notas, setNotas] = useState([]);
+  const [filtroNota, setFiltroNota] = useState({id:'',tipo:'',valorServico:'',documentoPrestador:'',nomePrestador:'',situacaoNfse:''});
   const navigate = useNavigate();
   const {message} = useContext(SnackbarContext)
+  const {confirmDialog} = useContext(ConfirmDialogContext)
   let [page, setPage] = useState(1);
   let [count, setCount] = useState(1);
   
@@ -18,7 +21,9 @@ export function ConsultaNfse() {
     console.log(data);
     Api.get('/nfses',{
       params: {
-        size: 10
+        size: 10,
+        documentoPrestador: filtroNota.documentoPrestador.length > 0 ?  filtroNota.documentoPrestador : null ,
+        nomePrestador: filtroNota.nomePrestador.length > 0 ?  filtroNota.nomePrestador : null ,
       }
     }).then(response =>{
       setNotas(response.data.content)
@@ -47,11 +52,13 @@ export function ConsultaNfse() {
   }
 
   const excluir = (id)=>{
-    Api.delete(`/nfses/${id}`).then(response =>{
-      message('Nfse excluida com sucesso ')
-    }).catch(error =>{
-      console.log(error)
-      message(error,'error')
+    confirmDialog('Voçê realmente desaja cancelar esta nota?',()=>{
+      Api.delete(`/nfses/${id}`).then(response =>{
+        message('Nfse cancelada com sucesso ')
+      }).catch(error =>{
+        console.log(error)
+        message(error,'error')
+      })
     })
   }
 
@@ -84,16 +91,16 @@ export function ConsultaNfse() {
           <TextField label="Tipo"  fullWidth/>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField label="Valor" fullWidth/>
+          <TextField label="Valor" onChange={(e)=>{setFiltroNota({...filtroNota, valorServico : e.target.value})}} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField label="Documento" fullWidth/>
+          <TextField label="Documento Prestador"  onChange={(e)=>{setFiltroNota({...filtroNota, documentoPrestador : e.target.value})}} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField label="Nome" fullWidth/>
+          <TextField label="Nome Prestador" onChange={(e)=>{setFiltroNota({...filtroNota, nomePrestador : e.target.value})}} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <TextField label="Situacao" fullWidth/>
+          <TextField label="Situacao" onChange={(e)=>{setFiltroNota({...filtroNota, situacaoNfse : e.target.value})}} fullWidth/>
         </Grid>
         <Grid item xs={12} sm={4}>
           <TextField label="Data Emissao" fullWidth/>
@@ -133,7 +140,7 @@ export function ConsultaNfse() {
               <TableCell>{row.situacaoNfse}</TableCell>
               <TableCell>
                 <Button onClick={e =>{ editar(row.id)}}>Editar</Button> 
-                <Button onClick={e =>{ excluir(row.id)}}>Excluir</Button> 
+                <Button onClick={e =>{ excluir(row.id)}}>Cancelar</Button> 
               </TableCell>
             </TableRow>
           ))}

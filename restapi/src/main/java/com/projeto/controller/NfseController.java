@@ -66,7 +66,7 @@ public class NfseController {
 		n.setDataEmissao(LocalDate.now());
 		n.setSituacaoNfse(SituacaoNfse.EMITIDA);
 		
-		nfseService.save(n);
+		n = nfseService.save(n);
 		return n;
 	}
 	
@@ -92,12 +92,21 @@ public class NfseController {
 	    @Parameter(name = "sort", description = "campo que a consulta via ser ordenada", in = ParameterIn.QUERY)
 	})
 	public Page<NfseDTOResponse> filtrar(
+		@RequestParam(required = false) String documentoPrestador,
+		@RequestParam(required = false) String nomePrestador,
 		@RequestParam(required = false) String localPrestacao,
 		@RequestParam(required = false) BigDecimal valor,
 		@RequestParam(required = false) SituacaoNfse situacaoNfse,
 		@Parameter(hidden = true) Pageable pageable
 	) {
-		Page<NfseDTOResponse> nfses =  nfseService.findByFilter(localPrestacao,valor,situacaoNfse, pageable).map(n -> new NfseDTOResponse(n));
+		Page<NfseDTOResponse> nfses =  nfseService.findByFilter(
+			documentoPrestador, 
+			nomePrestador,
+			localPrestacao,
+			valor,
+			situacaoNfse, 
+			pageable
+		).map(n -> new NfseDTOResponse(n));
 		return nfses;
 	}
 	

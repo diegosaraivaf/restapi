@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.projeto.entity.Nfse;
 import com.projeto.entity.SituacaoNfse;
@@ -33,16 +34,27 @@ public interface NfseRepository extends JpaRepository<Nfse, Long>{
 	    "left join fetch n.tomador t "+
 	    "WHERE (:localPrestacao IS NULL OR n.localPrestacao LIKE %:localPrestacao%) " +
 	    "AND (:valorServico IS NULL OR n.valorServico = :valorServico) "+
-	    "AND (:situacaoNfse IS NULL OR n.situacaoNfse = :situacaoNfse ) ",
+	    "AND (:situacaoNfse IS NULL OR n.situacaoNfse = :situacaoNfse ) "+
+	    "AND (:documentoPrestador IS NULL OR p.documento = :documentoPrestador ) "+
+	    "AND (:nomePrestador IS NULL OR p.nome like %:nomePrestador% ) ",
 	    
 	    countQuery = "SELECT  count(n.id) FROM Nfse n "+
 	    "left join n.prestador p "+
 	    "left join n.tomador t "+
 	    "WHERE (:localPrestacao IS NULL OR n.localPrestacao LIKE %:localPrestacao%) " +
 	    "AND (:valorServico IS NULL OR n.valorServico = :valorServico) "+
-	    "AND (:situacaoNfse IS NULL OR n.situacaoNfse = :situacaoNfse ) "
+	    "AND (:situacaoNfse IS NULL OR n.situacaoNfse = :situacaoNfse ) "+
+	    "AND (:documentoPrestador IS NULL OR p.documento = :documentoPrestador ) "+
+	    "AND (:nomePrestador IS NULL OR p.nome like %:nomePrestador% ) "
 	)
-	Page<Nfse> findByFilters(String localPrestacao, BigDecimal valorServico,SituacaoNfse situacaoNfse, Pageable pageable);
+	Page<Nfse> findByFilters(
+			String documentoPrestador, 
+			String nomePrestador,
+			String localPrestacao, 
+			BigDecimal valorServico,
+			SituacaoNfse situacaoNfse, 
+			Pageable pageable
+	);
 	
 	
 	//solucao com fetch join no select, mas neste caso ele execulta a consulta sem limit, e faz o limit em memoria. 

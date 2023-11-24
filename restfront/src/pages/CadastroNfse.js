@@ -1,8 +1,11 @@
 import { Alert, Button, DialogTitle, Grid, Input, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Api from "../componente/Api";
 import { SnackbarContext } from "../componente/SnackbarContext";
+import CurrencyInput from "react-currency-input-field";
+import { TextFieldCurrency, TextFieldMask } from "../componente/TextFieldUtil";
+import { NumericFormat } from "react-number-format";
 
 export function CadastroNfse() {
 //const { register,  handleSubmit,control,setValue} = useForm();
@@ -19,18 +22,21 @@ export function CadastroNfse() {
       nome:'',
       documento:''
     },
-    itensNfse : []
+    localPrestacao:'',
+    valorServico:'',
+    itensNfse : [{descricao:'',valor:'',quantidade:''}]
   })
   const navigate = useNavigate();
   const {message} = useContext(SnackbarContext)
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id")
 
+  
+
 
   useEffect( () => {
-    if(id != null){
+    if(!!id){
       const carregar = async() =>{
-        debugger
         const nfse =  (await Api.get(`/nfses/${id}`)).data
         setNfse(nfse)
       }
@@ -50,23 +56,11 @@ export function CadastroNfse() {
     }).catch(error =>{
 
     })
-
-    // fetch('http://localhost:8080/nfses', { 
-    //   method: 'POST', body: JSON.stringify(data) ,
-    //   headers: {"Content-type": "application/json; charset=UTF-8"}
-    // })
-    // .then(json => json.json())
-    // .then(response => {
-    //   console.log(response.content)
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // })
   }
 
   const adicionarItem = ()=>{
     // append({descricao:''})
-    setNfse({...nfse, itensNfse:nfse.itensNfse.concat([{}])})
+    setNfse({...nfse, itensNfse:nfse.itensNfse.concat([{descricao:'',valor:'',quantidade:''}])})
     console.log('adiciona item');
   }
 
@@ -108,26 +102,40 @@ export function CadastroNfse() {
    }
 
    const cadastrar = ()=>{
-    console.log("teste")
-    Api.post(`/nfses`,{
-      ...nfse,
-      prestadorId: nfse.prestador.id,
-      tomadorId: nfse.tomador.id,
-    })
-    .then(response =>{
-      console.log('entro aqui')
-      navigate('/ConsultaNfse')
-      message('Nfse cadastrada com sucesso')
-    }).catch(error=>{
-      console.log(error.data)
-      message(error.response.data,'error')
-    })
+    
+    if(!!id) {
+      Api.put(`/nfses/${id}`,{
+        ...nfse,
+        prestadorId: nfse.prestador.id,
+        tomadorId: nfse.tomador.id,
+      })
+      .then(response =>{
+        navigate('/ConsultaNfse')
+        message('Nfse editada com sucesso')
+      }).catch(error=>{
+        console.log(String(error.data))
+        message(error.response.data,'error')
+      })
+    }
+    else{
+      Api.post(`/nfses`,{
+        ...nfse,
+        prestadorId: nfse.prestador.id,
+        tomadorId: nfse.tomador.id,
+      })
+      .then(response =>{
+        navigate('/ConsultaNfse')
+        message('Nfse cadastrada com sucesso')
+      }).catch(error=>{
+        console.log(String(error.data))
+        message(error.response.data,'error')
+      })
+    }
    }
 
   return (
     <>
     <form >
-
       <Paper className="container" >
         <div className="title">
           Prestador
@@ -155,6 +163,7 @@ export function CadastroNfse() {
               nfse.prestador.nome = e.target.value
               setNfse({...nfse})
             }}  
+            disabled
             fullWidth
           />
           </Grid>
@@ -183,38 +192,36 @@ export function CadastroNfse() {
               nfse.tomador.nome = e.target.value
               setNfse({...nfse})
             }}  
+            disabled
             fullWidth/>
           </Grid>
         </Grid>
       </Paper>
 
       <Paper className="container" >
-      <div className="title">
+        <div className="title">
           Informações da nota
         </div>
         <Grid container spacing={2}>
           <Grid item>
-            <TextField label="Local Prestacao"  fullWidth/>
+            <TextField 
+              label="Local Prestacao"
+              value={nfse.localPrestacao} 
+              onChange={(e)=>{
+                setNfse({...nfse, localPrestacao :e.target.value})
+              }}   
+              fullWidth/>
           </Grid>
           <Grid item>
-          <TextField label="Valor"  fullWidth/>
+          <TextFieldCurrency
+            label="Valor"
+            value={nfse.valorServico}
+            onChange={(e)=>{
+              setNfse({...nfse, valorServico :e.target.value})
+            }}   
+            fullWidth/>
           </Grid>
         </Grid>
-
-        {/* <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
-            <TextField label="Descricao" {...register("documento")} fullWidth/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField label="Valor" {...register("nome")} fullWidth/>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextField label="Quantidade" {...register("nome")} fullWidth/>
-          </Grid>
-          <Grid item xs={12} sm={2}>
-            <Button onClick={onAdicionarItem} >Adicionar</Button> 
-          </Grid>
-        </Grid> */}
 
         <Table>
           <TableHead>
@@ -231,9 +238,27 @@ export function CadastroNfse() {
               return (
                 <TableRow key={index}>
                   <TableCell>${index}</TableCell>
-                   <TableCell><TextField value={nfse.itensNfse[index].descricao}/></TableCell>
-                  <TableCell ><TextField value={nfse.itensNfse[index].value}/></TableCell>
-                  <TableCell ><TextField value={nfse.itensNfse[index].quantidade}/></TableCell>
+                  <TableCell>
+                    <TextField 
+                      value={nfse.itensNfse[index].descricao}
+                      onChange={(e)=>{
+                        nfse.itensNfse[index].descricao = e.target.value
+                        setNfse({...nfse})
+                      }} /></TableCell>
+                  <TableCell >
+                    <TextField 
+                    value={nfse.itensNfse[index].valor}
+                    onChange={(e)=>{
+                      nfse.itensNfse[index].valor = e.target.value
+                      setNfse({...nfse})
+                    }}/></TableCell>
+                  <TableCell >
+                    <TextField 
+                    value={nfse.itensNfse[index].quantidade}
+                    onChange={(e)=>{
+                      nfse.itensNfse[index].quantidade = e.target.value
+                      setNfse({...nfse})
+                    }}/></TableCell>
                   <TableCell><Button onClick={()=> {deleteItem(index)}}>Excluir</Button></TableCell> 
                 </TableRow>
               );

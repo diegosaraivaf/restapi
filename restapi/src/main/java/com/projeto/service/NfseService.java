@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.projeto.entity.Nfse;
 import com.projeto.entity.SituacaoNfse;
@@ -48,8 +49,15 @@ public class NfseService {
 		return result;
 	}
 	
-	public Page<Nfse> findByFilter(String localPrestacao,BigDecimal valor,SituacaoNfse situacaoNfse, Pageable pageable) {    
-		Page<Nfse> result = nfseRepository.findByFilters(localPrestacao,valor,situacaoNfse, pageable);
+	public Page<Nfse> findByFilter(
+			String documentoPrestador, 
+			String nomePrestador,
+			String localPrestacao,
+			BigDecimal valor,
+			SituacaoNfse situacaoNfse, 
+			Pageable pageable) {    
+		Page<Nfse> result = nfseRepository.findByFilters(documentoPrestador, 
+				nomePrestador,localPrestacao,valor,situacaoNfse, pageable);
 		return result;
 	}
 }

@@ -78,7 +78,7 @@ const menu = [
     {
     //   icon: <DescriptionOutlinedIcon />,
       title: "Api Documentacao",
-      to:'http://localhost:8080/swagger-ui/index.html'
+      to:''
     }
   ];
 
@@ -87,19 +87,15 @@ export function Menu(){
         <aside id="aside-layout">
           <Drawer
               sx={{
-                  
                   flexShrink: 0,
-                  '& .MuiDrawer-paper': {
-                
-                  },
+                  '& .MuiDrawer-paper': {},
               }}
               variant="permanent"
               anchor="left"
           >
-          <List> 
-              <MontarMenu/>
-          </List> 
-    
+            <List> 
+                <MontarMenu/>
+            </List> 
           </Drawer>
         </aside>
         );
@@ -109,14 +105,19 @@ function MontarMenu() {
     return menu.map((item, key) => <MenuItem key={key} item={item} />);
 }
 
+
+
 const MenuItem = ({ item }) => {
+  
   const Component = hasChildren(item) ? MultiLevel : SingleLevel;
   return <Component item={item} />;
 };
 
+
+
+
 const SingleLevel = ({ item }) => {
   const navigate = useNavigate();
-  
   return (
       <ListItem onClick={e=> {navigate(item.to)}} >
       <ListItemIcon>{item.icon}</ListItemIcon>
@@ -135,7 +136,7 @@ const MultiLevel = ({ item }) => {
 
     return (
         <>
-        <ListItem button onClick={handleClick}>
+        <ListItem button onClick={handleClick} className={open?'menu-list-selected':''}>
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.title} />
             {open ? <ExpandLessIcon /> : <ExpandMoreIcon />} 

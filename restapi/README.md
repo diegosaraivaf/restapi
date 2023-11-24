@@ -28,8 +28,17 @@
 -(falta)integracao continua, doker ,microservico 
 -relacionamento oneToMany
 -enum
--mascaras e campos com valores data,monetario
 -imprementar um crud one to many com a abordagem do blog 
 -colocar docker
 -adicionar rederizacao/bloqueio condicional para campos dependendo das permicoes/regra interna do sistema(ex: um nota so pode ser editada se em uma determinada situacao)
 -consumir uma outra api do aqui do backend (vi um cara utilizado rest templat do spring, nao sei se ela e a mais utilizada)
+-?criar um especir de scarfould que cria todo o crud de uma entidade ?
+-?criar uma abordagem onde pode passar so referencia ou o objeto compreto nas dependencias ?
+
+
+##front 
+-mascaras(cpf,cnpj,telefone), campos com valores monetarios(R$ 20.100,52), campos data(21/11/23)
+-select menu 
+-checkbox
+-auto complete
+-

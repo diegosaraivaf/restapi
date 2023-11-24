@@ -41,11 +41,13 @@ insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_e
 insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(23,3,2,'Maracanau',50,'2019-10-10','EMITIDA');
 insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(24,3,2,'Maracanau',50,'2019-10-10','EMITIDA');
 insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(25,3,2,'Maracanau',50,'2019-10-10','CANCELADA');
+select setval('nfse_id_seq', 25, true);
 
 
 insert into item_nfse(id,descricao,valor,quantidade,nfse_id) values(1,'Troca de ar comdicionado',200,3,1);
 insert into item_nfse(id,descricao,valor,quantidade,nfse_id) values(2,'Manutenção de ar comdicionado',200,3,1);
 insert into item_nfse(id,descricao,valor,quantidade,nfse_id) values(3,'Limpeza do carro',100,1,2);
 insert into item_nfse(id,descricao,valor,quantidade,nfse_id) values(4,'Troza de oleo',100,1,2);
+select setval('item_nfse_id_seq', 4, true);
 
 commit;

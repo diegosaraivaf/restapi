@@ -8,10 +8,7 @@ CREATE TABLE IF NOT EXISTS public.endereco
     numero character varying ,
     cep character varying ,
 	contribuinte_id bigint ,
-    CONSTRAINT endereco_pkey PRIMARY KEY (id),
-	CONSTRAINT endereco_contribuinte_fk
-      FOREIGN KEY(contribuinte_id) 
-	  REFERENCES contribuinte(id)
+	CONSTRAINT endereco_contribuinte_fk FOREIGN KEY(contribuinte_id) REFERENCES contribuinte(id)
 );
 
 commit;
