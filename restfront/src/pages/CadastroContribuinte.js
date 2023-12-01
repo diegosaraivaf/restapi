@@ -104,13 +104,12 @@ export function CadastroContribuinte() {
             fullWidth
             // InputLabelProps={{ shrink: contribuinte.documento?.length > 0 }}
             />
-
-          <TextField 
+{/* 
+          <InputMask
             label="Telefone" 
-            
             fullWidth
             // InputLabelProps={{ shrink: contribuinte.documento?.length > 0 }}
-            />
+            /> */}
         </Grid>
       </Grid>
       <Stack direction={"row"}  sx={{ mt:5 }}>

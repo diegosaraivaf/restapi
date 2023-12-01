@@ -1,6 +1,4 @@
-import logo from './logo.svg';
 import './App.css';
-import { Card } from './componente/Card';
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { Home } from './pages/Home';
 import { About } from './pages/About';
@@ -13,6 +11,10 @@ import { CadastroContribuinte } from './pages/CadastroContribuinte';
 import { SnackBarProvider } from './componente/SnackbarContext';
 import { ConfirmDialogProvider } from './componente/ConfirmDialogContext';
 import { Login } from './pages/Login';
+import { ConsultaCaracteristica } from './pages/ConsultaCaracteristica';
+import { CadastroCaracteristica } from './pages/CadastroCaracteristica';
+import { ConsultaOpcaoCaracteristica } from './pages/ConsultaOpcaoCaracteritica';
+import { CadastroOpcaoCaracteristica } from './pages/CadastroOpcaoCaracteristica';
 
 function App() {
   return (
@@ -28,6 +30,10 @@ function App() {
               <Route path="/CadastroNfse" element={<CadastroNfse />}  />
               <Route path="/ConsultaContribuinte" element={<ConsultaContribuinte />} />
               <Route path="/CadastroContribuinte/:id?" element={<CadastroContribuinte />} />
+              <Route path="/ConsultaCaracteristica" element={<ConsultaCaracteristica />} />
+              <Route path="/CadastroCaracteristica/:id?" element={<CadastroCaracteristica />} />
+              <Route path="/ConsultaOpcaoCaracteristica" element={<ConsultaOpcaoCaracteristica />} />
+              <Route path="/CadastroOpcaoCaracteristica/:id?" element={<CadastroOpcaoCaracteristica />} />
             </Route>
             <Route path="/" element={<Login />} />
           </Routes>
@@ -38,11 +44,5 @@ function App() {
     </BrowserRouter>
   );
 }
-
-const LayoutWithHome = ({ children }) => (
-  <Layout>
-    {children}
-  </Layout>
-);
 
 export default App;

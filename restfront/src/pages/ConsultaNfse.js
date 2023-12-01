@@ -32,16 +32,6 @@ export function ConsultaNfse() {
     }).catch(error =>{
       console.log(error)
     })
-
-    // fetch('http://localhost:8080/nfses', { method: 'GET' })
-    // .then(json => json.json())
-    // .then(response => {
-    //   console.log(response.content)
-    //   setNotas(response.content)
-    // })
-    // .catch(err => {
-    //   console.log(err.message)
-    // })
   }
 
   const editar = (id)=>{

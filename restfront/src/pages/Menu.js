@@ -76,9 +76,23 @@ const menu = [
       to: "/ConsultaContribuinte"
     },
     {
+      icon: <HomeOutlinedIcon />,
+      title: "Configurações",
+      items: [
+        {
+          title: "Caracteristicas",
+          to: "/ConsultaCaracteristica"
+        },
+        {
+          title: "Opções caracteristicas",
+          to: "/ConsultaOpcaoCaracteristica"
+        },
+      ],
+    },
+    {
     //   icon: <DescriptionOutlinedIcon />,
       title: "Api Documentacao",
-      to:''
+      to:'http://localhost:8080/swagger-ui/index.html'
     }
   ];
 
@@ -87,8 +101,7 @@ export function Menu(){
         <aside id="aside-layout">
           <Drawer
               sx={{
-                  flexShrink: 0,
-                  '& .MuiDrawer-paper': {},
+                  flexShrink: 0
               }}
               variant="permanent"
               anchor="left"
