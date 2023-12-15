@@ -1,6 +1,5 @@
-import { Collapse, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import { Collapse, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+
 import React, { useState } from "react";
 
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -74,6 +73,11 @@ const menu = [
       icon: <TrendingUpOutlinedIcon />,
       title: "Contribuinte",
       to: "/ConsultaContribuinte"
+    },
+    {
+      icon: <TrendingUpOutlinedIcon />,
+      title: "Imovel",
+      to: "/ConsultaImovel"
     },
     {
       icon: <HomeOutlinedIcon />,

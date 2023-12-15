@@ -1,5 +1,11 @@
 package com.projeto.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,13 +24,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.projeto.entity.Contribuinte;
 import com.projeto.entity.Endereco;
 import com.projeto.entity.Imovel;
+import com.projeto.entity.ImovelImagens;
 import com.projeto.exeption.NegocioException;
 import com.projeto.service.ContribuinteService;
 import com.projeto.service.EnderecoService;
+import com.projeto.service.ImovelImagensService;
 import com.projeto.service.ImovelService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,7 +48,9 @@ public class ImovelController {
 	private ImovelService imovelService;
 	
 	@Autowired
-	private EnderecoService enderecoService;
+	private ImovelImagensService imovelImagensService;
+	
+
 	
 	@PostMapping()
 	public Imovel salvar(@RequestBody Imovel imovel) {
@@ -51,23 +62,23 @@ public class ImovelController {
 	}
 	
 	@PutMapping("/{id}")
-	public Contribuinte update(@PathVariable Long id, @RequestBody Contribuinte contribuinte) throws NegocioException {
+	public Imovel update(@PathVariable Long id, @RequestBody Imovel imovel) throws NegocioException {
 		logger.info("atualizando contribuinte");
 		
-		Contribuinte contribuinteAtual = contribuinteService.porId(id).get();
-		if(contribuinteAtual == null) {
-			throw new NegocioException("Nao existe contribuinte com o id :"+id+".");
+		Imovel imovelAtual = imovelService.findById(id);
+		if(imovelAtual == null) {
+			throw new NegocioException("Nao existe imovel com o id :"+id+".");
 		}
 //		provavelmente tenha que ser implementado um metodo para excluir os enderecos de contribuinte antes de salvar todos.
 		//enderecoService.saveAll(contribuinte.getEnderecos());
-		contribuinteAtual.setDocumento(contribuinte.getDocumento());
-		contribuinteAtual.setNome(contribuinte.getNome());
+		imovelAtual.setProprietario(imovel.getProprietario());
+
 		
-		return contribuinteService.salvar(contribuinteAtual);
+		return imovelService.salvar(imovelAtual);
 	}
 	
 	@GetMapping
-	public List<Contribuinte> filtrar(
+	public List<Imovel> filtrar(
 			@RequestParam(value = "id", required=false) Long id,
 			@RequestParam(value = "documento", required=false) String documento,
 			@RequestParam(value = "nome", required=false) String nome,
@@ -85,13 +96,16 @@ public class ImovelController {
 		try {
 			logger.info("deletando contribuinte de id {}",id);
 			
-			Contribuinte contribuinte = contribuinteService.porId(id)
-					.orElseThrow(() -> new NegocioException("Nao existe contribuinte com o id passado",NegocioException.BADREQUEST));
+			Imovel imovel = imovelService.findById(id);
+			if(imovel == null) { 
+				throw new NegocioException("Nao existe imovel com o id passado",NegocioException.BADREQUEST);
+			}
 			
-			contribuinteService.deletar(contribuinte);
+			imovelService.delete(imovel);
 			
 			return ResponseEntity.status(HttpStatus.OK).body(null);
-		}catch (NegocioException e) {
+		}
+		catch (NegocioException e) {
 			return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
 		}
 		catch (Exception e) {
@@ -104,46 +118,51 @@ public class ImovelController {
 		}
 	}
 	
-	@GetMapping("/documento/{documento}")
-	public ResponseEntity<?> porDocumento(@PathVariable("documento") String documento) {
-		logger.info("busca de contribuinte por documento : {}",documento);
-		
-		Contribuinte contribuinte = contribuinteService.buscarPorDocumento(documento);
-		return ResponseEntity.status(HttpStatus.OK).body(contribuinte);
-	}
+
 	
-	@GetMapping("/{idContribuinte}")
-	public Contribuinte buscarPorId(@PathVariable("idContribuinte") Long idContribuinte) throws NegocioException {
-		logger.info("busca de contribuinte por id {}",idContribuinte);
+	@GetMapping("/{idImovel}")
+	public Imovel buscarPorId(@PathVariable("idImovel") Long idImovel) throws NegocioException {
+		logger.info("busca de imovel por id {}",idImovel);
 		
-		Contribuinte  contribuinte  = contribuinteService.porId(idContribuinte).get();
-		if(contribuinte == null) {
-			throw new NegocioException("Contribuinte com o id passado nao existe");
+		Imovel  imovel  = imovelService.findById(idImovel);
+		if(imovel == null) {
+			throw new NegocioException("imovel com o id passado nao existe");
 		}
 		
-		return contribuinte;
+		return imovel;
 	}
 	
-	@GetMapping("/{idContribuinte}/enderecos")
-	public List<Endereco> porContribuinte(@PathVariable("idContribuinte") Long idContribuinte){
-		logger.info("buscando endereco por contribuinte {}",idContribuinte);
+	@GetMapping("/{idImovel}/imagens")
+	public List<ImovelImagens> porimovel(@PathVariable("idImovel") Long idImovel){
+		logger.info("buscando endereco por imovel {}",idImovel);
 		
-		return enderecoService.porContribuinte(idContribuinte);
+		return imovelImagensService.porImovel(idImovel);
 	}
 	
-	@PostMapping("/{idContribuinte}/enderecos")
-	public List<Endereco> enderecoporContribuinte(@PathVariable("idContribuinte") Long idContribuinte,@RequestBody List<Endereco> enderecos){
-		logger.info("adicionando enderecos ao contribuinte ");
+	@PostMapping("/{idImovel}/imagens")
+	public ImovelImagens salvarImovelImagens(@PathVariable("idImovel") Long idImovel, @RequestParam MultipartFile file){
+		logger.info("adicionando imagens ao imovel ");
 		
-		enderecoService.deletarPorContribuinte(idContribuinte);
-		
-		//setar contribuinte ao endereco
-		Contribuinte cont = new Contribuinte();
-		cont.setId(idContribuinte);
-		for(Endereco e : enderecos) {
-			e.setContribuinte(cont);
-			e = enderecoService.save(e);
+		try {
+			byte[] bytes = file.getBytes();
+			String nomeImagem = String.valueOf(file.getOriginalFilename());
+			String identificador = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+			Path caminho = Paths.get("c:/img/"+identificador);
+			Files.write(caminho,bytes);
+			
+			Imovel imovel = new Imovel();
+			imovel.setId(idImovel);
+			
+			ImovelImagens imagens = new ImovelImagens();
+			imagens.setImovel(imovel);
+			imagens.setNomeArquivo(nomeImagem);
+			imagens.setIdentificador(identificador);
+	
+			return imovelImagensService.salvar(imagens);
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
 		}
-		return enderecos;
+		return null;
 	}
 }

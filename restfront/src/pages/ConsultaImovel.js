@@ -5,7 +5,7 @@ import { SnackbarContext } from "../componente/SnackbarContext";
 import {  ConfirmDialogContext } from "../componente/ConfirmDialogContext";
 import Api from "../componente/Api";
 
-export function ConsultaContribuinte() {
+export function ConsultaImovel() {
   const {message} = useContext(SnackbarContext)
   const {confirmDialog} = useContext(ConfirmDialogContext)
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ export function ConsultaContribuinte() {
 
   const onEdit = (id)=>{
     navigate({
-      pathname: "/CadastroContribuinte",
+      pathname: "/CadastroImovel",
       search: createSearchParams({id}).toString()
     });
   }
@@ -92,7 +92,7 @@ export function ConsultaContribuinte() {
       </Grid>
 
       <Stack direction={"row"} justifyContent="space-between" sx={{ mt: 2 }}>
-          <Button onClick={e=> {navigate(`/CadastroContribuinte`)}} variant="contained" color="secondary" >Cadastro</Button>
+          <Button onClick={e=> {navigate(`/CadastroImovel`)}} variant="contained" color="secondary" >Cadastro</Button>
           <Button type="submit" variant="contained" onClick={onSubmit} >Pesquisar</Button>
      </Stack>
     </Paper>

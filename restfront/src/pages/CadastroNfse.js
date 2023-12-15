@@ -152,8 +152,6 @@ export function CadastroNfse() {
               }} 
               fullWidth
             />
-
-          
           </Grid>
           <Grid item>
           <TextField 

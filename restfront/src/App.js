@@ -15,6 +15,8 @@ import { ConsultaCaracteristica } from './pages/ConsultaCaracteristica';
 import { CadastroCaracteristica } from './pages/CadastroCaracteristica';
 import { ConsultaOpcaoCaracteristica } from './pages/ConsultaOpcaoCaracteritica';
 import { CadastroOpcaoCaracteristica } from './pages/CadastroOpcaoCaracteristica';
+import { ConsultaImovel } from './pages/ConsultaImovel';
+import { CadastroImovel } from './pages/CadastroImovel';
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
               <Route path="/CadastroCaracteristica/:id?" element={<CadastroCaracteristica />} />
               <Route path="/ConsultaOpcaoCaracteristica" element={<ConsultaOpcaoCaracteristica />} />
               <Route path="/CadastroOpcaoCaracteristica/:id?" element={<CadastroOpcaoCaracteristica />} />
+              <Route path="/ConsultaImovel" element={<ConsultaImovel/>} />
+              <Route path="/CadastroImovel" element={<CadastroImovel/>}  />
             </Route>
             <Route path="/" element={<Login />} />
           </Routes>

@@ -18,8 +18,16 @@ public class ImovelService {
 		return imovelRepository.save(imovel);
 	}
 	
+	public Imovel findById(Long id) {
+		return imovelRepository.findById(id).get();
+	}
+	
 	public List<Imovel> filtrar() {
 		return imovelRepository.findAll();
+	}
+	
+	public void delete(Imovel imovel) {
+		imovelRepository.delete(imovel);;
 	}
 	
 }
