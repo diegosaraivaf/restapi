@@ -1,0 +1,9 @@
+<html>
+  <head></head>
+  <body>
+    <img src="images/firefox-icon.png" alt="minha página de teste" />
+    <h2>Ola, ${nome}</h2>
+    <br/>
+    <p>${mensagem}</p>
+  </body>
+</html>
