@@ -95,7 +95,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		;
 		
 		http.headers().frameOptions().disable();//configuracao pro h2 funciona
-		http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> { // retorno persolalizado para acesso negado 
+		http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+			// retorno persolalizado para acesso negado 
+			response.getStatus();
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write("Acesso não autorizado para este recurso. Favor fazer login.");
         });
