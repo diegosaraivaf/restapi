@@ -6,10 +6,9 @@ const Api = axios.create({
 })
 
 
-
 //seta o token no head de todas a requisicoes 
-Api.defaults.headers.common['Authorization'] = 
-    localStorage.getItem('token') != null ? 'Bearer '+ localStorage.getItem('token') : null
+// Api.defaults.headers.common['Authorization'] = 
+//     localStorage.getItem('token') != null ? 'Bearer '+ localStorage.getItem('token') : null
 
 //interceptador de responses
 Api.interceptors.response.use(
@@ -20,12 +19,24 @@ Api.interceptors.response.use(
             alert("API fora dor ar")  
         // }else if(error.response.status == 401){
         }else if(error.response.status == 403){
-            debugger
             localStorage.removeItem("token");
             window.location.href="/";
         }
 
         return Promise.reject(error) 
+    }
+);
+
+Api.interceptors.request.use(
+    (request) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            request.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return request;
+    }, 
+    (error) => {
+        return Promise.reject(error);
     }
 );
 

@@ -44,11 +44,8 @@ export function ConsultaContribuinte() {
   const onEdit = (id)=>{
     navigate({
       pathname: "/CadastroContribuinte",
-      search: createSearchParams({
-          id
-      }).toString()
+      search: createSearchParams({id}).toString()
     });
-   
   }
 
   const excluir =  (id)=>{

@@ -16,6 +16,8 @@ export function Login() {
 
   const enviar = async ()=>{
     try{
+      debugger
+      console.log(Api)
       const response = await Api.post('/usuarios/autenticar',usuario)
    
       localStorage.setItem('email', usuario.email)
