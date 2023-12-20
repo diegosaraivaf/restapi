@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const Api = axios.create({
     baseURL:'http://localhost:8080'
@@ -14,9 +15,16 @@ Api.defaults.headers.common['Authorization'] =
 Api.interceptors.response.use(
     response => response,
     error =>  {
+        debugger
         if(error.code == "ERR_NETWORK"){
             alert("API fora dor ar")  
+        // }else if(error.response.status == 401){
+        }else if(error.response.status == 403){
+            debugger
+            localStorage.removeItem("token");
+            window.location.href="/";
         }
+
         return Promise.reject(error) 
     }
 );
