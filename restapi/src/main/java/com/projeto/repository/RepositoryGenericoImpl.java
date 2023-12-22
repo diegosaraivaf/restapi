@@ -29,6 +29,14 @@ public class RepositoryGenericoImpl <T,PK>{
         return clazz;
     }
 	
+	public Object salvar(Object entity) {
+		return manager.merge(entity);
+	}
+	
+	public T porId(Class<T> clazz, Long id) {
+		return (T) manager.find(clazz, id);
+	}
+	
 	/**
 	 * 
 	 * Implementar aqui um filtrar onde eu possa passar os campos que deve ser filtrados, as relacoes que devem ser carregadas e se quero paginacao

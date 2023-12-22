@@ -39,7 +39,8 @@ function App() {
                 <Route path="/ConsultaOpcaoCaracteristica" element={<ConsultaOpcaoCaracteristica />} />
                 <Route path="/CadastroOpcaoCaracteristica/:id?" element={<CadastroOpcaoCaracteristica />} />
                 <Route path="/ConsultaImovel" element={<ConsultaImovel/>} />
-                <Route path="/CadastroImovel" element={<CadastroImovel/>}  />
+                <Route path="/CadastroImovel/:id?" element={<CadastroImovel/>}  />
+                
               </Route>
             </Route>
             <Route path="/" element={<Login />} />
