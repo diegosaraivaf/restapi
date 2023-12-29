@@ -28,7 +28,7 @@ public class ContribuinteService {
 	
 	public List<Contribuinte> filtrar(Long id,String documento,String nome,String rua,String bairro) {
 		///teste
-		Contribuinte c = contribuinteRepository.porId(1L);
+		Contribuinte c = contribuinteRepository.findById(1L).get();
 		//fim teste
 		
 		return contribuinteRepository.filtrar(id,documento, nome, rua, bairro);

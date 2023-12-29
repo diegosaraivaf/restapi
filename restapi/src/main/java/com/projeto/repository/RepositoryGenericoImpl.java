@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
@@ -29,8 +30,14 @@ public class RepositoryGenericoImpl <T,PK>{
         return clazz;
     }
 	
+	//@Transactional
 	public Object salvar(Object entity) {
 		return manager.merge(entity);
+	}
+	
+	//@Transactional
+	public Object salvar(Class<T> clazz,Object entity) {
+		return manager.merge((T)entity);
 	}
 	
 	public T porId(Class<T> clazz, Long id) {

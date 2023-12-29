@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ import com.projeto.entity.Lancamento;
 
 
 @Repository
-public class ContribuinteRepositoryImpl extends RepositoryGenericoImpl<Contribuinte,Long>{
+public class ContribuinteRepositoryImpl /** extends RepositoryGenericoImpl<Contribuinte,Long> */{
 	
 	@PersistenceContext
 	private EntityManager manager;
@@ -58,6 +59,7 @@ public class ContribuinteRepositoryImpl extends RepositoryGenericoImpl<Contribui
 		return query.getResultList();
 	}
 	
+	@Transactional
 	public Contribuinte salvar(Contribuinte contribuinte) {
 		return manager.merge(contribuinte);
 	}

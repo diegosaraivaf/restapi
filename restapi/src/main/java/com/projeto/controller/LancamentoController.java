@@ -1,6 +1,7 @@
 package com.projeto.controller;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,11 +38,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projeto.dto.LancamentoDTO;
+import com.projeto.entity.Contribuinte;
 import com.projeto.entity.Lancamento;
 import com.projeto.entity.Pessoa;
 import com.projeto.entity.TipoLancamento;
 import com.projeto.exeption.NegocioException;
+import com.projeto.repository.ContribuinteRepositoryImpl;
+import com.projeto.repository.LancamentoRepositoryImpl;
 import com.projeto.repository.RepositoryGenericoImpl;
+import com.projeto.service.GenericService;
 import com.projeto.service.LancamentoService;
 import com.projeto.util.PathUtil;
 
@@ -51,6 +56,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/lancamentos")
 public class LancamentoController {
+	
+	@Autowired
+	private GenericService genericService;
 	
 	//tirar
 	@PostConstruct
@@ -163,8 +171,8 @@ public class LancamentoController {
 	@PatchMapping("/teste/{id}")
 	public void atualizarParcialmente(@PathVariable("id") Long id, @RequestBody Map<String,Object> atributos) {
 		try {
-			saveOrUpdate(Lancamento.class, atributos);
-		} catch (InstantiationException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			genericService.instantiateAndPopulate(Lancamento.class, atributos);
+		} catch (InstantiationException | IllegalAccessException | NoSuchFieldException | SecurityException | NoSuchMethodException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -196,71 +204,11 @@ public class LancamentoController {
 	 */
 	
 	
-	@Autowired
-	private RepositoryGenericoImpl<Lancamento, Long> repository;
+	
 
-	@Transactional
-    public <T> T saveOrUpdate(Class<T> clazz, Map<String, Object> attributes) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
-        T entity = instantiateAndPopulate(clazz, attributes);
-        Object o = repository.salvar(entity);
-        return (T)o;
-    }
-
-    private <T> T instantiateAndPopulate(Class<T> clazz, Map<String, Object> attributes) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
-        T entity = clazz.newInstance(); // Handle exceptions
-        
-        //pegar id da entidade para seta somente a informacoes que foram passadas no parametro
-        repository.porId(clazz, null)
-        
-
-        for (Map.Entry<String, Object> entry : attributes.entrySet()) {
-            Field field = clazz.getDeclaredField(entry.getKey()); // Handle exceptions
-            field.setAccessible(true);
-
-            if (isEntity(field.getType())) {
-                // Handle nested entity
-                Object nestedEntity = instantiateAndPopulate(field.getType(), (Map<String, Object>) entry.getValue());
-                field.set(entity, nestedEntity);
-            } else {
-                // Set simple field
-            	 Object convertedValue = convertValue(field.getType(), entry.getValue());
-                 field.set(entity, convertedValue);
-            }
-        }
-
-        return entity;
-    }
-
-    private boolean isEntity(Class<?> type) {
-        // Implement logic to determine if 'type' is an entity class
-        // For example, check if it's annotated with @Entity
-    	
-        return type.isAnnotationPresent(javax.persistence.Entity.class); 
-    }
+	
+ 
     
-    private Object convertValue(Class<?> type, Object value) {
-    	if (Long.class.equals(type)) {
-    		return new Long(value.toString());
-    	}
-    	else if (BigDecimal.class.equals(type)) {
-            return new BigDecimal(value.toString());
-        }
-        else if(Date.class.equals(type)) {
-        	try {
-        	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        	Date date = formatter.parse(value.toString());
-        	return date;
-			} 
-        	catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	return null;
-        }
-        // Add more type checks and conversions as needed
-        // For example, handling Integer, Date, etc.
-        
-        return value; // If no conversion is needed, return the original value
-    }
+ 
 
 }
