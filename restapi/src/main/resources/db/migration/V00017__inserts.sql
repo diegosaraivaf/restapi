@@ -15,6 +15,7 @@ insert into parcela(id,valor,situacao,lancamento_id,data_vencimento) values(2,10
 insert into parcela(id,valor,situacao,lancamento_id,data_vencimento) values(3,150,'EMITIDO',2,'2021-10-10');
 insert into parcela(id,valor,situacao,lancamento_id,data_vencimento) values(4,150,'EMITIDO',2,'2021-10-10');
 insert into parcela(id,valor,situacao,lancamento_id,data_vencimento) values(5,400,'EMITIDO',3,'2021-10-10');
+select setval('parcela_id_seq', 6, true);
 
 insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(1,1,2,'Fortaleza',200,'2021-10-10','EMITIDA');
 insert into nfse(id,prestador_id,tomador_id,local_prestacao,valor_servico,data_emissao,situacao_nfse) values(2,1,2,'Maracanau',200,'2021-10-10','EMITIDA');
