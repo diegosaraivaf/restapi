@@ -1,9 +1,6 @@
-import { Button, Card, CardContent, CardHeader, Grid, Paper, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
+import { Button, Grid, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
-import { Head } from "./head";
-import { useForm ,useFieldArray} from "react-hook-form";
-import { Menu } from "./Menu";
 import { useContext, useEffect, useState } from "react";
 import { SnackbarContext } from "../componente/SnackbarContext";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";

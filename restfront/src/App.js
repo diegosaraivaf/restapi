@@ -1,11 +1,10 @@
 import './App.css';
-import { BrowserRouter, Outlet, Route, Routes,Redirect, Navigate } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes, Navigate } from "react-router-dom";
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { CadastroNfse } from './pages/CadastroNfse';
 import { ConsultaNfse } from './pages/ConsultaNfse';
 import "./index.css";
-import { ConsultaContribuinte } from './pages/ConsultaContribuinte';
 import Layout from './pages/Layout';
 import { CadastroContribuinte } from './pages/CadastroContribuinte';
 import { SnackBarProvider } from './componente/SnackbarContext';
@@ -17,6 +16,7 @@ import { ConsultaOpcaoCaracteristica } from './pages/ConsultaOpcaoCaracteritica'
 import { CadastroOpcaoCaracteristica } from './pages/CadastroOpcaoCaracteristica';
 import { ConsultaImovel } from './pages/ConsultaImovel';
 import { CadastroImovel } from './pages/CadastroImovel';
+import { ChatRoom } from './pages/ChatRoom';
 
 function App() {
   return (
@@ -40,7 +40,7 @@ function App() {
                 <Route path="/CadastroOpcaoCaracteristica/:id?" element={<CadastroOpcaoCaracteristica />} />
                 <Route path="/ConsultaImovel" element={<ConsultaImovel/>} />
                 <Route path="/CadastroImovel/:id?" element={<CadastroImovel/>}  />
-                
+                <Route path="/ChatRoom" element={<ChatRoom/>}  />
               </Route>
             </Route>
             <Route path="/" element={<Login />} />
