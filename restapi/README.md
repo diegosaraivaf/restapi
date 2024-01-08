@@ -34,6 +34,7 @@
 -consumir uma outra api do aqui do backend (vi um cara utilizado rest templat do spring, nao sei se ela e a mais utilizada)
 -?criar um especir de scarfould que cria todo o crud de uma entidade ?
 -?criar uma abordagem onde pode passar so referencia ou o objeto compreto nas dependencias ?
+-utilizacao de Socket para o recebimento de mensagens do servidor(foi criado um chat basico)(websocketconfig.java, chatcontroller.java, chatroom.js)
 
 
 ##front 

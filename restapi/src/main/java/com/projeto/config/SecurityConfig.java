@@ -77,13 +77,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 						"/v3/api-docs/**", "/swagger-resources/configuration/ui", 
 						"/swagger-resources", "/swagger-resources/configuration/security", 
 						"/swagger-ui/**", "/webjars/**").permitAll()
+				.antMatchers(HttpMethod.GET,"/ws/**").permitAll() //permite conexao com o socket
 				//.antMatchers(HttpMethod.GET,"/**").permitAll()
 				//.antMatchers(HttpMethod.POST,"/**").permitAll()
 				//.antMatchers(HttpMethod.PUT,"/**").permitAll()
 				//.antMatchers(HttpMethod.PATCH,"/**").permitAll()
 				//.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 				//.antMatchers(HttpMethod.DELETE,"/**").permitAll()
-				//.antMatchers("/**").permitAll() //mermite tudo  
+//				.antMatchers("/**").permitAll() //mermite tudo  
 				.antMatchers("/**/*.html","/**/*.js","/**/*.css","/**/*.ico").permitAll() //permiter as paginas html 
 				.anyRequest().authenticated()
 		.and()

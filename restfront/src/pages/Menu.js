@@ -94,6 +94,11 @@ const menu = [
       ],
     },
     {
+      //   icon: <DescriptionOutlinedIcon />,
+        title: "Chat room",
+        to:'/ChatRoom'
+    },
+    {
     //   icon: <DescriptionOutlinedIcon />,
       title: "Api Documentacao",
       to:'http://localhost:8080/swagger-ui/index.html'
