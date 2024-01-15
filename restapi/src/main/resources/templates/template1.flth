@@ -1,9 +1,51 @@
 <html>
-  <head></head>
+  <head>
+	<style>
+	  * {
+		  margin:0;
+		  padding:0;
+	  }
+	  .header {
+		display: flex;
+		background:gray;
+		align-items: center;
+		height:150px;
+	  }
+	  .header h1 {
+		margin-left:30px;
+	  }
+	  .content {
+		background:#333333de;
+		color:white;
+		padding:20px;
+	  }
+	  .footer{
+		background:#000000;
+		padding:20px;
+		color:white;
+		display: flex;
+		justify-content: center;
+	  }
+	</style>
+  </head>
   <body>
-    <img src="images/firefox-icon.png" alt="minha página de teste" />
-    <h2>Ola, ${nome}</h2>
-    <br/>
-    <p>${mensagem}</p>
+	<div class="header">
+		<img width="100px" src="https://cdn-icons-png.flaticon.com/512/154/154878.png" alt="minha página de teste" />
+		<h1>Projeto Teste</h1>
+	</div>
+	<div class="content">
+		<h2>Ola, ${nome}</h2>
+		<br/>
+		<p>${mensagem}</p>
+	</div>
+	<div class="footer">
+		<span>
+			Teletone : (xx) xxxxxx.xxxxx
+			</br>
+			WhatsApp : (xx) xxxxxx.xxxxx
+			</br>
+			Email :  xxxxxx@xxxxx.com.br
+		</span>
+	</div>
   </body>
 </html>

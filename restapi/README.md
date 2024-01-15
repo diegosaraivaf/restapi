@@ -21,7 +21,7 @@
 -profile de teste com banco em memoria M2
 -(falta)pegar parametro do properties e de variaveis de ambiente 
 -(falta)relatorios pdf 
--(falta)envio de email 
+-(ok)envio de email (esta funcionando, falta apenas colocalo em uma funcionalidade real) 
 -(falta)criacao de graficos
 -paginacao com filtros 
 -(falta)aws

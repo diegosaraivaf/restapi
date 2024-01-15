@@ -20,10 +20,16 @@ export function Home({titulo,descricao}) {
 
   }
 
+  const enviarEmail =()=>{
+    Api.post("/email/enviar",{})
+
+  }
+
 
   return (
     <>
       <Button variant="contained" onClick={testar} >Testar Path</Button>
+      <Button variant="contained" onClick={enviarEmail} >Enviar email</Button>
     </>
   );
 }

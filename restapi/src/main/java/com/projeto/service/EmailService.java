@@ -27,34 +27,28 @@ public class EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
+	@Autowired
 	private Configuration fmConfiguration;
 	
 	
-	
-	public void enviar(String destinatario,String titulo, String message) {
-		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-		simpleMailMessage.setFrom(remetente);
-		simpleMailMessage.setTo(destinatario);
-		simpleMailMessage.setSubject(titulo);
-		simpleMailMessage.setText(message);
-		javaMailSender.send(simpleMailMessage);
-	}
-	
-	public void enviar() {
+	/**
+	 * Envio de email com Layout 
+	 */
+	public void enviar(String destinatario,String titulo,String message) {
 		try {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 			
 			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
-			mimeMessageHelper.setSubject("titulo");
-			mimeMessageHelper.setFrom("email@gmail.com");
-			mimeMessageHelper.setTo("email@gmail.com");
+			mimeMessageHelper.setSubject(titulo);
+//			mimeMessageHelper.setFrom(remetente);//informacao de remetente e chave de acesso ficam no application.properties
+			mimeMessageHelper.setTo(destinatario);
 			
 			
-			Map<String, Object> propsMap = new HashMap<>();
-			propsMap.put("nome","teste");
-			propsMap.put("mensagem","mensagem teste 234");
+			Map<String, Object> parametros = new HashMap<>();
+			parametros.put("nome","João");
+			parametros.put("mensagem",message);
 			
-			mimeMessageHelper.setText(getConteudoTemplate(propsMap),true);
+			mimeMessageHelper.setText(getConteudoTemplate(parametros),true);
 			javaMailSender.send(mimeMessageHelper.getMimeMessage());
 		} 
 		catch (MessagingException e) {
@@ -62,15 +56,31 @@ public class EmailService {
 		}
 	}
 	
-	public String getConteudoTemplate(Map<String, Object> model) {
+	private String getConteudoTemplate(Map<String, Object> parametros) {
 		try {
 			StringBuffer content = new StringBuffer();
-			content.append(FreeMarkerTemplateUtils.processTemplateIntoString(fmConfiguration.getTemplate("template1.flth"), model));
+			content.append(FreeMarkerTemplateUtils.processTemplateIntoString(fmConfiguration.getTemplate("template1.flth"), parametros));
 			return content.toString();
 		} 
 		catch (IOException | TemplateException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Envio de email simples 
+	 */
+	public void enviarEmailSimples() {
+		String destinatario = "diegosaraivaferreira@gmail.com";
+		String titulo = "titulo teste";
+		String message = "mensagem teste";
+		
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+		simpleMailMessage.setFrom(remetente);
+		simpleMailMessage.setTo(destinatario);
+		simpleMailMessage.setSubject(titulo);
+		simpleMailMessage.setText(message);
+		javaMailSender.send(simpleMailMessage);
 	}
 }
