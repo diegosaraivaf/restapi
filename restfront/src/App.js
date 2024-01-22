@@ -17,6 +17,7 @@ import { CadastroOpcaoCaracteristica } from './pages/CadastroOpcaoCaracteristica
 import { ConsultaImovel } from './pages/ConsultaImovel';
 import { CadastroImovel } from './pages/CadastroImovel';
 import { ChatRoom } from './pages/ChatRoom';
+import { RecuperarSenha } from './pages/RecuperarSenha';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
               </Route>
             </Route>
             <Route path="/" element={<Login />} />
+            <Route path="/RecuperarSenha/:codigoRecuperacaoSenha?" element={<RecuperarSenha />} />
           </Routes>
    
         

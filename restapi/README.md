@@ -19,7 +19,7 @@
 -(falta)Logge da aplicacao
 -utilizar auditorio de banco com hibernate.envers.Audited ?
 -profile de teste com banco em memoria M2
--(falta)pegar parametro do properties e de variaveis de ambiente 
+-(ok)pegar parametro do properties e de variaveis de ambiente(EmailService utiliza email e senha como variavel de ambiente em properties) 
 -(falta)relatorios pdf 
 -(ok)envio de email (esta funcionando, falta apenas colocalo em uma funcionalidade real) 
 -(falta)criacao de graficos

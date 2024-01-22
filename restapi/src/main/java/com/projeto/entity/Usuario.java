@@ -1,5 +1,8 @@
 package com.projeto.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +29,12 @@ public class Usuario {
 	
 	@Column
 	private String senha;
+	
+	@Column
+	private String codigoRecuperacaoSenha;
+	
+	@Column
+	private LocalDateTime dataGeracaoCodigoRecuperacaoSenha;
 
 	public Long getId() {
 		return id;
@@ -65,5 +74,21 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public String getCodigoRecuperacaoSenha() {
+		return codigoRecuperacaoSenha;
+	}
+
+	public void setCodigoRecuperacaoSenha(String codigoRecuperacaoSenha) {
+		this.codigoRecuperacaoSenha = codigoRecuperacaoSenha;
+	}
+
+	public LocalDateTime getDataGeracaoCodigoRecuperacaoSenha() {
+		return dataGeracaoCodigoRecuperacaoSenha;
+	}
+
+	public void setDataGeracaoCodigoRecuperacaoSenha(LocalDateTime dataGeracaoCodigoRecuperacaoSenha) {
+		this.dataGeracaoCodigoRecuperacaoSenha = dataGeracaoCodigoRecuperacaoSenha;
 	}
 }

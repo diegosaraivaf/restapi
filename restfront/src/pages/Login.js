@@ -1,4 +1,4 @@
-import { Button, Paper, TextField } from "@mui/material";
+import { Button, Link, Paper, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import { SnackbarContext } from "../componente/SnackbarContext";
 import Api from "../componente/Api";
@@ -38,7 +38,10 @@ export function Login() {
       elevatio={10}>
         <TextField label="Email" onChange={e => setUsuario({...usuario,email: e.target.value})}/>
         <TextField label="Senha" onChange={e => setUsuario({...usuario,senha: e.target.value})} />
-        <Button  onClick={enviar} >Logar </Button>
+        <Button variant="contained" className="w100" onClick={enviar} >Logar </Button>
+        <div className="recuperar-senha-container">
+          <Link onClick={e=>{navigate('/RecuperarSenha')}} underline="none">Recuperar senha</Link>
+        </div>
       </Paper>
 
       

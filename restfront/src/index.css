@@ -69,6 +69,10 @@ body {
   flex-wrap: wrap;
 }
 
+.justify-space-between {
+  justify-content:space-between;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -87,15 +91,17 @@ code {
   margin-bottom: 10px;
 }
 
-.login-container button{
-  width: 100%;
-}
 
 .login-background {
   background-color: rgb(231, 230, 230);
   height: 100vh;
   padding-top: 20vh;
 
+}
+
+.recuperar-senha-container{
+  text-align: right;
+  margin-top: 10px;
 }
 
 .css-1ps6pg7-MuiPaper-root{
@@ -122,6 +128,20 @@ code {
 .menu-list-selected.css-bshv44-MuiButtonBase-root-MuiListItem-root {
   background-color: rgb(218, 217, 217);
 }
+
+.w100{
+  width: 100%;
+}
+
+.mt10{
+  margin-top: 10px !important;
+}
+
+.mla {
+  margin-left: auto;
+}
+
+
 
 
 

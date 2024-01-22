@@ -25,6 +25,10 @@ public class UsuarioService {
 		return usuarioRepository.save(usuario);
 	}
 	
+	public Usuario atualizar(Usuario usuario) {
+		return usuarioRepository.save(usuario);
+	}
+	
 	public List<Usuario> listarUsuario() {
 		return usuarioRepository.findAll();
 	}

@@ -1,8 +1,13 @@
 package com.projeto.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.joda.DateTimeFormatterFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projeto.dto.TokenDTO;
 import com.projeto.entity.Usuario;
 import com.projeto.exeption.NegocioException;
+import com.projeto.service.EmailService;
 import com.projeto.service.JwtService;
 import com.projeto.service.UsuarioService;
 
@@ -33,6 +39,9 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@PostMapping("/")
 	public Usuario salvar(@RequestBody Usuario usuario) {
@@ -67,6 +76,45 @@ public class UsuarioController {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Um erro inesperado aconteceu");
 		}
+	}
+	
+	@PostMapping("/gerarCodigoRecuperacaoSenha")
+	public void geraCodigoRecuperacaoSenha(String email ) throws NegocioException {
+		Usuario usuario  = usuarioService.findByEmail(email);
+		
+		if(usuario == null) {
+			throw new NegocioException("Email invalido");
+		}
+		
+		String codigoRecuperacaoSenha = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyyyymmssmm"+usuario.getId()));
+		usuario.setCodigoRecuperacaoSenha(codigoRecuperacaoSenha);
+		usuario.setDataGeracaoCodigoRecuperacaoSenha(LocalDateTime.now());
+		usuarioService.atualizar(usuario);
+		
+		emailService.enviar(
+				email, 
+				"Recuperacao de senha ", 
+				"clique no link abaixo para redefinir sua senha http://localhost:3000/RecuperarSenha?codigoRecuperacaoSenha="+codigoRecuperacaoSenha+"&email="+email);
+		
+	}
+	
+	@PostMapping("/redefinirSenha")
+	public void redefinirSenha(Usuario usuario ) throws NegocioException {
+		Usuario usuarioAux  = usuarioService.findByEmail(usuario.getEmail());
+		
+		if(usuarioAux == null) {
+			throw new NegocioException("Email invalido");
+		}
+		if(usuarioAux.getCodigoRecuperacaoSenha() != usuario.getCodigoRecuperacaoSenha()) {
+			throw new NegocioException("Codigo invalido");
+		}
+		if(ChronoUnit.MINUTES.between(usuarioAux.getDataGeracaoCodigoRecuperacaoSenha(), LocalDateTime.now()) > 30) {
+			throw new NegocioException("Codigo de recuperacao esta inspirado, faça outro pedido");
+		}
+		
+		usuarioAux.setSenha(usuario.getSenha());
+		usuarioService.salvar(usuarioAux);
+		
 	}
 
 }
