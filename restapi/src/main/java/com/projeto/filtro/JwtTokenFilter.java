@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,8 @@ public class JwtTokenFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
+		MDC.put("tenantId", "teste");
+		
 		String autorization = request.getHeader("Authorization");
 	
 		if(autorization != null && autorization.startsWith("Bearer")){
@@ -48,5 +51,7 @@ public class JwtTokenFilter extends OncePerRequestFilter{
 			}
 		}
 		filterChain.doFilter(request,response);
+		
+		MDC.remove("tenantId");
 	}
 }

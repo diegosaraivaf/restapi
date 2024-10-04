@@ -17,6 +17,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -53,6 +55,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("testes")
 public class TesteController {
+	Logger log = LoggerFactory.getLogger(TesteController.class);
+
 	 
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
@@ -65,6 +69,8 @@ public class TesteController {
 	
 	@Autowired
 	private NfseService nfseService;
+	
+	List<Nfse> nfses = new ArrayList<>();
 	
 	/**
 	 * Teste de validacao com bean validator
@@ -170,6 +176,15 @@ public class TesteController {
 	public ResponseEntity teste2() throws InterruptedException {
 		System.out.println("teste2");
 		//Thread.sleep(10000);
+		nfses.add(new Nfse());
+		
+		return ResponseEntity.ok().body("blz 2");
+	}
+	
+	@GetMapping("/teste22")
+	public ResponseEntity teste22() throws InterruptedException {
+		log.info("teste log");
+		nfses = new ArrayList<>();
 		
 		return ResponseEntity.ok().body("blz 2");
 	}
